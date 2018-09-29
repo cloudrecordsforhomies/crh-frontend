@@ -1,0 +1,10 @@
+@media all and (min-width: 480px){
+  .Users {
+    padding: 80px 0;
+    text-align: center;
+  }
+  .Users .table{
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+}

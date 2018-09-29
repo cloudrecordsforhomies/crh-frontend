@@ -1,0 +1,13 @@
+@media all and (min-width: 480px){
+  .Profile {
+    padding: 80px 0;
+    text-align: center;
+  }
+  .Profile .list-group {
+    max-width: 100px;
+  }
+  .Profile .list-group-item{
+    height: 50px;
+    font-weight: bold;
+  }
+}
