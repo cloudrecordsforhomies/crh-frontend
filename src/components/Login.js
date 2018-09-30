@@ -30,8 +30,14 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className="Login">
+      <div className="landerForm">
       <Thumbnail>
+        <div style={{textAlign:'center'}}>
+          <Button className="btn btn-primary">Login with Facebook</Button>
+          <div style={{marginTop:'10px'}}></div>
+          <Button className="btn btn-success">Login with Google</Button>
+        </div>
+        <hr></hr>
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="email" bsSize="large">
             <ControlLabel>Email</ControlLabel>
@@ -60,6 +66,9 @@ export default class Login extends Component {
             Login
           </Button>
         </form>
+        <hr></hr>
+        <a href="/signup">Don't have an account? Sign up</a>
+
         </Thumbnail>
       </div>
     );

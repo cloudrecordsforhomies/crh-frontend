@@ -21,6 +21,8 @@ export default class Signup extends Component {
       confirmationCode: "",
       newUser: null
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   validateForm() {
@@ -121,7 +123,8 @@ export default class Signup extends Component {
 
   render() {
     return (
-      <div className="Signup">
+
+      <div className="landerForm">
       <Thumbnail>
         {this.state.newUser === null
           ? this.renderForm()

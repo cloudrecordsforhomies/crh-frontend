@@ -21,3 +21,13 @@
   border-radius: 10px;
   max-width: 320px;
 }
+
+.Signup .landerForm {
+  height:auto;
+  width:377px;
+  padding:32px;
+  right:200px;
+  top:100px;
+  position:absolute;
+  border-radius:10px;
+}

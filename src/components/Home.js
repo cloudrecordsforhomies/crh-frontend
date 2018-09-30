@@ -1,19 +1,41 @@
 import React, { Component } from "react";
 import "../styles/Home.css";
+import Login from "./Login.js"
 
 export default class Home extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      sqft: 0,
+      location: "",
+      checkIn: "",
+      checkOut: ""
+    }
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  }
+
+  handleSelection = event => {
+    this.setState({[event.target.id]: event.target.value});
+  }
+
   render() {
     return (
       <div className="Home">
+      <Login />
         <div className="lander">
-          <h1>Cache</h1>
-          <p>Find and book a place to keep your shit</p>
-          {/*
-          <img src='https://media.istockphoto.com/photos/stacks-of-cardboard-boxes-picture-id509555584'
-               alt='nothing to see here'
-               className="marqueeImg repeat"/>
-          */}
+
+          <div className="blackOverlay">
+            <div className="bgImage">
+            </div>
+          </div>
         </div>
+
+
       </div>
     );
   }

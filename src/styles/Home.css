@@ -12,14 +12,29 @@
   color: #999;
 }
 
-.marqueeImg {
-  opacity: 0.5;
-  max-width: 100%;
-  height: auto;
-  margin: auto;
+.Home .bgImage {
+  width: 100%;
   position: absolute;
-  top: 66px;
-  left: 0;
+  background-size:cover;
+  height: 664px;
+  background-image: url("https://media.istockphoto.com/photos/stacks-of-cardboard-boxes-picture-id509555584");
+}
+
+.Home .blackOverlay {
+  background-color: #000;
+  width: 100%;
+  height: 664px;
+  top:0;
+  opacity: .5;
+  position: absolute;
   z-index: -1;
-  background-repeat: repeat-x;
+}
+.Home .landerForm {
+  height:auto;
+  width:377px;
+  padding:32px;
+  right:200px;
+  top:100px;
+  position:absolute;
+  border-radius:10px;
 }

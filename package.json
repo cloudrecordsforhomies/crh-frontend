@@ -2,9 +2,11 @@
   "name": "cache",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cloudrecordsforhomies.github.io/frontend/",
+  "homepage": "https://cloudrecordsforhomies.github.io/crh-frontend",
   "dependencies": {
+    "@babel/core": "^7.1.2",
     "ajv": "^6.5.4",
+    "babel-loader": "^8.0.4",
     "gh-pages": "^2.0.0",
     "history": "^4.7.2",
     "react": "^16.5.2",
@@ -13,7 +15,8 @@
     "react-router": "^4.3.1",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "svg-react-loader": "^0.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
