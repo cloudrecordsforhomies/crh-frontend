@@ -5,17 +5,17 @@ import "../styles/Login.css";
 export default class Login extends Component {
   constructor(props) {
     super(props);
-
+    console.log(this.props);
     this.state = {
       email: "",
       password: ""
     };
+
   }
 
   validateForm() {
     return this.state.email.length > 0 &&
-           this.state.password.length > 0 &&
-           this.state.email.includes("@")
+           this.state.password.length > 0
   }
 
   handleChange = event => {
@@ -25,7 +25,8 @@ export default class Login extends Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault();
+    event.preventDefault()
+    this.props.history.push("/profile");
   }
 
   render() {
@@ -38,7 +39,7 @@ export default class Login extends Component {
           <Button className="btn btn-success">Login with Google</Button>
         </div>
         <hr></hr>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit.bind(this)}>
           <FormGroup controlId="email" bsSize="large">
             <ControlLabel>Email</ControlLabel>
             <FormControl

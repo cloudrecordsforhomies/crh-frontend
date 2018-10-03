@@ -26,7 +26,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="Home">
-      <Login />
+      <Login history={this.props.history} />
         <div className="lander">
 
           <div className="blackOverlay">

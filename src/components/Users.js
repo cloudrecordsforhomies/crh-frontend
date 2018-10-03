@@ -25,8 +25,9 @@ export default class Users extends Component {
     let table = [];
     for(var user of this.state.users){
       let children = [];
-      console.log(user);
-      Object.keys(user).map(element => children.push(user[element] instanceof Array ? <td>{user[element].join(", ")}</td> : <td>{user[element]}</td>))
+      for(var key in user){
+        children.push(user[key] instanceof Array ? <td>{user[key].join(", ")}</td> : <td>{user[key]}</td>)
+      }
       table.push(<tr>{children}</tr>);
     }
     return table

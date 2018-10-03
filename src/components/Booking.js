@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  HelpBlock,
   FormGroup,
   FormControl,
   ControlLabel,
@@ -12,20 +11,9 @@ import "../styles/Booking.css";
 export default class Booking extends Component {
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {squareFootage:10};
   }
 
-validateForm() {
-  return (
-    this.state.email.length > 0 &&
-    this.state.password.length > 0 &&
-    this.state.password === this.state.confirmPassword
-  );
-}
-
-validateConfirmationForm() {
-  return this.state.confirmationCode.length > 0;
-}
 
 handleChange = event => {
   this.setState({
@@ -35,15 +23,14 @@ handleChange = event => {
 
 handleSubmit = async event => {
   event.preventDefault();
-  this.setState({ isLoading: true });
-  this.setState({ newUser: "test" });
-  this.setState({ isLoading: false });
+  var target = document.getElementById('target')
+
+  target.innerHTML = `/listings?location=${this.state.location},checkIn=${this.state.checkIn},checkOut=${this.state.checkOut},sqft=${this.state.squareFootage}`;
+  // this.context.history.push("/listings?location=banana,checkin=02/01/2020,checkout=05/99/12")
+  // send params to
+  // redirect to booking page
 }
 
-handleConfirmationSubmit = async event => {
-  event.preventDefault();
-  this.setState({ isLoading: true });
-}
 
 render() {
   return (
@@ -66,6 +53,7 @@ render() {
         <ControlLabel>Check In</ControlLabel>
         <FormControl
         type="date"
+        onChange={this.handleChange}
         />
         </FormGroup>
         </div>
@@ -74,6 +62,7 @@ render() {
         <ControlLabel>Check Out</ControlLabel>
         <FormControl
         type="date"
+        onChange={this.handleChange}
         />
         </FormGroup>
       </div>
@@ -83,6 +72,7 @@ render() {
         <FormControl
          componentClass="select"
          placeholder="select"
+         value={this.state.squareFootage}
          onChange={this.handleChange}
          >
           <option value="10">10sqft</option>
@@ -98,7 +88,9 @@ render() {
       > Submit
       </Button>
       </form>
+      <div id='target'></div>
     </Thumbnail>
+
   )
 }
 }
