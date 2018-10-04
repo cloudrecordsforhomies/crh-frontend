@@ -28,14 +28,11 @@ export default class Home extends Component {
       <div className="Home">
       <Login history={this.props.history} />
         <div className="lander">
-
           <div className="blackOverlay">
             <div className="bgImage">
             </div>
           </div>
         </div>
-
-
       </div>
     );
   }

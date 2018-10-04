@@ -124,8 +124,8 @@ export default class Signup extends Component {
   render() {
     return (
 
-      <div className="landerForm">
-      <Thumbnail>
+      <div>
+      <Thumbnail className="signupForm">
         {this.state.newUser === null
           ? this.renderForm()
           : this.renderConfirmationForm()}
