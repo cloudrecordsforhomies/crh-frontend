@@ -29,6 +29,7 @@ class App extends Component {
           <Nav pullRight>
             <NavItem href="/users">Users</NavItem>
             <NavItem href="/about">About</NavItem>
+            <NavItem href="/contract">Contract</NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

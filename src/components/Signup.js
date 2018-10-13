@@ -48,6 +48,8 @@ export default class Signup extends Component {
     this.setState({ isLoading: true });
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
+
+
   }
 
   handleConfirmationSubmit = async event => {
