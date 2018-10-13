@@ -48,6 +48,8 @@ export default class Signup extends Component {
     this.setState({ isLoading: true });
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
+
+
   }
 
   handleConfirmationSubmit = async event => {
@@ -124,8 +126,8 @@ export default class Signup extends Component {
   render() {
     return (
 
-      <div className="landerForm">
-      <Thumbnail>
+      <div>
+      <Thumbnail className="signupForm">
         {this.state.newUser === null
           ? this.renderForm()
           : this.renderConfirmationForm()}

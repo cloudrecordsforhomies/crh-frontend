@@ -8,10 +8,12 @@ import {
 } from "react-bootstrap";
 import "../styles/Booking.css";
 
+
+
 export default class Booking extends Component {
   constructor(props){
     super(props);
-    this.state = {squareFootage:10};
+    this.state = {squareFootage:10, location:"asdf"};
   }
 
 
@@ -29,6 +31,10 @@ handleSubmit = async event => {
   // this.context.history.push("/listings?location=banana,checkin=02/01/2020,checkout=05/99/12")
   // send params to
   // redirect to booking page
+  var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
+  var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
+
+
 }
 
 
@@ -36,7 +42,7 @@ render() {
   return (
     <Thumbnail className="landerForm">
       <h1>Cache</h1>
-      <p>Find a place to keep your shit</p>
+
       <form onSubmit={this.handleSubmit}>
         <FormGroup controlId="location" bsSize="large">
           <ControlLabel>Send Me Your Location</ControlLabel>
