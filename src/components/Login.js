@@ -5,7 +5,6 @@ import "../styles/Login.css";
 export default class Login extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
     this.state = {
       email: "",
       password: ""
@@ -25,11 +24,9 @@ export default class Login extends Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault()
+    event.preventDefault();
 
-    //     this.props.history.push("/users/id");
-    // }
-
+    this.props.history.push("/profile");
   }
 
   render() {
