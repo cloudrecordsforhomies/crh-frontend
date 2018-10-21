@@ -6,6 +6,7 @@ import Signup from "./components/Signup";
 import Users from "./components/Users";
 import Profile from "./components/Profile";
 import ContractHome from "./components/ContractHome"
+import Listing from "./components/Listing"
 
 export default () =>
   <Switch>
@@ -15,4 +16,5 @@ export default () =>
     <Route path="/users" exact component={Users} />
     <Route path="/profile" exact component={Profile} />
     <Route path="/contract" exact component={ContractHome} />
+    <Route path="/listings" exact component={Listing} />
   </Switch>;

@@ -14,28 +14,32 @@ export default class Booking extends Component {
   constructor(props){
     super(props);
     this.state = {squareFootage:10, location:"asdf"};
+
+    console.log(this.props);
   }
 
 
-handleChange = event => {
-  this.setState({
-    [event.target.id]: event.target.value
-  });
-}
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+    console.log(this.props);
+  }
 
-handleSubmit = async event => {
-  event.preventDefault();
-  var target = document.getElementById('target')
+  handleSubmit = event => {
+    event.preventDefault();
+    //var target = document.getElementById('target')
 
-  target.innerHTML = `/listings?location=${this.state.location},checkIn=${this.state.checkIn},checkOut=${this.state.checkOut},sqft=${this.state.squareFootage}`;
-  // this.context.history.push("/listings?location=banana,checkin=02/01/2020,checkout=05/99/12")
-  // send params to
-  // redirect to booking page
-  var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
-  var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
+    // target.innerHTML = `/listings?location=${this.state.location},checkIn=${this.state.checkIn},checkOut=${this.state.checkOut},sqft=${this.state.squareFootage}`;
+    // // send params to
+    // // redirect to booking page
+    // var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
+    // var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
 
+    this.props.history.push("/listings");
 
-}
+  }
+
 
 
 render() {
@@ -43,7 +47,7 @@ render() {
     <Thumbnail className="landerForm">
       <h1>Cache</h1>
 
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit.bind(this)}>
         <FormGroup controlId="location" bsSize="large">
           <ControlLabel>Send Me Your Location</ControlLabel>
           <FormControl

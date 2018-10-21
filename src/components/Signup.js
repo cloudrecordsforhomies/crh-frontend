@@ -8,6 +8,7 @@ import {
   Thumbnail
 } from "react-bootstrap";
 import "../styles/Signup.css";
+import axios from 'axios';
 
 export default class Signup extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ export default class Signup extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   validateForm() {
@@ -48,13 +50,17 @@ export default class Signup extends Component {
     this.setState({ isLoading: true });
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
-
+    axios.post('http://localhost:5000/users/new', {first: 'Safa',last: 'T',email: this.state.email,password: 'asdfasdf',phone: '54533433',profPic: 'htttpss'}
+  ).then(()=>this.props.history.push('/users'));
+    //fetch('localhost:5000/users/new', {method:"POST", , body: }).then(()=>this.props.history.push("/profile"));
 
   }
+
 
   handleConfirmationSubmit = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });
+
   }
 
   renderConfirmationForm() {
@@ -85,7 +91,7 @@ export default class Signup extends Component {
 
   renderForm() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="signupForm">
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
@@ -128,11 +134,14 @@ export default class Signup extends Component {
 
       <div>
       <Thumbnail className="signupForm">
-        {this.state.newUser === null
-          ? this.renderForm()
-          : this.renderConfirmationForm()}
+        {this.renderForm()}
+
       </Thumbnail>
       </div>
     );
   }
 }
+
+// <!--{this.state.newUser === null
+//   ? this.renderForm()
+//   : this.renderConfirmationForm()}-->

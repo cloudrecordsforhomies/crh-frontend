@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
 import "../styles/Users.css";
+import axios from 'axios';
 
 export default class Users extends Component {
 
@@ -8,29 +9,26 @@ export default class Users extends Component {
     super(props);
 
     this.state = {
-      users: [{id:-1,
-               first:"Safa",
-               last:"Tinaztepe",
-               email:"safa.tinaztepe@gmail.com",
-               activeBookings: [-1,-1,-1]}
-             ]
+      users:[]
     }
+
+    var users = axios.get('http://localhost:5000/users/').then( (res) => {
+      this.createTable(res.data);
+    });
   }
 
-  componentDidMount(){
-    // populate all state with GET from users
-  }
 
-  createTable(){
+  createTable(data){
     let table = [];
-    for(var user of this.state.users){
+    for(var user of data){
       let children = [];
       for(var key in user){
-        children.push(user[key] instanceof Array ? <td>{user[key].join(", ")}</td> : <td>{user[key]}</td>)
+        children.push(`<td>${user[key]}</td>`)
       }
-      table.push(<tr>{children}</tr>);
+
+      table.push(`<tr>${children.join('')}</tr>`);
     }
-    return table
+    document.getElementById('target').innerHTML = table.join('');
   }
 
   render() {
@@ -44,11 +42,13 @@ export default class Users extends Component {
               <th> First Name </th>
               <th> Last Name </th>
               <th> Email </th>
-              <th> Active Bookings </th>
+              <th> Password </th>
+              <th> phone </th>
+              <th> profpic </th>
             </tr>
           </thead>
-          <tbody>
-            {this.createTable()}
+          <tbody id='target'>
+
           </tbody>
         </Table>
       </div>
