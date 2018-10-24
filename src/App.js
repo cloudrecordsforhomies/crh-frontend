@@ -9,8 +9,10 @@ import Treasure from "./treasure.svg";
 class App extends Component {
   constructor(data){
     super(data)
+    var user = sessionStorage.getItem('user')
     this.state = {
-      username: "Safa"
+      loggedIn: user != null,
+      profile: user
     }
   }
 
@@ -18,7 +20,7 @@ class App extends Component {
     return (
       <div className="App">
       <Navbar fluid collapseOnSelect style={{maxWidth:1000, margin:'0 auto'}}>
-        <Navbar.Header>
+        <Navbar.Header style={{display:'inline-block'}}>
           <Link to="/">
             <img src={Treasure} alt='Cache' style={{paddingTop:2.5,height:45, width:45, zIndex:1}}></img>
             <Navbar.Brand>Cache</Navbar.Brand>
@@ -26,17 +28,22 @@ class App extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav pullRight>
+          <Nav pullRight style={{display:'inline-block'}}>
             <NavItem href="/users">Users</NavItem>
             <NavItem href="/about">About</NavItem>
-            <NavItem href="/contract">Contract</NavItem>
+
+            { this.state.loggedIn? (
+              <NavItem href={'/profile/' + String(this.state.profile)}>Profile</NavItem>
+            ) : (
+              <div></div>
+            )}
+
+            {/*<NavItem href="/contract">Contract</NavItem>*/}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
       <Routes />
       {/* This is the template that will render on every page*/}
-
-
       </div>
     );
   }

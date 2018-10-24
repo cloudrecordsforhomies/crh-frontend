@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, FormGroup, FormControl, ControlLabel, Thumbnail } from "react-bootstrap";
 import "../styles/Login.css";
+import axios from 'axios';
 
 export default class Login extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export default class Login extends Component {
       email: "",
       password: ""
     };
-
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   validateForm() {
@@ -24,9 +25,15 @@ export default class Login extends Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault();
+    axios.post(`http://localhost:5000/users/login`, {email:this.state.email, password:this.state.password}).then(function(response){
+      return response.data.id;
+    }).then(function(result){
+      console.log(result);
+      sessionStorage.setItem('user', result);
+    });
+    var user = sessionStorage.getItem('user');
+    this.props.history.push(`/profile/${user}`);
 
-    this.props.history.push("/profile");
   }
 
   render() {
@@ -39,7 +46,7 @@ export default class Login extends Component {
           <Button className="btn btn-success">Login with Google</Button>
         </div>
         <hr></hr>
-        <form onSubmit={this.handleSubmit.bind(this)}>
+        <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="email" bsSize="large">
             <ControlLabel>Email</ControlLabel>
             <FormControl

@@ -41,6 +41,38 @@ app.get('/users', (req, res) => {
   });
 });
 
+app.post('/users/login', (req, response) => {
+  var email = req.body.email;
+  var password = req.body.password
+  sql = `SELECT uId FROM User WHERE email='${email}' AND password='${password}';`
+  db.query(sql, function(err,result,fields){
+    if(err){
+      throw(err);
+      response.status(400).send({id:-1});
+    }
+    if(result) {
+      var id = result[0]['uId'];
+      response.status(200).send({id:id});
+    } else {
+      response.status(400).send({id:-1});
+    }
+  });
+});
+
+app.get('/profile/:id', (req, res) => {
+  var id = req.params.id;
+  var sql = `SELECT * FROM USER WHERE uId=${id}`;
+  db.query(sql, function(err,result,fields){
+    if(err){
+      throw(err);
+      res.status(400).send("Could not complete request");
+    }
+    console.log(result);
+    res.status(200).send(result[0]);
+  });
+
+});
+
 // ====================================== //
 
 
@@ -60,18 +92,10 @@ app.post('/users/new', (req, res) => {
 
   db.query(sql, [values], function(err,result,fields){
     if(err) throw(err);
-
   });
 
   res.status(200).send(req.body);
 });
-
-  // db.query(sql, [values], function(err,res, fields){
-  //   //if(err) throw(err);
-  // });
-
-  //res.status(200).send(req.body);
-// ====================================== //
 
 // 404
 app.use('*', function(req,res){

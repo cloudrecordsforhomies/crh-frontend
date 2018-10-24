@@ -6,11 +6,9 @@ export default class Home extends Component {
   constructor(props){
     super(props);
     this.state = {
-      sqft: 0,
-      location: "",
-      checkIn: "",
-      checkOut: ""
     }
+    sessionStorage.setItem('user', null);
+
   }
 
   handleChange = event => {
