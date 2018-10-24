@@ -20,7 +20,10 @@ export default class Signup extends Component {
       password: "",
       confirmPassword: "",
       confirmationCode: "",
-      newUser: null
+      newUser: null,
+      phone: "",
+      first: "",
+      last: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -50,8 +53,19 @@ export default class Signup extends Component {
     this.setState({ isLoading: true });
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
-    axios.post('http://localhost:5000/users/new', {first: 'Safa',last: 'T',email: this.state.email,password: 'asdfasdf',phone: '54533433',profPic: 'htttpss'}
-  ).then(()=>this.props.history.push('/users'));
+    var self = this;
+    axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: 'htttpss'}
+  ).then(function(){
+    axios.post(`http://localhost:5000/users/login`, {email:self.state.email, password:self.state.password})
+    .then(function(response){
+      return response.data.id;
+    }).then(function(result){
+      sessionStorage.setItem('user', result);
+    });
+    var user = sessionStorage.getItem('user');
+    self.props.history.push(`/profile/${user}`);
+
+  });
     //fetch('localhost:5000/users/new', {method:"POST", , body: }).then(()=>this.props.history.push("/profile"));
 
   }
@@ -91,7 +105,30 @@ export default class Signup extends Component {
 
   renderForm() {
     return (
-      <form onSubmit={this.handleSubmit} className="signupForm">
+      <Thumbnail className='thumbnail signupForm' style={{width:'377px', margin:'0 auto'}}>
+      <form onSubmit={this.handleSubmit} style={{top:'25px'}}>
+      <div className="row">
+        <div className="col-xs-6">
+          <FormGroup controlId="first" bsSize="large">
+          <ControlLabel>First Name</ControlLabel>
+          <FormControl
+          type="text"
+          onChange={this.handleChange}
+          />
+          </FormGroup>
+          </div>
+        <div className="col-xs-6">
+          <FormGroup controlId="last" bsSize="large">
+          <ControlLabel>Last Name</ControlLabel>
+          <FormControl
+          type="text"
+          onChange={this.handleChange}
+          />
+          </FormGroup>
+        </div>
+        </div>
+
+
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
@@ -117,6 +154,14 @@ export default class Signup extends Component {
             type="password"
           />
         </FormGroup>
+        <FormGroup controlId="phone" bsSize="large">
+          <ControlLabel>Phone Number</ControlLabel>
+          <FormControl
+            value={this.state.phone}
+            onChange={this.handleChange}
+            type="phone"
+          />
+        </FormGroup>
         <Button
           block
           bsSize="large"
@@ -126,6 +171,7 @@ export default class Signup extends Component {
         > Signup
         </Button>
       </form>
+      </Thumbnail>
     );
   }
 
@@ -133,10 +179,7 @@ export default class Signup extends Component {
     return (
 
       <div>
-      <Thumbnail className="signupForm">
         {this.renderForm()}
-
-      </Thumbnail>
       </div>
     );
   }

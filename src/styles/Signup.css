@@ -19,12 +19,13 @@
   margin: 0 auto;
   background-color: #d4d7db;
   border-radius: 10px;
-  max-width: 320px;
+  height:319px;
+  width:377px;
 }
 
 .Signup .signupForm {
-  height:auto;
   width:377px;
+  height:auto;
   padding:32px;
   left: 500px;
   top:100px;
