@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap";
 import "../styles/Booking.css";
 import SVG from 'react-inlinesvg';
+import axios from 'axios';
 //import {box3} from '../../img/box3.png';
 
 
@@ -15,7 +16,10 @@ import SVG from 'react-inlinesvg';
 export default class Hosting extends Component {
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+      user: sessionStorage.getItem('user')
+    };
+
     this.handleRangeChange = this.handleRangeChange.bind(this);
   }
 
@@ -46,14 +50,14 @@ export default class Hosting extends Component {
     // target.innerHTML = `/listings?location=${this.state.location},checkIn=${this.state.checkIn},checkOut=${this.state.checkOut},sqft=${this.state.squareFootage}`;
     // // send params to
     // // redirect to booking page
-    // var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
-    // var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
 
+    var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
+    var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
+
+    axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, renterId:0, checkIn:this.state.checkIn, checkOut:this.state.checkOut, contractId:null, active:false, location:this.state.location, picture:"http://placehold.it/200x200", squareFootage: this.state.sqft, active:false}})
     this.props.history.push("/listings");
 
   }
-
-
 
 
 render() {

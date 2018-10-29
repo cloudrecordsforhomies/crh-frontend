@@ -10,12 +10,12 @@ CREATE TABLE User(
   password VARCHAR(255),
   phone VARCHAR(255),
   profPic VARCHAR(255),
-  CONSTRAINT uPK PRIMARY KEY (uId)
+  CONSTRAINT uPK PRIMARY KEY (uId, email)
 );
 
 CREATE TABLE ConfirmedBooking(
   bId INT NOT NULL AUTO_INCREMENT,
-  renterId INT NOT NULL,
+  renterId INT,
   hostId INT NOT NULL,
   picture VARBINARY,
   startTime BIGINT NOT NULL,

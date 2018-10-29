@@ -20,10 +20,8 @@ export default class Profile extends Component {
     });
     var profile = JSON.parse(sessionStorage.getItem('profile'));
     this.state = {
-      user: profile
+      user: user
     };
-
-    console.log(this.state);
   }
 
   render() {
@@ -31,13 +29,13 @@ export default class Profile extends Component {
       <div className="profile">
         <div className="container bootstrap snippet">
             <div className="row">
-              <div className="col-sm-10"><h1>{this.state.user.first} {this.state.user.last}</h1></div>
+              <div className="col-sm-10"><h1>Safa Tinaz</h1></div>
             </div>
             <div className="row">
               <div className="col-sm-3">
                 <div className="text-center">
                   <img src="https://scontent-atl3-1.cdninstagram.com/vp/8654fba64ada6d2f7cb30c2b82ee6ebf/5C2877D1/t51.2885-19/s320x320/40470301_737609546577676_7163267097605177344_n.jpg" className="avatar img-circle img-thumbnail" alt="avatar"></img>
-                  <h3> {this.state.user.first} {this.state.user.last} </h3>
+
                   <div className="row">
                   <div className="col-md-6">
                     <button href='#' className='btn btn-default'>Change Password</button>
@@ -56,8 +54,8 @@ export default class Profile extends Component {
                 </ul>
               </div>
               <div className="col-md-6">
-                <div className="activePane"><Booking /></div>
-                <Hosting />
+                <div className="activePane"><Booking history={this.props.history} /></div>
+                <Hosting history={this.props.history} />
               </div>
             </div>
         </div>
