@@ -10,17 +10,19 @@ export default class Listing extends Component {
 
   render() {
     return (
-      <table>
-        <th><h3> Where to store </h3></th>
+      <div id="listing" >
+      <h3> Where to store </h3>
+      <table style={{marginTop:'100px'}}>
         <tr>
           <td>
-            <ListCard location="San Francisco" price={5} image="https://preview.redd.it/z2g2jdrgsws11.png?width=640&crop=smart&auto=webp&s=7fb3f99249f2ee5cd0a3b955b6ea56ce225e0f40"/>
+            <ListCard location="San Francisco" price={5} image="http://placehold.it/200x200"/>
           </td>
           <td style={{paddingLeft:5}}>
-            <ListCard location="San Francisco" price={6} image="https://preview.redd.it/z2g2jdrgsws11.png?width=640&crop=smart&auto=webp&s=7fb3f99249f2ee5cd0a3b955b6ea56ce225e0f40"/>
+            <ListCard location="San Francisco" price={6} image="http://placehold.it/200x200"/>
           </td>
         </tr>
       </table>
+      </div>
     );
   }
 

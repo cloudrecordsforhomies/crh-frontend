@@ -32,10 +32,13 @@ class App extends Component {
             <NavItem href="/users">Users</NavItem>
             <NavItem href="/about">About</NavItem>
 
-            { this.state.loggedIn? (
+            { this.state.profile != null? (
+              <div className="nav navbar-nav navbar-right">
               <NavItem href={'/profile/' + String(this.state.profile)}>Profile</NavItem>
+              <NavItem href='/logout'>Log Out</NavItem>
+              </div>
             ) : (
-              <div></div>
+              <NavItem href='/login'>Log In</NavItem>
             )}
 
             {/*<NavItem href="/contract">Contract</NavItem>*/}

@@ -1,18 +1,23 @@
 import React, { Component } from "react";
 import "../styles/ListCard.css";
+import axios from 'axios';
 
 export default class ListCard extends Component {
 
   constructor(props){
     super(props)
     this.state = {
-      profile: "https://via.placeholder.com/200x200",
+      image: "https://via.placeholder.com/200x200",
       price: '0.002 ETH',
       location: 'San Francisco',
       successfulBookings: 10,
       sqft: 15,
       host: 'Safa'
     }
+
+    axios.get("http://localhost:5000/bookings").then(function(response){
+
+    });
   }
 
   render() {

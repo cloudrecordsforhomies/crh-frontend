@@ -63,7 +63,7 @@ export default class Signup extends Component {
       sessionStorage.setItem('user', result);
     });
     var user = sessionStorage.getItem('user');
-    self.props.history.push(`/profile/${user}`);
+    self.props.history.push(`/profile/1`);
 
   });
     //fetch('localhost:5000/users/new', {method:"POST", , body: }).then(()=>this.props.history.push("/profile"));

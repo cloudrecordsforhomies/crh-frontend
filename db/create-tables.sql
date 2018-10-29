@@ -10,20 +10,23 @@ CREATE TABLE User(
   password VARCHAR(255),
   phone VARCHAR(255),
   profPic VARCHAR(255),
-  CONSTRAINT uPK PRIMARY KEY (uId)
+  CONSTRAINT uPK PRIMARY KEY (uId, email)
 );
 
 CREATE TABLE Booking(
   bId INT NOT NULL AUTO_INCREMENT,
-  renterId INT NOT NULL,
+  renterId INT,
   hostId INT NOT NULL,
   startTime DATETIME NOT NULL,
   endTime DATETIME NOT NULL,
   contractId VARCHAR(255),
   active BOOLEAN NOT NULL,
+  location VARCHAR(255),
+  picture VARCHAR(255),
+  squareFootage INTEGER NOT NULL,
   CONSTRAINT bPK PRIMARY KEY (bId),
   CONSTRAINT rFK FOREIGN KEY (renterId) REFERENCES User(uId),
   CONSTRAINT hFK FOREIGN KEY (hostID) REFERENCES User(uId)
 );
 
-/* CREATE TABLE Claims();
+/* CREATE TABLE Claims(); */
