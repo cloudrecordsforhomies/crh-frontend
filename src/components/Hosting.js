@@ -17,7 +17,7 @@ export default class Hosting extends Component {
   constructor(props){
     super(props);
     this.state = {
-      user: sessionStorage.getItem('user')
+      user: localStorage.getItem('user')
     };
 
     this.handleRangeChange = this.handleRangeChange.bind(this);
@@ -96,7 +96,7 @@ render() {
       </div>
     </div>
         <FormGroup controlId="squareFootage">
-        <ControlLabel>Square Footage</ControlLabel>: <span id='rangeValue'>10</span> sqft
+        <ControlLabel>Square Footage</ControlLabel>: <span id='rangeValue'>30</span> sqft
         <input
          componentclass="range"
          id="sqftRange"

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, FormGroup, FormControl, ControlLabel, Thumbnail } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 import "../styles/Login.css";
 import axios from 'axios';
 
@@ -8,9 +9,12 @@ export default class Login extends Component {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      profile:"",
+      loggedIn:false
     };
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   validateForm() {
@@ -25,20 +29,28 @@ export default class Login extends Component {
   }
 
   handleSubmit = event => {
-    axios.post(`http://localhost:5000/users/login`, {email:this.state.email, password:this.state.password}).then(function(response){
+    event.preventDefault();
+    var self = this;
+    axios.post(`http://localhost:5000/users/login`, {email:self.state.email, password:self.state.password}).then(function(response){
       return response.data.id;
     }).then(function(result){
-      console.log(result);
-      sessionStorage.setItem('user', result);
+      self.handleLogin(result);
     });
-    var user = sessionStorage.getItem('user');
-    this.props.history.push(`/profile/${user}`);
+  }
 
+  handleLogin = result => {
+    if(result != null){
+      localStorage.setItem('profile', result);
+      this.setState({ profile: result, loggedIn: true }, function(){
+        console.log(this.state.profile);
+      });
+    }
   }
 
   render() {
     return (
       <div className="landerForm">
+      {this.state.loggedIn?<Redirect to={`/profile/${this.state.profile}`} /> : <div></div> }
       <Thumbnail>
         <div style={{textAlign:'center'}}>
           <Button className="btn btn-primary">Login with Facebook</Button>

@@ -7,8 +7,6 @@ export default class Home extends Component {
     super(props);
     this.state = {
     }
-    sessionStorage.setItem('user', null);
-
   }
 
   handleChange = event => {
@@ -24,7 +22,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="Home">
-      <Login history={this.props.history} />
+      <Login />
         <div className="lander">
           <div className="blackOverlay">
             <div className="bgImage">
