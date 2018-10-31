@@ -9,10 +9,9 @@ export default class Users extends Component {
     super(props);
 
     this.state = {
-      users:[]
     }
 
-    var users = axios.get('http://localhost:5000/users/').then( (res) => {
+    axios.get('http://localhost:5000/users/').then( (res) => {
       this.createTable(res.data);
     });
   }

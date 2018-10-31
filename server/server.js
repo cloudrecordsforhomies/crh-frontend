@@ -117,6 +117,7 @@ app.post('/users/login', (req, response) => {
       response.status(400).send({id:-1});
     }
     if(result) {
+      console.log(result);
       var id = result[0]['uId'];
       response.status(200).send({id:id});
     } else {
@@ -125,33 +126,7 @@ app.post('/users/login', (req, response) => {
   });
 });
 
-app.post('/booking/new', (req, res) => {
-  /*
-  bId INT NOT NULL AUTO_INCREMENT,
-  renterId INT NOT NULL,
-  hostId INT NOT NULL,
-  startTime DATETIME NOT NULL,
-  endTime DATETIME NOT NULL,
-  contractId VARCHAR(255),
-  active
-  */
-  console.log(req.body);
-  req = req.body;
-  var sql = `INSERT INTO Booking(renterId, hostId, startTime, endTime, contractId) VALUES (?)`;
 
-  var values = [req.body.hostId, req.body.renterId, req.body.checkIn, req.body.checkOut, req.body.contractId]
-  db.query(sql, [values], function(err,result,fields){
-    if(err){
-      throw(err);
-      res.status(500).send("Booking Error");
-    }
-  });
-
-  res.status(200).send(req.body);
-  // var renter = req.body.renterId;
-  // var host = req.body.host;
-  // var startTime =
-});
 
 // ====================================== //
 

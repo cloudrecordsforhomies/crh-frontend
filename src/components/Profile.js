@@ -9,19 +9,30 @@ export default class Profile extends Component {
   constructor(props){
     super(props);
     var user = null;
-    var uId = sessionStorage.getItem('user');
+    var uId = localStorage.getItem('profile');
+
+    this.state = {
+      first: null,
+      last: null,
+      email: null
+    }
+
+    this.handleLogin = this.handleLogin.bind(this);
+    var self = this;
     axios.get(`http://localhost:5000/profile/${uId}`)
     .then(function(response){
       user = response.data;
-      sessionStorage.setItem('profile', JSON.stringify(user));
+      self.handleLogin(user);
     })
-    .catch(function(error){
-      console.log("ERROR");
+    .catch(function(err){
+      alert("user not found");
     });
-    var profile = JSON.parse(sessionStorage.getItem('profile'));
-    this.state = {
-      user: user
-    };
+  }
+
+  handleLogin = (result) => {
+    this.setState({ first: result.first, last:result.last, email:result.email }, () => {
+      console.log(this.state.first);
+    });
   }
 
   render() {
@@ -29,13 +40,12 @@ export default class Profile extends Component {
       <div className="profile">
         <div className="container bootstrap snippet">
             <div className="row">
-              <div className="col-sm-10"><h1>Safa Tinaz</h1></div>
+              <div className="col-sm-10"><h1>{this.state.first} {this.state.last}</h1></div>
             </div>
             <div className="row">
               <div className="col-sm-3">
                 <div className="text-center">
                   <img src="https://scontent-atl3-1.cdninstagram.com/vp/8654fba64ada6d2f7cb30c2b82ee6ebf/5C2877D1/t51.2885-19/s320x320/40470301_737609546577676_7163267097605177344_n.jpg" className="avatar img-circle img-thumbnail" alt="avatar"></img>
-
                   <div className="row">
                   <div className="col-md-6">
                     <button href='#' className='btn btn-default'>Change Password</button>
