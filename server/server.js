@@ -1,4 +1,5 @@
 // ============== Imports =============== //
+const url = require('url');
 const cors = require('cors');
 const http = require('http');
 const mysql = require('mysql');
@@ -53,10 +54,31 @@ app.get('/profile/:id', (req, res) => {
     res.status(200).send(result[0]);
   });
 
-  app.get('/listings/*', (req,res) => {
 
-  });
 
+});
+app.get('/listings', (req,res) => {
+  console.log(req.query);
+  var uLat = req.query.uLat;
+  var uLong = req.query.uLong;
+  var uRadius = req.query.uRadius;
+  var sql = "SELECT * FROM UnconfirmedHostSideBooking";
+  var sql2 = `SELECT b.bId, b.hostId, b.squareFeet, (3959 * acos( cos( radians(${uLat}) )
+                                          * cos( radians(b.latitude) )
+                                          * cos( radians(b.longitude) - radians(${uLong}) )
+                                          + sin( radians(${uLat}) )
+                                          * sin( radians(${uLong}) ) ) ) AS distance_miles
+  FROM UnconfirmedHostSideBooking b
+
+  GROUP BY b.bId
+  HAVING distance_miles <= ${uRadius}
+  ORDER BY distance_miles ASC;`;
+
+  db.query(sql, function(err, result) {
+    console.log(result);
+    if(err) throw(err);
+    res.status(200).send(result);
+  })
 });
 
 // ====================================== //

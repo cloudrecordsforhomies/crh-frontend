@@ -1,0 +1,1 @@
+LOAD DATA LOCAL INFILE 'bookings.csv' INTO TABLE UnconfirmedHostSideBooking FIELDS TERMINATED BY "," LINES TERMINATED BY "/r/n";
