@@ -28,6 +28,7 @@ export default class Signup extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   validateForm() {
@@ -54,27 +55,29 @@ export default class Signup extends Component {
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
     var self = this;
+    var prof = null
     axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: 'htttpss'}
   ).then(function(){
     axios.post(`http://localhost:5000/users/login`, {email:self.state.email, password:self.state.password})
     .then(function(response){
       return response.data.id;
     }).then(function(result){
-      sessionStorage.setItem('user', result);
+      self.handleLogin(result);
     });
-    var user = sessionStorage.getItem('user');
-    self.props.history.push(`/profile/1`);
-
   });
-    //fetch('localhost:5000/users/new', {method:"POST", , body: }).then(()=>this.props.history.push("/profile"));
-
   }
 
 
   handleConfirmationSubmit = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });
+  }
 
+  handleLogin = (result) => {
+    alert(result);
+    localStorage.setItem('profile', result);
+    this.setState({ user: result });
+    this.props.history.push(`/profile/${this.state.user}`);
   }
 
   renderConfirmationForm() {

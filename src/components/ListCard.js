@@ -25,9 +25,9 @@ export default class ListCard extends Component {
       <div className="card" style={{ width: 200, height: "auto" }}>
         <div className="container" style={{ position: "relative" }}>
           <img
-            class="card-img-top"
+            className="card-img-top"
             src={this.state.image}
-            alt="Card image cap"
+            alt=""
           />
           <div
             style={{
@@ -40,16 +40,16 @@ export default class ListCard extends Component {
               borderRadius:1000
             }}
           >
-            <img src="https://image.flaticon.com/icons/svg/145/145867.svg"/>
+            <img src="https://image.flaticon.com/icons/svg/145/145867.svg" alt=""/>
           </div>
         </div>
-        <div class="card-body">
-          <h5 class="card-title">
-            <a href="#">
+        <div className="card-body">
+          <h5 className="card-title">
+            <a href="https://www.google.com">
               {this.state.sqft}sqft in {this.state.location}
             </a>
           </h5>
-          <p class="card-text">
+          <p className="card-text">
             <strong>{this.state.successfulBookings}</strong> successful bookings
             with <strong>{this.state.host}</strong>
           </p>
