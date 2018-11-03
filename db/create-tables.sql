@@ -15,13 +15,13 @@ CREATE TABLE User(
 
 CREATE TABLE ConfirmedBooking(
   bId INT NOT NULL AUTO_INCREMENT,
-  renterId INT,
-  hostId INT NOT NULL,
-  picture VARBINARY,
+  renterId INTEGER NOT NULL,
+  hostId INTEGER NOT NULL,
+  picture VARCHAR(255),
   startTime BIGINT NOT NULL,
   endTime BIGINT NOT NULL,
   address VARCHAR(255) NOT NULL,
-  squareFeet INT NOT NULL,
+  squareFeet INTEGER NOT NULL,
   latitude DECIMAL NOT NULL,
   longitude DECIMAL NOT NULL,
   CONSTRAINT bPK PRIMARY KEY (bId),
@@ -45,13 +45,14 @@ CREATE TABLE UnconfirmedRentSideBooking(
 CREATE TABLE UnconfirmedHostSideBooking(
   bId INT NOT NULL AUTO_INCREMENT,
   hostId INT NOT NULL,
-  picture VARBINARY,
+  picture VARCHAR(255),
   squareFeet INT NOT NULL,
-  latitude DECIMAL NOT NULL,
-  longitude DECIMAL NOT NULL,
+  latitude DECIMAL(6,3) NOT NULL,
+  longitude DECIMAL(6,3) NOT NULL,
   address VARCHAR(255),
   startTime BIGINT NOT NULL,
   endTime BIGINT NOT NULL,
+  CONSTRAINT uhPK PRIMARY KEY (bId),
   CONSTRAINT hsFK FOREIGN KEY (hostId) REFERENCES User(uId)
 );
 
