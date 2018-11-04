@@ -13,7 +13,8 @@ export default class Profile extends Component {
     this.state = {
       first: null,
       last: null,
-      email: null
+      email: null,
+      uId: uId
     }
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -64,7 +65,7 @@ export default class Profile extends Component {
               </div>
               <div className="col-md-6">
                 <div className="activePane"><Booking history={this.props.history} /></div>
-                <Hosting />
+                <Hosting user={this.state.uId} />
               </div>
             </div>
         </div>

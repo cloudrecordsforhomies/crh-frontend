@@ -20,7 +20,7 @@ export default class Listing extends Component {
 
   render() {
     return (
-      <div id="listing" >
+      <div id="listing" width="1000px">
       <h3> Where to store </h3>
       <table style={{marginTop:'100px'}}>
       <tbody>
