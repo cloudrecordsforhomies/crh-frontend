@@ -9,13 +9,20 @@ import {
 import "../styles/Booking.css";
 
 
-
 export default class Booking extends Component {
+
+
   constructor(props){
     super(props);
-    this.state = {squareFootage:10, location:"asdf"};
+    this.state = {
+      squareFootage:10,
+      latitude:33.7,
+      longitude: -84.1,
+      radius:100,
+      list:false
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
 
-    this.handleRedirect = this.handleRedirect.bind(this);
   }
 
 
@@ -25,22 +32,12 @@ export default class Booking extends Component {
     });
   }
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    //var target = document.getElementById('target')
-
-    // target.innerHTML = `/listings?location=${this.state.location},checkIn=${this.state.checkIn},checkOut=${this.state.checkOut},sqft=${this.state.squareFootage}`;
-    // // send params to
-    // // redirect to booking page
-    // var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
-    // var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
-    this.handleRedirect();
+    this.setState({list:true}, function(){
+      console.log(this.state.list);
+    })
   }
-  handleRedirect(){
-    console.log(this.props);
-    this.props.history.push("/listings");
-  }
-
 
 
 render() {
@@ -58,6 +55,36 @@ render() {
           onChange={this.handleChange}
           />
         </FormGroup>
+      <div className="row">
+        <div className="col-xs-4">
+          <FormGroup controlId="latitude" bsSize="large">
+          <ControlLabel>Latitude</ControlLabel>
+          <FormControl
+          type="text"
+          onChange={this.handleChange}
+          />
+          </FormGroup>
+          </div>
+        <div className="col-xs-4">
+          <FormGroup controlId="longitude" bsSize="large">
+          <ControlLabel>Longitude</ControlLabel>
+          <FormControl
+          type="text"
+          onChange={this.handleChange}
+          />
+          </FormGroup>
+          </div>
+          <div className="col-xs-4">
+          <FormGroup controlId="radius" bsSize="large">
+          <ControlLabel>Distance (mi)</ControlLabel>
+          <FormControl
+          type="text"
+          onChange={this.handleChange}
+          />
+          </FormGroup>
+
+        </div>
+      </div>
     <div className="row">
       <div className="col-xs-6">
         <FormGroup controlId="checkIn" bsSize="large">
@@ -96,12 +123,12 @@ render() {
         bsSize="large"
         className="btn-success"
         type="submit"
+        href={`/listings/?uLat=${this.state.latitude}&uLong=${this.state.longitude}&uRadius=${this.state.radius}`}
       > Submit
       </Button>
       </form>
       <div id='target'></div>
     </Thumbnail>
-
-  )
-}
+  );
+  }
 }
