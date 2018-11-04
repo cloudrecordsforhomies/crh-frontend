@@ -3,7 +3,6 @@ import Booking from "./Booking.js";
 import Hosting from "./Hosting.js";
 import axios from 'axios';
 
-
 export default class Profile extends Component {
 
   constructor(props){
@@ -57,15 +56,15 @@ export default class Profile extends Component {
                 </div>
                 <ul className="list-group">
                   <li className="list-group-item text-muted" style={{textAlign:"center", fontWeight:"bold"}}>Actions</li>
-                  <li className="list-group-item"><a href="#">Search for New Booking</a></li>
-                  <li className="list-group-item"><a href="#">Active Bookings</a></li>
-                  <li className="list-group-item"><a href="#">Bookings History</a></li>
-                  <li className="list-group-item"><a href="#">Saves</a></li>
+                  <li className="list-group-item"><a href="google.com">Search for New Booking</a></li>
+                  <li className="list-group-item"><a href="google.com">Active Bookings</a></li>
+                  <li className="list-group-item"><a href="google.com">Bookings History</a></li>
+                  <li className="list-group-item"><a href="google.com">Saves</a></li>
                 </ul>
               </div>
               <div className="col-md-6">
                 <div className="activePane"><Booking history={this.props.history} /></div>
-                <Hosting history={this.props.history} />
+                <Hosting />
               </div>
             </div>
         </div>

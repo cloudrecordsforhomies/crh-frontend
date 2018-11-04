@@ -50,7 +50,6 @@ app.get('/profile/:id', (req, res) => {
       throw(err);
       res.status(400).send("Could not complete request");
     }
-    console.log(result);
     res.status(200).send(result[0]);
   });
 
@@ -58,27 +57,18 @@ app.get('/profile/:id', (req, res) => {
 
 });
 app.get('/listings', (req,res) => {
-  console.log(req.query);
+
   var uLat = req.query.uLat;
   var uLong = req.query.uLong;
   var uRadius = req.query.uRadius;
-  var sql = "SELECT * FROM UnconfirmedHostSideBooking";
-  var sql2 = `SELECT b.bId, b.hostId, b.squareFeet, (3959 * acos( cos( radians(${uLat}) )
-                                          * cos( radians(b.latitude) )
-                                          * cos( radians(b.longitude) - radians(${uLong}) )
-                                          + sin( radians(${uLat}) )
-                                          * sin( radians(${uLong}) ) ) ) AS distance_miles
-  FROM UnconfirmedHostSideBooking b
-
-  GROUP BY b.bId
-  HAVING distance_miles <= ${uRadius}
-  ORDER BY distance_miles ASC;`;
-
+  var sql = `SELECT b.bId, b.hostId, b.squareFeet, b.address, b.picture, (3959 * acos( cos( radians(${uLat}) )* cos( radians(b.latitude) )* cos( radians(b.longitude) - radians(${uLong}) )+ sin( radians(${uLat}) )* sin( radians(b.latitude) ) ) ) AS distance_miles FROM UnconfirmedHostSideBooking b GROUP BY b.bId ;`
+  console.log(sql);
   db.query(sql, function(err, result) {
-    console.log(result);
     if(err) throw(err);
+    console.log(result);
     res.status(200).send(result);
-  })
+  });
+
 });
 
 // ====================================== //
@@ -125,6 +115,26 @@ app.post('/users/login', (req, response) => {
     }
   });
 });
+
+app.post('/booking/new', (req, res) => {
+
+  console.log(req.body);
+  req = req.body;
+  var sql = `INSERT INTO UnconfirmedHostSideBooking(hostId, startTime, endTime, picture, address) VALUES (?)`;
+  var values = [req.body.hostId, req.body.checkIn, req.body.checkOut, req.body.picture, req.body.address];
+  db.query(sql, [values], function(err,result,fields){
+    if(err){
+      throw(err);
+      res.status(500).send("Booking Error");
+    }
+  });
+   res.status(200).send(req.body);
+  // var renter = req.body.renterId;
+  // var host = req.body.host;
+  // var startTime =
+});
+
+
 
 
 

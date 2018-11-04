@@ -7,16 +7,29 @@ export default class ListCard extends Component {
   constructor(props){
     super(props)
     this.state = {
-      image: "https://via.placeholder.com/200x200",
-      price: '0.002 ETH',
-      location: 'San Francisco',
-      successfulBookings: 10,
-      sqft: 15,
-      host: 'Safa'
+      address:props.address,
+      sqft:props.sqft,
+      price:props.price,
+      image:props.image,
+      distance:props.distance,
+      host:props.host,
+      hostImg: null,
+      hostFirst:null
     }
+    var self = this;
+    axios.get(`http://localhost:5000/profile/${self.state.host}`)
+    .then(function(response){
+      var user = response.data;
+      self.getData(user);
+    })
+    .catch(function(err){
+      alert("user not found");
+    });
+  }
 
-    axios.get("http://localhost:5000/bookings").then(function(response){
-
+  getData = (result) => {
+    this.setState({ hostImg:result.profPic, hostFirst:result.first }, () => {
+      console.log(result);
     });
   }
 
@@ -27,7 +40,9 @@ export default class ListCard extends Component {
           <img
             className="card-img-top"
             src={this.state.image}
-            alt=""
+            height="200px"
+            width="200px"
+            alt="space"
           />
           <div
             style={{
@@ -37,21 +52,20 @@ export default class ListCard extends Component {
               float: "left",
               position: "absolute",
               bottom: "0px",
-              borderRadius:1000
+              borderRadius:"100%"
             }}
           >
-            <img src="https://image.flaticon.com/icons/svg/145/145867.svg" alt=""/>
+            <a href={`/profile/${this.state.host}`}> <img src={this.state.hostImg} className="avatar img-circle img-thumbnail" alt="host"/></a>
           </div>
         </div>
         <div className="card-body">
           <h5 className="card-title">
             <a href="https://www.google.com">
-              {this.state.sqft}sqft in {this.state.location}
+              {this.state.sqft} sqft hosted by {this.state.hostFirst}
             </a>
           </h5>
           <p className="card-text">
-            <strong>{this.state.successfulBookings}</strong> successful bookings
-            with <strong>{this.state.host}</strong>
+            {this.state.distance} miles away
           </p>
         </div>
       </div>

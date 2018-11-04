@@ -9,25 +9,28 @@ import {
 import "../styles/Booking.css";
 import SVG from 'react-inlinesvg';
 import axios from 'axios';
-//import {box3} from '../../img/box3.png';
+import { Redirect } from 'react-router-dom';
 
 
 
 export default class Hosting extends Component {
+
   constructor(props){
     super(props);
     this.state = {
-      user: localStorage.getItem('user')
+      user: localStorage.getItem('user'),
+      list: false
     };
 
     this.handleRangeChange = this.handleRangeChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleRangeChange() {
     var target = document.getElementById('rangeValue');
     var range = document.getElementById('sqftRange');
     target.innerHTML = range.value;
-    console.log(`../img/box${Math.ceil(range.value/10)}.png`);
+    //console.log(`../img/box${Math.ceil(range.value/10)}.png`);
     //document.getElementById('boxesSvg').src = `img/box${Math.ceil(range.value/10).svg}`;
     document.getElementById('boxesImg').src = require(`../images/box${Math.ceil(range.value/10)}.png`);
 
@@ -53,14 +56,27 @@ export default class Hosting extends Component {
 
     var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
     var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
+    axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, contractId:null, address:this.state.location, picture:"http://placehold.it/200x200", squareFootage: this.state.sqft, active:false}})
+         .then( function(response){
+            console.log(response);
+          })
+         .catch( function(response){
+            console.log("error");
+    });
 
-    axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, renterId:0, checkIn:this.state.checkIn, checkOut:this.state.checkOut, contractId:null, active:false, location:this.state.location, picture:"http://placehold.it/200x200", squareFootage: this.state.sqft, active:false}})
-    this.props.history.push("/listings");
+    this.setState({list:true}, function(){
+      console.log(this.state.list);
+    })
 
   }
 
 
 render() {
+
+  if(this.state.list){
+    return(<Redirect to={`/listings`} />)
+  }
+
   return (
     <Thumbnail className="landerForm">
       <h1 style={{paddingLeft:'100px'}}>Host a Space</h1>
@@ -134,11 +150,11 @@ render() {
       <img
         style={{height:'100px',width:'auto'}}
         id='boxesImg'
-        src=""
+        src="images/box3.png"
+        alt="boxes"
       />
       </div>
     </Thumbnail>
-
-  )
-}
+  );
+  }
 }

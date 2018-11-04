@@ -10,7 +10,7 @@ CREATE TABLE User(
   password VARCHAR(255),
   phone VARCHAR(255),
   profPic VARCHAR(255),
-  CONSTRAINT uPK PRIMARY KEY (uId, email)
+  CONSTRAINT uPK PRIMARY KEY (uId)
 );
 
 CREATE TABLE ConfirmedBooking(
@@ -44,14 +44,14 @@ CREATE TABLE UnconfirmedRentSideBooking(
 
 CREATE TABLE UnconfirmedHostSideBooking(
   bId INT NOT NULL AUTO_INCREMENT,
-  hostId INT NOT NULL,
+  hostId INT,
   picture VARCHAR(255),
-  squareFeet INT NOT NULL,
-  latitude DECIMAL(6,3) NOT NULL,
-  longitude DECIMAL(6,3) NOT NULL,
+  squareFeet INT,
+  latitude DECIMAL(6,3),
+  longitude DECIMAL(6,3),
   address VARCHAR(255),
-  startTime BIGINT NOT NULL,
-  endTime BIGINT NOT NULL,
+  startTime BIGINT,
+  endTime BIGINT,
   CONSTRAINT uhPK PRIMARY KEY (bId),
   CONSTRAINT hsFK FOREIGN KEY (hostId) REFERENCES User(uId)
 );
