@@ -5,8 +5,10 @@ const http = require('http');
 const mysql = require('mysql');
 const express = require('express');
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
 // ====================================== //
 
+var transporter;
 // ============== Database ============== //
 var db = mysql.createConnection({
   host     : 'localhost',
@@ -94,6 +96,21 @@ app.post('/users/new', (req, res) => {
     }
 
   });
+
+  var mailOptions = {
+    from: '"Cache Team" <admin@cache370.com>', // sender address
+    to: req.body.email, // list of receivers
+    subject: 'Welcome!', // Subject line
+    text: 'Hey there! Welcome to Cache! We are excited to have you.', // plaintext body
+    html: `<b>Hey there, ${req.body.first}! Welcome to Cache! We are excited to have you.</b>` // html body
+};
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        return console.log(error);
+    }
+    console.log('Message sent: ' + info.response);
+  });
   res.status(200).send(req.body);
 });
 
@@ -149,6 +166,8 @@ app.use('*', function(req,res){
 
 server.listen(app.get('PORT'), function(){
 	console.log('Listening at ' + app.get('PORT'));
+
+  transporter = nodemailer.createTransport('smtps://admin%40cache370.com:ilovedorian@mail.privateemail.com');
 });
 
 process.on('exit', function() {
