@@ -56,7 +56,7 @@ export default class Signup extends Component {
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
     var self = this;
-    axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: 'htttpss'}
+    axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: self.state.image}
   ).then(function(){
     axios.post(`http://localhost:5000/users/login`, {email:self.state.email, password:self.state.password})
     .then(function(response){
@@ -164,6 +164,15 @@ export default class Signup extends Component {
             type="phone"
           />
         </FormGroup>
+        <div className="row">
+        <FormGroup controlId="image" bsSize="large">
+        <ControlLabel>Image Url</ControlLabel>
+        <FormControl
+        type="text"
+        onChange={this.handleChange}
+        />
+        </FormGroup>
+        </div>
         <Button
           block
           bsSize="large"

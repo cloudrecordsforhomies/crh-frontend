@@ -18,7 +18,7 @@ export default class Hosting extends Component {
   constructor(props){
     super(props);
     this.state = {
-      user: localStorage.getItem('user'),
+      user: props.user,
       list: false
     };
 
@@ -30,6 +30,9 @@ export default class Hosting extends Component {
     var target = document.getElementById('rangeValue');
     var range = document.getElementById('sqftRange');
     target.innerHTML = range.value;
+    this.setState({squareFootage:range.value}, function(){
+      console.log(this.state.squareFootage);
+    });
     //console.log(`../img/box${Math.ceil(range.value/10)}.png`);
     //document.getElementById('boxesSvg').src = `img/box${Math.ceil(range.value/10).svg}`;
     document.getElementById('boxesImg').src = require(`../images/box${Math.ceil(range.value/10)}.png`);
@@ -56,7 +59,7 @@ export default class Hosting extends Component {
 
     var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
     var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
-    axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, contractId:null, address:this.state.location, picture:"http://placehold.it/200x200", squareFootage: this.state.sqft, active:false}})
+    axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:this.state.image, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude}})
          .then( function(response){
             console.log(response);
           })
@@ -111,6 +114,26 @@ render() {
         </FormGroup>
       </div>
     </div>
+    <div className="row">
+      <div className="col-xs-6">
+        <FormGroup controlId="latitude" bsSize="large">
+        <ControlLabel>Latitude</ControlLabel>
+        <FormControl
+        type="text"
+        onChange={this.handleChange}
+        />
+        </FormGroup>
+      </div>
+      <div className="col-xs-6">
+        <FormGroup controlId="longitude" bsSize="large">
+        <ControlLabel>Longitude</ControlLabel>
+        <FormControl
+        type="text"
+        onChange={this.handleChange}
+        />
+        </FormGroup>
+      </div>
+    </div>
         <FormGroup controlId="squareFootage">
         <ControlLabel>Square Footage</ControlLabel>: <span id='rangeValue'>30</span> sqft
         <input
@@ -124,8 +147,8 @@ render() {
          step="10"
          list='steplist'
          />
-
         </FormGroup>
+
         <datalist id="steplist">
            <option value="10">10sqft</option>
            <option value="20">20sqft</option>
@@ -133,6 +156,23 @@ render() {
            <option value="40">40sqft</option>
          </datalist>
         <div id='boxShape'>
+        </div>
+        <div id='target'>
+          <img
+            style={{height:'100px',width:'auto'}}
+            id='boxesImg'
+            src="../images/box3.png"
+            alt="boxes"
+          />
+        </div>
+        <div className="row">
+        <FormGroup controlId="image" bsSize="large">
+        <ControlLabel>Image Url</ControlLabel>
+        <FormControl
+        type="text"
+        onChange={this.handleChange}
+        />
+        </FormGroup>
         </div>
       <Button
         block
@@ -142,18 +182,7 @@ render() {
       > Submit
       </Button>
       </form>
-      <div id='target'>
-      <SVG
-          id='boxesSvg'
-          src=""
-      />
-      <img
-        style={{height:'100px',width:'auto'}}
-        id='boxesImg'
-        src="images/box3.png"
-        alt="boxes"
-      />
-      </div>
+
     </Thumbnail>
   );
   }

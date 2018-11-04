@@ -29,7 +29,7 @@ export default class ListCard extends Component {
 
   getData = (result) => {
     this.setState({ hostImg:result.profPic, hostFirst:result.first }, () => {
-      console.log(result);
+      console.log(result.first);
     });
   }
 
