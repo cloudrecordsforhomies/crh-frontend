@@ -49,18 +49,18 @@ export default class About extends Component {
                     <div class="desc">{this.state.desc3}</div>
                 </div>
                 <div class="bottom">
-                    <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/">
+                    <a class="btn-about btn-primary btn-twitter btn-sm " href="https://twitter.com/">
                         <i class="fa fa-twitter"></i>
                     </a>
-                    <a class="btn btn-danger btn-sm" rel="publisher"
+                    <a class="btn-about btn-danger btn-sm " rel="publisher"
                        href={this.state.linkedin}>
                         <i class="fa fa-linkedin"></i>
                     </a>
-                    <a class="btn btn-primary btn-sm" rel="publisher"
+                    <a class="btn-about btn-primary btn-sm " rel="publisher"
                        href={this.state.facebook}>
                         <i class="fa fa-facebook"></i>
                     </a>
-                    <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                    <a class="btn-about btn-warning btn-sm " rel="publisher" href="https://plus.google.com/shahnuralam">
                         <i class="fa fa-behance"></i>
                     </a>
                 </div>
