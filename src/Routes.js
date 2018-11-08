@@ -7,6 +7,7 @@ import Users from "./components/Users";
 import Profile from "./components/Profile";
 import ContractHome from "./components/ContractHome";
 import Listing from "./components/Listing";
+import MapContainer from "./components/MapContainer";
 import AboutPage from "./components/AboutPage";
 
 export default () =>
@@ -20,6 +21,7 @@ export default () =>
       <Route path="/profile/*" exact component={Profile} />
       <Route path="/contract" exact component={ContractHome} />
       <Route path="/listings" exact component={Listing} />
+      <Route path="/map" exact component={MapContainer} />
       <Route path="/about" exact component={AboutPage} />
     </Switch>
   </BrowserRouter>

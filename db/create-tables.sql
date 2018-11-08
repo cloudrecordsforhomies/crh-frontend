@@ -15,18 +15,22 @@ CREATE TABLE User(
 
 CREATE TABLE ConfirmedBooking(
   bId INT NOT NULL AUTO_INCREMENT,
-  renterId INTEGER NOT NULL,
-  hostId INTEGER NOT NULL,
-  picture VARCHAR(255),
+  ursbId INT NOT NULL,
+  uhsbId INT NOT NULL,
+  renterId INT NOT NULL,
+  hostId INT NOT NULL,
+  picture VARBINARY,
   startTime BIGINT NOT NULL,
   endTime BIGINT NOT NULL,
   address VARCHAR(255) NOT NULL,
-  squareFeet INTEGER NOT NULL,
+  squareFeet INT NOT NULL,
   latitude DECIMAL NOT NULL,
   longitude DECIMAL NOT NULL,
   CONSTRAINT bPK PRIMARY KEY (bId),
   CONSTRAINT rFK FOREIGN KEY (renterId) REFERENCES User(uId),
-  CONSTRAINT hFK FOREIGN KEY (hostID) REFERENCES User(uId)
+  CONSTRAINT hFK FOREIGN KEY (hostID) REFERENCES User(uId),
+  CONSTRAINT ursbFK FOREIGN KEY () REFERENCES UnconfirmedRentSideBooking(bId),
+  CONSTRAINT uhsbFK FOREIGN KEY () REFERENCES UnconfirmedHostSideBooking(bId)
 );
 
 CREATE TABLE UnconfirmedRentSideBooking(
