@@ -49,7 +49,7 @@ export default class Login extends Component {
 
   renderForm(){
     return(
-    <div className="landerForm">
+    <div className="landerForm" style={{width:"377px", margin:"0 auto"}}>
     <Thumbnail>
       <div style={{textAlign:'center'}}>
         <Button className="btn btn-primary">Login with Facebook</Button>
@@ -99,7 +99,7 @@ export default class Login extends Component {
     }
     return (
       <div>
-        {this.renderForm()};
+        {this.renderForm()}
       </div>
     );
   }

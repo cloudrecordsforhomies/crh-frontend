@@ -6,8 +6,7 @@ import {
   Button,
   Thumbnail
 } from "react-bootstrap";
-import "../styles/Booking.css";
-import SVG from 'react-inlinesvg';
+import "../styles/Booking.css"; 
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
@@ -159,21 +158,21 @@ render() {
         </div>
         <div id='target'>
           <img
-            style={{height:'100px',width:'auto'}}
+            style={{height:'100px',width:'auto', margin:"0 auto"}}
             id='boxesImg'
             src="../images/box3.png"
             alt="boxes"
           />
         </div>
-        <div className="row">
+
         <FormGroup controlId="image" bsSize="large">
         <ControlLabel>Image Url</ControlLabel>
-        <FormControl
-        type="text"
-        onChange={this.handleChange}
-        />
+          <FormControl
+          type="text"
+          onChange={this.handleChange}
+          />
         </FormGroup>
-        </div>
+
       <Button
         block
         bsSize="large"

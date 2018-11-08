@@ -75,7 +75,9 @@ export default class Signup extends Component {
 
   handleLogin = (result) => {
     localStorage.setItem('profile', result);
-    this.setState({ user: result });
+    this.setState({ user: result }, function(){
+      console.log(this.state.user);
+    });
   }
 
   renderConfirmationForm() {
@@ -164,7 +166,7 @@ export default class Signup extends Component {
             type="phone"
           />
         </FormGroup>
-        <div className="row">
+
         <FormGroup controlId="image" bsSize="large">
         <ControlLabel>Image Url</ControlLabel>
         <FormControl
@@ -172,7 +174,7 @@ export default class Signup extends Component {
         onChange={this.handleChange}
         />
         </FormGroup>
-        </div>
+
         <Button
           block
           bsSize="large"
@@ -188,6 +190,7 @@ export default class Signup extends Component {
 
   render() {
     if(this.state.user){
+      console.log(this.state.user);
       return <Redirect to={`profile/${this.state.user}`} />
     }
     return (
