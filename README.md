@@ -1,3 +1,32 @@
+Instructions:
+
+This project uses ReactJs for frontend rendering, NodeJs for the server, and MySQL for database.
+
+
+## To get this project built on your computer
+- install git
+- install npm
+- install mysql
+- `git clone https://github.com/cloudrecordsforhomies/crh-frontend.git`
+- `cd crh-frontend`
+- `npm install`
+- `cd db`
+- `mysql -u root -p`
+  - `source create-user.sql`
+  - `source create-tables.sql`
+  - `source populate-tables.sql`
+- `cd ..`
+- `npm start`
+- in a separate terminal window also at `crh-frontend`, run `node server/server.js`
+- `App.js` contains the layout that will be rendered on every page
+- `src/components` contains JSX components.
+  - to use a component: at the top of a file, write `import <COMPONENT> from './<COMPONENT>';`
+  - or `import <COMPONENT> from './components/<COMPONENT>';` if your file is not in the components directory
+  - HTML will be sent to the client from the `render(){}`, which can access the `this.state` variable from the constructor method of the component.
+  - you can link in other modular components with JSX by `<COMPONENT propname={propvalue} />`, which will include all the html from that component's render method
+- website will be live locally at `localhost:3000` and the backend will be open at `localhost:5000`
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
