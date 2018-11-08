@@ -48,15 +48,15 @@ CREATE TABLE UnconfirmedRentSideBooking(
 
 CREATE TABLE UnconfirmedHostSideBooking(
   bId INT NOT NULL AUTO_INCREMENT,
-  hostId INT NOT NULL,
-  picture VARBINARY,
-  squareFeet INT NOT NULL,
-  latitude DECIMAL NOT NULL,
-  longitude DECIMAL NOT NULL,
+  hostId INT,
+  picture VARCHAR(255),
+  squareFeet INT,
+  latitude DECIMAL(6,3),
+  longitude DECIMAL(6,3),
   address VARCHAR(255),
-  startTime BIGINT NOT NULL,
-  endTime BIGINT NOT NULL,
-  CONSTRAINT uhsbPK PRIMARY KEY (bId),
+  startTime BIGINT,
+  endTime BIGINT,
+  CONSTRAINT uhPK PRIMARY KEY (bId),
   CONSTRAINT hsFK FOREIGN KEY (hostId) REFERENCES User(uId)
 );
 

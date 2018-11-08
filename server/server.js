@@ -5,8 +5,10 @@ const mysql = require('mysql');
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 // ====================================== //
 
+var transporter;
 // ============== Database ============== //
 var db = mysql.createConnection({
   host     : 'localhost',
@@ -74,12 +76,10 @@ app.get('/profile/:id', (req, res) => {
 });
 
 app.get('/listings', (req,res) => {
-  console.log(req.query);
-  var uLat = req.query.uLat;
-  var uLong = req.query.uLong;
-  var uRadius = req.query.uRadius;
-  var sql = "SELECT * FROM UnconfirmedHostSideBooking";
-  var sql2 = `SELECT b.bId, b.hostId, b.squareFeet, (3959 * acos( cos( radians(${uLat}) )
+  var uLat = req.query.uLat ? req.query.uLat : 0;
+  var uLong = req.query.uLong ? req.query.uLong : 0;
+  var uRadius = req.query.uRadius ? req.query.uRadius : 25001;
+  var sql = `b.bId, b.hostId, b.squareFeet, b.address, b.picture, (3959 * acos( cos( radians(${uLat}) )
                                           * cos( radians(b.latitude) )
                                           * cos( radians(b.longitude) - radians(${uLong}) )
                                           + sin( radians(${uLat}) )
@@ -88,12 +88,11 @@ app.get('/listings', (req,res) => {
   GROUP BY b.bId
   HAVING distance_miles <= ${uRadius}
   ORDER BY distance_miles ASC;`;
-
   db.query(sql, function(err, result) {
-    console.log(result);
     if(err) throw(err);
+    console.log(result);
     res.status(200).send(result);
-  })
+  });
 });
 
 // ====================================== //
@@ -120,6 +119,21 @@ app.post('/users/new', (req, res) => {
     if(err) throw(err);
   });
 
+
+  var mailOptions = {
+    from: '"Cache Team" <admin@cache370.com>', // sender address
+    to: req.body.email, // list of receivers
+    subject: 'Welcome!', // Subject line
+    text: 'Hey there! Welcome to Cache! We are excited to have you.', // plaintext body
+    html: `<b>Hey there, ${req.body.first}! Welcome to Cache! We are excited to have you.</b>` // html body
+};
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        return console.log(error);
+    }
+    console.log('Message sent: ' + info.response);
+  });
   res.status(200).send(req.body);
 });
 
@@ -139,10 +153,8 @@ app.post('/confirmedbooking/new', (req, res) => {
   });
   //After we confirm a booking, we can remove the unconfirmed bookings from the
   //DB to free up space
-
   uhsbId = req.body.uhsbId;
   ursbId = req.body.uhsbId;
-
   var sqlhrm = `DELETE FROM UnconfirmedHostSideBooking WHERE bId = ` + SqlString.escape(uhsbId);
   var sqlrrm = `DELETE FROM UnconfirmedRentSideBooking WHERE bId = ` + SqlString.escape(ursbId);
 
@@ -162,6 +174,27 @@ app.post('/confirmedbooking/new', (req, res) => {
   res.status(200).send(req.body);
 });
 
+
+app.post('/booking/new', (req, res) => {
+
+  console.log(req.body);
+  req = req.body;
+  var sql = `INSERT INTO UnconfirmedHostSideBooking(hostId, startTime, endTime, picture, address, latitude, longitude, squareFeet) VALUES (?)`;
+  var values = [req.body.hostId, req.body.checkIn, req.body.checkOut, req.body.picture, req.body.address, req.body.latitude, req.body.longitude, req.body.squareFeet];
+  db.query(sql, [values], function(err,result,fields){
+    if(err){
+      throw(err);
+      res.status(500).send("Booking Error");
+    }
+  });
+   res.status(200).send(req.body);
+  // var renter = req.body.renterId;
+  // var host = req.body.host;
+  // var startTime =
+});
+
+  
+
 app.post('/unconfirmedhostsidebooking/new', (req, res) => {
 
 });
@@ -173,6 +206,8 @@ app.use('*', function(req,res){
 
 server.listen(app.get('PORT'), function(){
 	console.log('Listening at ' + app.get('PORT'));
+
+  transporter = nodemailer.createTransport('smtps://admin%40cache370.com:ilovedorian@mail.privateemail.com');
 });
 
 process.on('exit', function() {

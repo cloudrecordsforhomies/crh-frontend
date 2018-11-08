@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import "../styles/Signup.css";
 import axios from 'axios';
+import { Redirect } from "react-router-dom";
 
 export default class Signup extends Component {
   constructor(props) {
@@ -55,8 +56,7 @@ export default class Signup extends Component {
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
     var self = this;
-    var prof = null
-    axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: 'htttpss'}
+    axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: self.state.image}
   ).then(function(){
     axios.post(`http://localhost:5000/users/login`, {email:self.state.email, password:self.state.password})
     .then(function(response){
@@ -75,8 +75,9 @@ export default class Signup extends Component {
 
   handleLogin = (result) => {
     localStorage.setItem('profile', result);
-    this.setState({ user: result });
-    this.props.history.push(`/profile/${this.state.user}`);
+    this.setState({ user: result }, function(){
+      console.log(this.state.user);
+    });
   }
 
   renderConfirmationForm() {
@@ -106,6 +107,7 @@ export default class Signup extends Component {
   }
 
   renderForm() {
+
     return (
       <Thumbnail className='thumbnail signupForm' style={{width:'377px', margin:'0 auto'}}>
       <form onSubmit={this.handleSubmit} style={{top:'25px'}}>
@@ -164,6 +166,15 @@ export default class Signup extends Component {
             type="phone"
           />
         </FormGroup>
+
+        <FormGroup controlId="image" bsSize="large">
+        <ControlLabel>Image Url</ControlLabel>
+        <FormControl
+        type="text"
+        onChange={this.handleChange}
+        />
+        </FormGroup>
+
         <Button
           block
           bsSize="large"
@@ -178,12 +189,16 @@ export default class Signup extends Component {
   }
 
   render() {
+    if(this.state.user){
+      console.log(this.state.user);
+      return <Redirect to={`profile/${this.state.user}`} />
+    }
     return (
-
       <div>
-        {this.renderForm()}
+        {this.renderForm()};
       </div>
     );
+
   }
 }
 

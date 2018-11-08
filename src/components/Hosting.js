@@ -6,28 +6,33 @@ import {
   Button,
   Thumbnail
 } from "react-bootstrap";
-import "../styles/Booking.css";
-import SVG from 'react-inlinesvg';
+import "../styles/Booking.css"; 
 import axios from 'axios';
-//import {box3} from '../../img/box3.png';
+import { Redirect } from 'react-router-dom';
 
 
 
 export default class Hosting extends Component {
+
   constructor(props){
     super(props);
     this.state = {
-      user: localStorage.getItem('user')
+      user: props.user,
+      list: false
     };
 
     this.handleRangeChange = this.handleRangeChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleRangeChange() {
     var target = document.getElementById('rangeValue');
     var range = document.getElementById('sqftRange');
     target.innerHTML = range.value;
-    console.log(`../img/box${Math.ceil(range.value/10)}.png`);
+    this.setState({squareFootage:range.value}, function(){
+      console.log(this.state.squareFootage);
+    });
+    //console.log(`../img/box${Math.ceil(range.value/10)}.png`);
     //document.getElementById('boxesSvg').src = `img/box${Math.ceil(range.value/10).svg}`;
     document.getElementById('boxesImg').src = require(`../images/box${Math.ceil(range.value/10)}.png`);
 
@@ -53,14 +58,27 @@ export default class Hosting extends Component {
 
     var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
     var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
+    axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:this.state.image, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude}})
+         .then( function(response){
+            console.log(response);
+          })
+         .catch( function(response){
+            console.log("error");
+    });
 
-    axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, renterId:0, checkIn:this.state.checkIn, checkOut:this.state.checkOut, contractId:null, active:false, location:this.state.location, picture:"http://placehold.it/200x200", squareFootage: this.state.sqft, active:false}})
-    this.props.history.push("/listings");
+    this.setState({list:true}, function(){
+      console.log(this.state.list);
+    })
 
   }
 
 
 render() {
+
+  if(this.state.list){
+    return(<Redirect to={`/listings`} />)
+  }
+
   return (
     <Thumbnail className="landerForm">
       <h1 style={{paddingLeft:'100px'}}>Host a Space</h1>
@@ -95,6 +113,26 @@ render() {
         </FormGroup>
       </div>
     </div>
+    <div className="row">
+      <div className="col-xs-6">
+        <FormGroup controlId="latitude" bsSize="large">
+        <ControlLabel>Latitude</ControlLabel>
+        <FormControl
+        type="text"
+        onChange={this.handleChange}
+        />
+        </FormGroup>
+      </div>
+      <div className="col-xs-6">
+        <FormGroup controlId="longitude" bsSize="large">
+        <ControlLabel>Longitude</ControlLabel>
+        <FormControl
+        type="text"
+        onChange={this.handleChange}
+        />
+        </FormGroup>
+      </div>
+    </div>
         <FormGroup controlId="squareFootage">
         <ControlLabel>Square Footage</ControlLabel>: <span id='rangeValue'>30</span> sqft
         <input
@@ -108,8 +146,8 @@ render() {
          step="10"
          list='steplist'
          />
-
         </FormGroup>
+
         <datalist id="steplist">
            <option value="10">10sqft</option>
            <option value="20">20sqft</option>
@@ -118,6 +156,23 @@ render() {
          </datalist>
         <div id='boxShape'>
         </div>
+        <div id='target'>
+          <img
+            style={{height:'100px',width:'auto', margin:"0 auto"}}
+            id='boxesImg'
+            src="../images/box3.png"
+            alt="boxes"
+          />
+        </div>
+
+        <FormGroup controlId="image" bsSize="large">
+        <ControlLabel>Image Url</ControlLabel>
+          <FormControl
+          type="text"
+          onChange={this.handleChange}
+          />
+        </FormGroup>
+
       <Button
         block
         bsSize="large"
@@ -126,19 +181,8 @@ render() {
       > Submit
       </Button>
       </form>
-      <div id='target'>
-      <SVG
-          id='boxesSvg'
-          src=""
-      />
-      <img
-        style={{height:'100px',width:'auto'}}
-        id='boxesImg'
-        src=""
-      />
-      </div>
-    </Thumbnail>
 
-  )
-}
+    </Thumbnail>
+  );
+  }
 }

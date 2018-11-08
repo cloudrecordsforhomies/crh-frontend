@@ -13,7 +13,9 @@
     "expo-cli": "^2.2.0",
     "google-maps-react": "^2.0.2",
     "history": "^4.7.2",
+    "merge": ">=1.2.1",
     "mysql": "^2.16.0",
+    "nodemailer": "^4.6.8",
     "react": "^16.5.2",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.5.2",
@@ -38,8 +40,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "gh-pages": "^2.0.1"
-  }
+  ]
 }

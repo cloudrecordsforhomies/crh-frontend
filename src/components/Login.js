@@ -41,55 +41,65 @@ export default class Login extends Component {
   handleLogin = result => {
     if(result != null){
       localStorage.setItem('profile', result);
-      this.setState({ profile: result, loggedIn: true }, function(){
-        console.log(this.state.profile);
+      this.setState({ user: result, loggedIn: true }, function(){
+        console.log(this.state.user);
       });
     }
   }
 
-  render() {
-    return (
-      <div className="landerForm">
-      {this.state.loggedIn?<Redirect to={`/profile/${this.state.profile}`} /> : <div></div> }
-      <Thumbnail>
-        <div style={{textAlign:'center'}}>
-          <Button className="btn btn-primary">Login with Facebook</Button>
-          <div style={{marginTop:'10px'}}></div>
-          <Button className="btn btn-success">Login with Google</Button>
-        </div>
-        <hr></hr>
-        <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="email" bsSize="large">
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
-              autoFocus
-              type="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
-              value={this.state.password}
-              onChange={this.handleChange}
-              type="password"
-            />
-          </FormGroup>
-          <Button
-            block
-            bsSize="large"
-            className="btn-success"
-            disabled={!this.validateForm()}
-            type="submit"
-          >
-            Login
-          </Button>
-        </form>
-        <hr></hr>
-        <a href="/signup">Don't have an account? Sign up</a>
+  renderForm(){
+    return(
+    <div className="landerForm" style={{width:"377px", margin:"0 auto"}}>
+    <Thumbnail>
+      <div style={{textAlign:'center'}}>
+        <Button className="btn btn-primary">Login with Facebook</Button>
+        <div style={{marginTop:'10px'}}></div>
+        <Button className="btn btn-success">Login with Google</Button>
+      </div>
+      <hr></hr>
+      <form onSubmit={this.handleSubmit}>
+        <FormGroup controlId="email" bsSize="large">
+          <ControlLabel>Email</ControlLabel>
+          <FormControl
+            autoFocus
+            type="email"
+            value={this.state.email}
+            onChange={this.handleChange}
+          />
+        </FormGroup>
+        <FormGroup controlId="password" bsSize="large">
+          <ControlLabel>Password</ControlLabel>
+          <FormControl
+            value={this.state.password}
+            onChange={this.handleChange}
+            type="password"
+          />
+        </FormGroup>
+        <Button
+          block
+          bsSize="large"
+          className="btn-success"
+          disabled={!this.validateForm()}
+          type="submit"
+        >
+          Login
+        </Button>
+      </form>
+      <hr></hr>
+      <a href="/signup">Don't have an account? Sign up</a>
 
-        </Thumbnail>
+      </Thumbnail>
+    </div>
+  );
+  }
+
+  render() {
+    if(this.state.user){
+      return <Redirect to={`profile/${this.state.user}`} />
+    }
+    return (
+      <div>
+        {this.renderForm()}
       </div>
     );
   }
