@@ -14,7 +14,8 @@ export default class Profile extends Component {
       first: null,
       last: null,
       email: null,
-      uId: uId
+      uId: uId,
+      image: null
     }
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -30,7 +31,7 @@ export default class Profile extends Component {
   }
 
   handleLogin = (result) => {
-    this.setState({ first: result.first, last:result.last, email:result.email }, () => {
+    this.setState({ first: result.first, last:result.last, email:result.email, image:result.profPic }, () => {
       console.log(this.state.first);
     });
   }
@@ -45,7 +46,7 @@ export default class Profile extends Component {
             <div className="row">
               <div className="col-sm-3">
                 <div className="text-center">
-                  <img src="https://scontent-atl3-1.cdninstagram.com/vp/8654fba64ada6d2f7cb30c2b82ee6ebf/5C2877D1/t51.2885-19/s320x320/40470301_737609546577676_7163267097605177344_n.jpg" className="avatar img-circle img-thumbnail" alt="avatar"></img>
+                  <img src={this.state.image} className="avatar img-thumbnail" style={{width:"250px", height:"250px"}} alt="avatar"></img>
                   <div className="row">
                   <div className="col-md-6">
                     <button href='#' className='btn btn-default'>Change Password</button>
