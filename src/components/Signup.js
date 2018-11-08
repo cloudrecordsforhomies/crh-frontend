@@ -74,7 +74,6 @@ export default class Signup extends Component {
   }
 
   handleLogin = (result) => {
-    alert(result);
     localStorage.setItem('profile', result);
     this.setState({ user: result });
     this.props.history.push(`/profile/${this.state.user}`);

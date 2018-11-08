@@ -10,23 +10,27 @@ CREATE TABLE User(
   password VARCHAR(255),
   phone VARCHAR(255),
   profPic VARCHAR(255),
-  CONSTRAINT uPK PRIMARY KEY (uId, email)
+  CONSTRAINT uPK PRIMARY KEY (uId)
 );
 
 CREATE TABLE ConfirmedBooking(
   bId INT NOT NULL AUTO_INCREMENT,
-  renterId INTEGER NOT NULL,
-  hostId INTEGER NOT NULL,
-  picture VARCHAR(255),
+  ursbId INT NOT NULL,
+  uhsbId INT NOT NULL,
+  renterId INT NOT NULL,
+  hostId INT NOT NULL,
+  picture VARBINARY,
   startTime BIGINT NOT NULL,
   endTime BIGINT NOT NULL,
   address VARCHAR(255) NOT NULL,
-  squareFeet INTEGER NOT NULL,
+  squareFeet INT NOT NULL,
   latitude DECIMAL NOT NULL,
   longitude DECIMAL NOT NULL,
   CONSTRAINT bPK PRIMARY KEY (bId),
   CONSTRAINT rFK FOREIGN KEY (renterId) REFERENCES User(uId),
-  CONSTRAINT hFK FOREIGN KEY (hostID) REFERENCES User(uId)
+  CONSTRAINT hFK FOREIGN KEY (hostID) REFERENCES User(uId),
+  CONSTRAINT ursbFK FOREIGN KEY () REFERENCES UnconfirmedRentSideBooking(bId),
+  CONSTRAINT uhsbFK FOREIGN KEY () REFERENCES UnconfirmedHostSideBooking(bId)
 );
 
 CREATE TABLE UnconfirmedRentSideBooking(
@@ -45,14 +49,14 @@ CREATE TABLE UnconfirmedRentSideBooking(
 CREATE TABLE UnconfirmedHostSideBooking(
   bId INT NOT NULL AUTO_INCREMENT,
   hostId INT NOT NULL,
-  picture VARCHAR(255),
+  picture VARBINARY,
   squareFeet INT NOT NULL,
-  latitude DECIMAL(6,3) NOT NULL,
-  longitude DECIMAL(6,3) NOT NULL,
+  latitude DECIMAL NOT NULL,
+  longitude DECIMAL NOT NULL,
   address VARCHAR(255),
   startTime BIGINT NOT NULL,
   endTime BIGINT NOT NULL,
-  CONSTRAINT uhPK PRIMARY KEY (bId),
+  CONSTRAINT uhsbPK PRIMARY KEY (bId),
   CONSTRAINT hsFK FOREIGN KEY (hostId) REFERENCES User(uId)
 );
 
