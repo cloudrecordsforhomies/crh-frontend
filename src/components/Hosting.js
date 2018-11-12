@@ -6,7 +6,7 @@ import {
   Button,
   Thumbnail
 } from "react-bootstrap";
-import "../styles/Booking.css"; 
+import "../styles/Booking.css";
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
@@ -58,9 +58,12 @@ export default class Hosting extends Component {
 
     var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
     var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
+    var self = this;
     axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:this.state.image, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude}})
          .then( function(response){
-            console.log(response);
+            self.setState({bid:response},function(){
+              console.log(this.state.bid);
+            });
           })
          .catch( function(response){
             console.log("error");
@@ -68,7 +71,7 @@ export default class Hosting extends Component {
 
     this.setState({list:true}, function(){
       console.log(this.state.list);
-    })
+    });
 
   }
 
@@ -76,7 +79,7 @@ export default class Hosting extends Component {
 render() {
 
   if(this.state.list){
-    return(<Redirect to={`/listings`} />)
+    return(<Redirect to={`/hostinspect/${this.state.bid}`} />)
   }
 
   return (

@@ -1,0 +1,151 @@
+.detail-component-area {
+  box-sizing: border-box;
+  color: rgb(97, 97, 97);
+  font-family: Lato;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 22.85px;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  margin-bottom: 0px;
+  margin-left: 135px;
+  margin-right: 135px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 0px;
+  width: 1170px;
+}
+
+.detail-view {
+  margin-top: 45px;
+  color: #6e6e6e;
+  font-weight: 100;
+}
+
+.detail-box {
+  background-color: #fff;
+  margin-bottom: 7px;
+  box-shadow: 0 .5px 3px 0 rgba(0,0,0,.14);
+}
+
+.space-desc {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.detail-box .own-space.space-title {
+    background: purple;
+    font-weight: 400;
+    color: #fff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.detail-box .own-space {
+    padding-left: 22px;
+}
+
+.detail-placeholder-pic {
+    height: 320px;
+    width: 100%;
+}
+
+.detail-box .own-space.space-pricing {
+
+    padding-left: 35px;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+
+}
+.detail-box .own-space {
+    padding-left: 22px;
+}
+.col-md-12 {
+    width: 100%;
+}
+
+.detail-placeholder-pic {
+    height: 320px;
+    width: 100%;
+}
+img {
+    vertical-align: middle;
+    border: 0;
+}
+
+.detail-name-addr {
+    padding: 20px 20px 0;
+}
+
+.detail-request-area {
+    margin-bottom: 20px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.right-float-me {
+    float: right;
+}
+.btn {
+    border: 0;
+}
+.btn-request {
+    background-color: purple;
+    color: #fff !important;
+    padding: 12px 15px;
+    font-weight: 400;
+    font-size: 18px;
+    box-shadow: 0 2px 0 #c74c00;
+    left: 0;
+}
+
+.detail-name {
+    word-wrap: break-word;
+    font-size: 20px;
+    font-weight: 400;
+    color: #616161;
+}
+
+.detail-cost {
+    font-weight: 600;
+    font-size: 24px;
+}
+.detail-sqft {
+    font-weight: 300;
+}
+
+.detail-max {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-message-request {
+    background-color: #fff;
+    padding: 10px 14px;
+    font-weight: 300;
+    font-size: 15px;
+    border: 1px solid #929292;
+    border-radius: 6px;
+    box-shadow: 0 1px 0 #929292;
+    margin-left: 5px;
+    margin-top: 5px;
+    font-weight: 400;
+    float: right;
+    color: #616161;
+}
+
+.reviews-container {
+    background-color: #fff;
+    padding: 20px 30px;
+    border: 0;
+    box-shadow: 0 .5px 3px 0 rgba(0,0,0,.14);
+}
+.review-section-header {
+    font-size: 20px;
+    font-weight: 400;
+    color: #616161;
+    margin-bottom: 25px !important;
+}

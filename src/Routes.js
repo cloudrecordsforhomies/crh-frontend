@@ -9,6 +9,8 @@ import ContractHome from "./components/ContractHome";
 import Listing from "./components/Listing";
 import MapContainer from "./components/MapContainer";
 import AboutPage from "./components/AboutPage";
+import HostInspect from "./components/HostInspect";
+import RentInspect from "./components/RentInspect";
 
 export default () =>
   <BrowserRouter>
@@ -23,5 +25,7 @@ export default () =>
       <Route path="/listings" exact component={Listing} />
       <Route path="/map" exact component={MapContainer} />
       <Route path="/about" exact component={AboutPage} />
+      <Route path="/hostinspect/*" exact component={HostInspect} />
+      <Route path="/rentinspect/*" exact component={RentInspect} />
     </Switch>
   </BrowserRouter>

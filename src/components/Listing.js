@@ -16,6 +16,7 @@ export default class Listing extends Component {
         console.log(self.state.cards);
       });
     });
+
   }
 
   render() {

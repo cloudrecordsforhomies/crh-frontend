@@ -46,20 +46,20 @@ app.get('/users', (req, res) => {
 
 app.post('/users/login', (req, response) => {
   var email = req.body.email;
-  var password = req.body.password
-  sql = `SELECT uId FROM User WHERE email='${email}' AND password='${password}';`
+  var password = req.body.password;
+  sql = `SELECT uId, password FROM User WHERE email='${email}';`
   db.query(sql, function(err,result,fields){
-    if(err){
+    result = result[0];
+    console.log(result);
+    if(result && bcrypt.compareSync(password, result.password) && !err) {
+      var id = result['uId'];
+      response.status(200).send({id:id});
+    } else {
       throw(err);
       response.status(400).send({id:-1});
     }
-    if(result) {
-      var id = result[0]['uId'];
-      response.status(200).send({id:id});
-    } else {
-      response.status(400).send({id:-1});
-    }
   });
+
 });
 
 app.get('/profile/:id', (req, res) => {
@@ -187,13 +187,22 @@ app.post('/booking/new', (req, res) => {
       res.status(500).send("Booking Error");
     }
   });
-   res.status(200).send(req.body);
+  var bid;
+  sql = `SELECT bId FROM UnconfirmedHostSideBooking WHERE hostId=${req.body.hostId} ORDER BY bId DESC`;
+  db.query(sql, function(err,result,fields){
+    if(err){
+      throw(err);
+      res.status(500).send("Booking Error");
+    }
+    bid = result[0];
+  });
+  res.status(200).send(bid.bid);
   // var renter = req.body.renterId;
   // var host = req.body.host;
   // var startTime =
 });
 
-  
+
 
 app.post('/unconfirmedhostsidebooking/new', (req, res) => {
 
