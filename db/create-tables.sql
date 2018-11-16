@@ -10,6 +10,7 @@ CREATE TABLE User(
   password VARCHAR(255),
   phone VARCHAR(255),
   profPic VARCHAR(255),
+  wallet VARCHAR(255),
   CONSTRAINT uPK PRIMARY KEY (uId)
 );
 
