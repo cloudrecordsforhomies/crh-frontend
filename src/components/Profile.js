@@ -34,6 +34,10 @@ export default class Profile extends Component {
     this.setState({ first: result.first, last:result.last, email:result.email, image:result.profPic }, () => {
       console.log(this.state.first);
     });
+    // var newState = {}
+    // Object.keys(result).map(function(key){newState[key] = result[key]});
+    // console.log(newState);
+    // this.setState(newState);
   }
 
   render() {
@@ -58,10 +62,10 @@ export default class Profile extends Component {
                 </div>
                 <ul className="list-group">
                   <li className="list-group-item text-muted" style={{textAlign:"center", fontWeight:"bold"}}>Actions</li>
-                  <li className="list-group-item"><a href="google.com">Search for New Booking</a></li>
-                  <li className="list-group-item"><a href="google.com">Active Bookings</a></li>
-                  <li className="list-group-item"><a href="google.com">Bookings History</a></li>
-                  <li className="list-group-item"><a href="google.com">Saves</a></li>
+                  <li className="list-group-item"><a href={`/listings?renterId=${this.state.uId}&status=1`}>Active Bookings</a></li>
+                  <li className="list-group-item"><a href={`/listings?renterId=${this.state.uId}&status=2`}>Bookings History</a></li>
+                  <li className="list-group-item"><a href={`/listings?hostId=${this.state.uId}&status=1`}>Active Hostings</a></li>
+                  <li className="list-group-item"><a href={`/listings?hostId=${this.state.uId}&status=2`}>Hosting History</a></li>
                 </ul>
               </div>
               <div className="col-md-6">

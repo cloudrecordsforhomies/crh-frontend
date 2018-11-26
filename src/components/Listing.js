@@ -29,7 +29,7 @@ export default class Listing extends Component {
           { this.state.cards.map(function(listing){
               return(
                 <td style={{paddingLeft:5}}>
-                  <ListCard key={listing.bId} address={listing.address} sqft={listing.squareFeet} image={listing.picture} distance={listing.distance_miles} host={listing.hostId}/>
+                  <ListCard bId={listing.bId} address={listing.address} sqft={listing.squareFeet} image={listing.picture} distance={listing.distance_miles} host={listing.hostId}/>
                 </td>
               )
             })

@@ -7,7 +7,7 @@ export default class ListCard extends Component {
   constructor(props){
     super(props)
     this.state = {
-      id:props.key,
+      id:props.bId,
       address:props.address,
       sqft:props.sqft,
       price:props.price,
@@ -18,7 +18,7 @@ export default class ListCard extends Component {
       hostFirst:null,
       user:localStorage.getItem("profile")
     }
-
+    console.log(props.bId);
     var self = this;
     axios.get(`http://localhost:5000/profile/${self.state.host}`)
     .then(function(response){

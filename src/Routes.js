@@ -21,6 +21,7 @@ export default () =>
       <Route path="/signup" exact component={Signup} />
       <Route path="/users" exact component={Users} />
       <Route path="/profile/*" exact component={Profile} />
+      <Route path="/activebookings/*" exact component={Listing} />
       <Route path="/contract" exact component={ContractHome} />
       <Route path="/listings" exact component={Listing} />
       <Route path="/map" exact component={MapContainer} />
