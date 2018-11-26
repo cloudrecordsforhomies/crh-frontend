@@ -123,7 +123,7 @@ render() {
         bsSize="large"
         className="btn-success"
         type="submit"
-        href={`/listings/?uLat=${this.state.latitude}&uLong=${this.state.longitude}&uRadius=${this.state.radius}`}
+        href={`/listings/?uLat=${this.state.latitude}&uLong=${this.state.longitude}&uRadius=${this.state.radius}&status=0`}
       > Submit
       </Button>
       </form>

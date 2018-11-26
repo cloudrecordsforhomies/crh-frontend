@@ -10,54 +10,24 @@ CREATE TABLE User(
   password VARCHAR(255),
   phone VARCHAR(255),
   profPic VARCHAR(255),
+  saves VARCHAR(255),
   CONSTRAINT uPK PRIMARY KEY (uId)
 );
 
-CREATE TABLE ConfirmedBooking(
+CREATE TABLE Booking(
   bId INT NOT NULL AUTO_INCREMENT,
-  ursbId INT NOT NULL,
-  uhsbId INT NOT NULL,
-  renterId INT NOT NULL,
-  hostId INT NOT NULL,
-  picture VARBINARY,
-  startTime BIGINT NOT NULL,
-  endTime BIGINT NOT NULL,
-  address VARCHAR(255) NOT NULL,
-  squareFeet INT NOT NULL,
-  latitude DECIMAL NOT NULL,
-  longitude DECIMAL NOT NULL,
-  CONSTRAINT bPK PRIMARY KEY (bId),
-  CONSTRAINT rFK FOREIGN KEY (renterId) REFERENCES User(uId),
-  CONSTRAINT hFK FOREIGN KEY (hostID) REFERENCES User(uId),
-  CONSTRAINT ursbFK FOREIGN KEY () REFERENCES UnconfirmedRentSideBooking(bId),
-  CONSTRAINT uhsbFK FOREIGN KEY () REFERENCES UnconfirmedHostSideBooking(bId)
-);
-
-CREATE TABLE UnconfirmedRentSideBooking(
-  bId INT NOT NULL AUTO_INCREMENT,
-  renterId INT NOT NULL,
-  squareFeet INT NOT NULL,
-  radius DECIMAL,
-  centerLatitude DECIMAL,
-  centerLongitude DECIMAL,
-  startTime BIGINT NOT NULL,
-  endTime BIGINT NOT NULL,
-  CONSTRAINT ursbPK PRIMARY KEY (bId),
-  CONSTRAINT rsFK FOREIGN KEY (renterId) REFERENCES User(uId)
-);
-
-CREATE TABLE UnconfirmedHostSideBooking(
-  bId INT NOT NULL AUTO_INCREMENT,
+  renterId INT,
   hostId INT,
   picture VARCHAR(255),
-  squareFeet INT,
-  latitude DECIMAL(6,3),
-  longitude DECIMAL(6,3),
+  startTime INT,
+  endTime INT,
   address VARCHAR(255),
-  startTime BIGINT,
-  endTime BIGINT,
-  CONSTRAINT uhPK PRIMARY KEY (bId),
-  CONSTRAINT hsFK FOREIGN KEY (hostId) REFERENCES User(uId)
+  squareFeet INT,
+  latitude DECIMAL,
+  longitude DECIMAL,
+  status TINYINT,
+  price DECIMAL,
+  CONSTRAINT bPK PRIMARY KEY (bId),
+  CONSTRAINT rFK FOREIGN KEY (renterId) REFERENCES User(uId),
+  CONSTRAINT hFK FOREIGN KEY (hostID) REFERENCES User(uId)
 );
-
-/* CREATE TABLE Claims();

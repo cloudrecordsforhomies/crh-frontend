@@ -6,11 +6,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
-const web3 = require('web3');
-const axios = require('axios');
+const AWS = require('aws-sdk');
+const fs = require('fs');
+const fileType = require('file-type');
+const bluebird = require('bluebird');
+const multiparty = require('multiparty');
 // ====================================== //
 
-var transporter;
+
+// ============== Mailer ============== //
+var transporter = nodemailer.createTransport('smtps://admin%40cache370.com:ilovedorian@mail.privateemail.com');
+// ====================================== //
+
 // ============== Database ============== //
 var db = mysql.createConnection({
   host     : 'localhost',
@@ -18,6 +25,32 @@ var db = mysql.createConnection({
   password : 'web_client',
   database : 'cache'
 });
+// ====================================== //
+
+// ============== AWS S3 ============== //
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+
+// configure AWS to work with promises
+AWS.config.setPromisesDependency(bluebird);
+
+// create S3 instance
+const s3 = new AWS.S3();
+// ====================================== //
+
+// ============== File Upload ============== //
+const uploadFile = (buffer, name, type) => {
+  const params = {
+    ACL: 'public-read',
+    Body: buffer,
+    Bucket: process.env.CACHE_S3_BUCKET,
+    ContentType: type.mime,
+    Key: `${name}.${type.ext}`
+  };
+  return s3.upload(params).promise();
+};
 // ====================================== //
 
 
@@ -53,13 +86,9 @@ app.post('/users/login', (req, response) => {
   db.query(sql, function(err,result,fields){
     result = result[0];
     console.log(result);
-    if(result &&
-       bcrypt.compareSync(password, result.password) &&
-       !err) {
-
+    if(result && bcrypt.compareSync(password, result.password) && !err) {
       var id = result['uId'];
       response.status(200).send({id:id});
-
     } else {
       throw(err);
       response.status(400).send({id:-1});
@@ -70,6 +99,8 @@ app.post('/users/login', (req, response) => {
 
 app.get('/profile/:id', (req, res) => {
   var id = req.params.id;
+
+  // should be selecting certain rows, probably shouldn't send password back to client
   var sql = `SELECT * FROM USER WHERE uId=${id}`;
   db.query(sql, function(err,result,fields){
     if(err){
@@ -82,112 +113,24 @@ app.get('/profile/:id', (req, res) => {
 });
 
 app.get('/listings', (req,res) => {
-
   var uLat = req.query.uLat ? req.query.uLat : 0;
   var uLong = req.query.uLong ? req.query.uLong : 0;
-  var uRadius = req.query.uRadius ? req.query.uRadius : 25000;
-
-  var hostId = req.query.hostId ? req.query.hostId : '*';
-  var status = req.query.status ? req.query.status : '*';
-  var renterId = req.query.renderId ? req.query.renderId : '*';
-
-  var filter_params = ['hostId', 'renterId', 'status'];
-  var sql_filter = `WHERE `
-  var filter_str = [];
-
-  filter_params.map(function(param){
-    if (req.query[param]){
-      filter_str.push(`${param} = ${req.query[param]}`);
-    }
-  });
-
-  filter_str = filter_str.join(' AND ');
-  sql_filter = sql_filter + filter_str;
-
-  var sql = `SELECT b.bId, b.hostId, b.squareFeet, b.address, b.picture, b.status, (3959 * acos( cos( radians(${uLat}) )
+  var uRadius = req.query.uRadius ? req.query.uRadius : 25001;
+  var sql = `b.bId, b.hostId, b.squareFeet, b.address, b.picture, (3959 * acos( cos( radians(${uLat}) )
                                           * cos( radians(b.latitude) )
                                           * cos( radians(b.longitude) - radians(${uLong}) )
                                           + sin( radians(${uLat}) )
                                           * sin( radians(${uLong}) ) ) ) AS distance_miles
-  FROM Booking b
-  ${sql_filter !== `WHERE ` ? sql_filter : ""}
+  FROM UnconfirmedHostSideBooking b
   GROUP BY b.bId
   HAVING distance_miles <= ${uRadius}
   ORDER BY distance_miles ASC;`;
-
   db.query(sql, function(err, result) {
-    if(err){
-      throw(err);
-      res.status(500).send();
-    }
+    if(err) throw(err);
     console.log(result);
     res.status(200).send(result);
   });
 });
-
-app.get('/booking/:id', (req,res) => {
-  var id = req.params.id;
-  var sql = `SELECT * FROM Booking WHERE bId=${id}`;
-  db.query(sql, function(err,result,fields){
-    if(err){
-      throw(err);
-      res.status(400).send("Could not complete request");
-    }
-    console.log(result);
-    res.status(200).send(result[0]);
-  });
-});
-
-app.get('/booking/confirm', (req, res) => {
-  // if(renterId == hostId || endTime > startTime){
-  //   res.status(400).send("This is not a valid booking");
-  // }
-
-  // confirmed booking just references unconfirmed
-  var sql = `UPDATE Booking SET status=1, renderId=${req.body.renterId} WHERE bid=${req.body.bId}`;
-
-  db.query(sql, function(err,result,fields){
-    if(err){
-      throw(err);
-    }
-  });
-
-  res.status(200).send();
-});
-
-app.get('/booking/flush', (req,res) => {
-
-  // archive stale confirmed Bookings
-  // set status=2 where current time < endtime
-
-})
-
-app.get('/booking/archive', (req,res) => {
-  var curr_time = Date.now();
-  var sql = `UPDATE Booking SET status=2, WHERE endTime >= ${curr_time}`;
-
-  db.query(sql, function(err,result,fields){
-    if(err){
-      throw(err);
-    }
-  });
-
-  res.status(200).send();
-});
-
-app.get('/saves/:id', (req,res) => {
-  var id = req.params.id;
-
-  var sql = `SELECT saves FROM User WHERE uId=${id}`;
-  db.query(sql, function(err,result,fields){
-    if(err){
-      throw(err);
-    }
-  });
-  // get array of bid in saves field by user id
-
-});
-
 
 // ====================================== //
 
@@ -201,9 +144,8 @@ app.post('/api/echo', (req, res) => {
 });
 
 app.post('/users/new', (req, res) => {
-  console.log(req.body);
   var sql = `INSERT INTO User (first, last, email, password, phone, profPic) VALUES (?)`;
-  var values = Object.keys(req.body).map(function(_){return req.body[_]});
+  var values = [req.body.first, req.body.last, req.body.email, req.body.password, req.body.phone, req.body.profPic];//Object.keys(req.body).map(function(_){return req.body[_]});
 
   values[3] = bcrypt.hashSync(req.body.password, 10);
 
@@ -217,42 +159,81 @@ app.post('/users/new', (req, res) => {
     to: req.body.email, // list of receivers
     subject: 'Welcome!', // Subject line
     text: 'Hey there! Welcome to Cache! We are excited to have you.', // plaintext body
-    html: axios.get("https://pastebin.com/raw/WueB3Lvd").then((response) => response.data)
+    html: `<b>Hey there, ${req.body.first}! Welcome to Cache! We are excited to have you.</b>` // html body
 };
 
-  transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        return console.log(error);
+  // transporter.sendMail(mailOptions, function(error, info){
+  //   if(error){
+  //       console.log("error");
+  //   } else {
+  //       console.log('Message sent: ' + info.response);
+  //   }
+  // });
+
+  res.status(200).send(req.body);
+});
+
+app.post('/confirmedbooking/new', (req, res) => {
+  assert(renterId != hostId);
+  assert(endTime > startTime);
+
+  var sql = `INSERT INTO ConfirmedBooking (renterId, hostId, ursbId, uhsbId, picture, startTime,
+     endTime, address, squareFeet, latitude, longitude) VALUES (?)`;
+  var values = Object.keys(req.body).map(function(_){return req.body[_]});
+
+  db.query(sql, [values], function(err,result,fields){
+    if(err){
+      res.status(500).send(req.body);
+      throw(err);
     }
-    console.log('Message sent: ' + info.response);
   });
+  //After we confirm a booking, we can remove the unconfirmed bookings from the
+  //DB to free up space
+  uhsbId = req.body.uhsbId;
+  ursbId = req.body.uhsbId;
+  var sqlhrm = `DELETE FROM UnconfirmedHostSideBooking WHERE bId = ` + SqlString.escape(uhsbId);
+  var sqlrrm = `DELETE FROM UnconfirmedRentSideBooking WHERE bId = ` + SqlString.escape(ursbId);
+
+  db.query(sqlhrm, [values], function(err,result,fields){
+    if(err){
+      res.status(500).send(req.body);
+      throw(err);
+    }
+  });
+  db.query(sqlrrm, [values], function(err,result,fields){
+    if(err){
+      res.status(500).send(req.body);
+      throw(err);
+    }
+  });
+
   res.status(200).send(req.body);
 });
 
 
 app.post('/booking/new', (req, res) => {
 
-  //req = req.body;
-  var sql = `INSERT INTO Booking(hostId, startTime, endTime, picture, address, latitude, longitude, squareFeet, status) VALUES (?)`;
-  var values = [req.body.hostId, req.body.checkIn, req.body.checkOut, req.body.picture, req.body.address, req.body.latitude, req.body.longitude, req.body.squareFeet, 0];
+  console.log(req.body);
+  req = req.body;
+  var sql = `INSERT INTO UnconfirmedHostSideBooking(hostId, startTime, endTime, picture, address, latitude, longitude, squareFeet) VALUES (?)`;
+  var values = [req.body.hostId, req.body.checkIn, req.body.checkOut, req.body.picture, req.body.address, req.body.latitude, req.body.longitude, req.body.squareFeet];
   db.query(sql, [values], function(err,result,fields){
     if(err){
       throw(err);
       res.status(500).send("Booking Error");
     }
   });
-  sql = `SELECT bId FROM Booking WHERE hostId=${req.body.hostId} ORDER BY bId DESC LIMIT 1`;
-  db.query(sql, function(err,result,fields){
-    if(err){
-      throw(err);
-      res.status(500).send("Booking Error");
-    }
-    var bid = result[0].bId;
-    console.log(bid);
-    res.status(200).send(bid.toString());
-  });
+   res.status(200).send(req.body);
+  // var renter = req.body.renterId;
+  // var host = req.body.host;
+  // var startTime =
 });
 
+
+
+app.post('/unconfirmedhostsidebooking/new', (req, res) => {
+
+});
 
 // 404
 app.use('*', function(req,res){
@@ -261,8 +242,6 @@ app.use('*', function(req,res){
 
 server.listen(app.get('PORT'), function(){
 	console.log('Listening at ' + app.get('PORT'));
-
-  transporter = nodemailer.createTransport('smtps://admin%40cache370.com:ilovedorian@mail.privateemail.com');
 });
 
 process.on('exit', function() {

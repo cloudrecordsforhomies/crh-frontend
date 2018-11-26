@@ -17,26 +17,15 @@ class App extends Component {
       loggedIn: user != 0,
       logout: false
     }
-
-    this.handleLogout = this.handleLogout.bind(this);
   }
 
-  handleLogout() {
-    localStorage.clear();
-    this.setState({
-      profile: 0,
-      loggedIn: false,
-      logout: true
-    }, function(){
-      console.log(this.state.profile);
-    });
-  }
+
 
   render() {
     return (
       <div className="App">
         {this.state.logout?<Redirect to={'/home'} /> : <div></div> }
-        <Header />
+        <Header profile={this.state.profile} />
         <Routes />
         {/*}<Footer />*/}
       </div>

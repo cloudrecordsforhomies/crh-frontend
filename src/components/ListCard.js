@@ -7,6 +7,7 @@ export default class ListCard extends Component {
   constructor(props){
     super(props)
     this.state = {
+      id:props.bId,
       address:props.address,
       sqft:props.sqft,
       price:props.price,
@@ -14,8 +15,10 @@ export default class ListCard extends Component {
       distance:props.distance,
       host:props.host,
       hostImg: null,
-      hostFirst:null
+      hostFirst:null,
+      user:localStorage.getItem("profile")
     }
+    console.log(props.bId);
     var self = this;
     axios.get(`http://localhost:5000/profile/${self.state.host}`)
     .then(function(response){
@@ -60,7 +63,7 @@ export default class ListCard extends Component {
         </div>
         <div className="card-body">
           <h5 className="card-title">
-            <a href="https://www.google.com">
+            <a href={this.state.host == this.state.profile ? `/hostinspect/${this.state.id}` : `/hostinspect/${this.state.id}`}>
               {this.state.sqft} sqft hosted by {this.state.hostFirst}
             </a>
           </h5>
