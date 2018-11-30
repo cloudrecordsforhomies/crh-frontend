@@ -15,7 +15,8 @@ export default class Profile extends Component {
       last: null,
       email: null,
       uId: uId,
-      image: null
+      image: null,
+      saves: null
     }
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -26,12 +27,12 @@ export default class Profile extends Component {
       self.handleLogin(user);
     })
     .catch(function(err){
-      alert("user not found");
+      console.log("user not found");
     });
   }
 
   handleLogin = (result) => {
-    this.setState({ first: result.first, last:result.last, email:result.email, image:result.profPic }, () => {
+    this.setState({ first: result.first, last:result.last, email:result.email, image:result.profPic, saves:result.saves }, () => {
       console.log(this.state.first);
     });
     // var newState = {}
@@ -66,6 +67,8 @@ export default class Profile extends Component {
                   <li className="list-group-item"><a href={`/listings?renterId=${this.state.uId}&status=2`}>Bookings History</a></li>
                   <li className="list-group-item"><a href={`/listings?hostId=${this.state.uId}&status=1`}>Active Hostings</a></li>
                   <li className="list-group-item"><a href={`/listings?hostId=${this.state.uId}&status=2`}>Hosting History</a></li>
+                  <li className="list-group-item"><a href={`/listings?hostId=${this.state.uId}&status=0`}>Pending Hostings</a></li>
+                  <li className="list-group-item"><a href={`/listings?bid=${this.state.saves}`}>Saves</a></li>
                 </ul>
               </div>
               <div className="col-md-6">

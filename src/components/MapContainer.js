@@ -1,24 +1,86 @@
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-import React from "react";
+import React, { Component } from "react";
 
-export class MapContainer extends React.Component {
+export class MapContainer extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      currentLocation: {},
+      showingInfoWindow: false,
+      activeMarker: {},
+      selectedPlace: {},
+    };
+    this.onMarkerClick = this.onMarkerClick.bind(this);
+    this.onMapClicked = this.onMapClicked.bind(this);
+  }
+
+  onMarkerClick = (props, marker, e) =>
+      this.setState({
+        selectedPlace: props,
+        activeMarker: marker,
+        showingInfoWindow: true
+    });
+
+  onMapClicked = (props) => {
+      if (this.state.showingInfoWindow) {
+        this.setState({
+          showingInfoWindow: false,
+          activeMarker: null
+        })
+      }
+      console.log(props);
+    };
+
   render() {
+    if (navigator && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+          const coords = pos.coords;
+          this.setState({
+              currentLocation: {
+                  lat: coords.latitude,
+                  lng: coords.longitude
+              }
+          })
+        })
+    }
+    const style = {
+      marginTop:'21px',
+      width: '95%',
+      height: '90%'
+    }
+
     return (
-      <Map google={this.props.google} zoom={14}>
+      <Map
+      style={style}
+      google={this.props.google}
+      zoom={14}
+      onClick={this.onMapClicked}
+      initialCenter={
+        {lat: 33.794772,
+        lng: -84.326590}
+      }
+      >
 
-        <Marker onClick={this.onMarkerClick}
-                name={'Current location'} />
+      <Marker
+        onClick={this.onMarkerClick}
+        name={"Current location"}
+        location={this.state.currentLocation}
+        position={this.state.currentLocation}
+       />
 
-        <InfoWindow onClose={this.onInfoWindowClose}>
-            <div>
-              <h1>{"PLACEHOLDER"}</h1>
-            </div>
-        </InfoWindow>
+      <InfoWindow
+        marker={this.state.activeMarker}
+        visible={this.state.showingInfoWindow}>
+        <div>
+          <h1>{this.state.selectedPlace.name}</h1>
+          <h2>{JSON.stringify(this.state.selectedPlace.location)}</h2>
+        </div>
+      </InfoWindow>
       </Map>
     );
   }
 }
 
 export default GoogleApiWrapper({
-  apiKey: ("AIzaSyAyesbQMyKVVbBgKVi2g6VX7mop2z96jBo")
+  apiKey: ("AIzaSyAhrGBawfLBRDKNuekWAIjV5XnPndRive4")
 })(MapContainer)

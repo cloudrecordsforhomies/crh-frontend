@@ -31,6 +31,14 @@ export default class HostInspect extends Component {
     this.setState(newState);
   }
 
+  // save = () => {
+  //   uid = localStorage.getItem("profile");
+  //   axios.get(`http://localhost:5000/save/${uid}/${this.state.bid}`)
+  //        .then(function(){
+  //          alert(`booking ${this.state.bid} has been saved`);
+  //        })
+  // }
+
   render() {
     return (
       <div className="row">
@@ -63,7 +71,6 @@ export default class HostInspect extends Component {
                       <div className="detail-placeholder-pic"><img className="detail-placeholder-pic" src={this.state.picture} /></div>
                       <hr />
                       {/* TODO: confirmlisting: send to a confirmation page listing out all the details, which redirects to filtered listing page*/}
-                      
                   </div>
               </div>
           </div>

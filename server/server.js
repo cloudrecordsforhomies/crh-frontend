@@ -90,6 +90,7 @@ app.get('/listings', (req,res) => {
   var hostId = req.query.hostId ? req.query.hostId : '*';
   var status = req.query.status ? req.query.status : '*';
   var renterId = req.query.renderId ? req.query.renderId : '*';
+  var bid = req.query.bid ? req.query.bid : '*'
 
   var filter_params = ['hostId', 'renterId', 'status'];
   var sql_filter = `WHERE `
@@ -102,7 +103,14 @@ app.get('/listings', (req,res) => {
   });
 
   filter_str = filter_str.join(' AND ');
+
   sql_filter = sql_filter + filter_str;
+
+  if(sql_filter === `WHERE ` && req.query.bid){
+    sql_filter += `bId IN (${bid})`;
+  } else if (sql_filter !== `WHERE ` && req.query.bid) {
+    sql_filter += ` AND bId IN (${bid})`;
+  }
 
   var sql = `SELECT b.bId, b.hostId, b.squareFeet, b.address, b.picture, b.status, (3959 * acos( cos( radians(${uLat}) )
                                           * cos( radians(b.latitude) )
@@ -175,19 +183,59 @@ app.get('/booking/archive', (req,res) => {
   res.status(200).send();
 });
 
-app.get('/saves/:id', (req,res) => {
-  var id = req.params.id;
 
+
+app.get('/saves/:uid', (req,res) => {
+  var id = req.params.uid;
+  var arr = [];
   var sql = `SELECT saves FROM User WHERE uId=${id}`;
   db.query(sql, function(err,result,fields){
-    if(err){
-      throw(err);
-    }
+    result = result[0].saves.split(",");
+    res.status(200).send(result);
   });
-  // get array of bid in saves field by user id
 
+
+  // get array of bid in saves field by user id
 });
 
+// had to split into different method due to asynchronous behavior of js
+function handleSaves(bid, uid, method, callback){
+  let sql = `SELECT saves FROM User WHERE uId=${uid}`;
+  let arr = [];
+  db.query(sql, function(err,result,fields){
+    result = result[0].saves.split(",");
+    if(method === "mk"){
+      result.push(bid);
+    } else if(method === "rm"){
+      result.splice( result.indexOf(bid), 1 );
+    }
+    sql2 = `UPDATE User SET saves='${result.join(',')}' WHERE uId=${uid}`;
+    db.query(sql2, function(err,result2,fields){
+      if(err) console.log(err);
+      callback(result);
+    });
+
+  });
+}
+
+app.get('/saves/rm/:uid/:bid', (req, res) => {
+  var bid = req.params.bid;
+  var uid = req.params.uid;
+  handleSaves(bid, uid, "rm", function(arr){
+    console.log(arr);
+    res.status(200).send(arr)
+  });
+});
+
+app.get('/saves/:uid/:bid', (req, res) => {
+  var bid = req.params.bid;
+  var uid = req.params.uid;
+  handleSaves(bid, uid, "mk", function(arr){
+    console.log(arr);
+    res.status(200).send(arr)
+  });
+
+});
 
 // ====================================== //
 
@@ -241,16 +289,17 @@ app.post('/booking/new', (req, res) => {
       res.status(500).send("Booking Error");
     }
   });
-  sql = `SELECT bId FROM Booking WHERE hostId=${req.body.hostId} ORDER BY bId DESC LIMIT 1`;
-  db.query(sql, function(err,result,fields){
-    if(err){
-      throw(err);
-      res.status(500).send("Booking Error");
-    }
-    var bid = result[0].bId;
-    console.log(bid);
-    res.status(200).send(bid.toString());
-  });
+  // sql = `SELECT bId FROM Booking WHERE hostId=${req.body.hostId} ORDER BY bId DESC LIMIT 1`;
+  // db.query(sql, function(err,result,fields){
+  //   if(err){
+  //     throw(err);
+  //     res.status(500).send("Booking Error");
+  //   }
+  //   var bid = result[0].bId;
+  //   console.log(bid);
+  //   res.status(200).send(bid.toString());
+  // });
+  res.status(200).send();
 });
 
 

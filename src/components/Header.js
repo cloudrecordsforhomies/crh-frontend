@@ -47,10 +47,12 @@ export default class Header extends Component {
           <Nav pullRight style={{display:'inline-block'}}>
             <NavItem href="/users">Users</NavItem>
             <NavItem href="/about">About</NavItem>
+            <NavItem href='/contract'> Contract </NavItem>
             {
             this.state.profile? (
               <Nav pullRight style={{display:'inline-block'}}>
                 <NavItem href={`/profile/${this.state.profile}`}> Profile </NavItem>
+                <NavItem href={'/map'}> Map </NavItem>
                 <NavItem onClick={this.handleLogout}> Log Out </NavItem>
               </Nav>
             ) : (

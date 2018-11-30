@@ -35,6 +35,8 @@ export default class Login extends Component {
       return response.data.id;
     }).then(function(result){
       self.handleLogin(result);
+    }).catch(function(result){
+      alert("User not found");
     });
   }
 

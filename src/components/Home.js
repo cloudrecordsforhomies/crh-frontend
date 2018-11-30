@@ -7,6 +7,7 @@ export default class Home extends Component {
     super(props);
     this.state = {
     }
+
   }
 
   handleChange = event => {
@@ -20,9 +21,11 @@ export default class Home extends Component {
   }
 
   render() {
+
     return (
       <div className="Home">
       <Login />
+      <button class="transferFunds">Send Money!</button>
         <div className="lander">
           <div className="blackOverlay">
             <div className="bgImage">
