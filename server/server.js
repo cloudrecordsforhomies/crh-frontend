@@ -152,7 +152,7 @@ app.get('/booking/confirm', (req, res) => {
   // }
 
   // confirmed booking just references unconfirmed
-  var sql = `UPDATE Booking SET status=1, renderId=${req.body.renterId} WHERE bid=${req.body.bId}`;
+  var sql = `UPDATE Booking SET status=1, renterId=${req.body.renterId} WHERE bid=${req.body.bId}`;
 
   db.query(sql, function(err,result,fields){
     if(err){
