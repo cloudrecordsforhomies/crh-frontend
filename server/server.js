@@ -52,14 +52,12 @@ app.post('/users/login', (req, response) => {
   sql = `SELECT uId, password FROM User WHERE email='${email}';`
   db.query(sql, function(err,result,fields){
     result = result[0];
-    console.log(result);
     if(result &&
        bcrypt.compareSync(password, result.password) &&
        !err) {
 
       var id = result['uId'];
       response.status(200).send({id:id});
-
     } else {
       throw(err);
       response.status(400).send({id:-1});
@@ -254,9 +252,12 @@ app.post('/users/new', (req, res) => {
   var values = Object.keys(req.body).map(function(_){return req.body[_]});
 
   values[3] = bcrypt.hashSync(req.body.password, 10);
-
   db.query(sql, [values], function(err,result,fields){
-    if(err) throw(err);
+
+    if(err){
+      throw(err);
+      console.log("uh oh");
+    }
   });
 
 
@@ -268,13 +269,13 @@ app.post('/users/new', (req, res) => {
     html: axios.get("https://pastebin.com/raw/WueB3Lvd").then((response) => response.data)
 };
 
-  transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        return console.log(error);
-    }
-    console.log('Message sent: ' + info.response);
-  });
-  res.status(200).send(req.body);
+  // transporter.sendMail(mailOptions, function(error, info){
+  //   if(error){
+  //       return console.log(error);
+  //   }
+  //   console.log('Message sent: ' + info.response);
+  // });
+  res.status(200).send(JSON.stringify(req.body));
 });
 
 
