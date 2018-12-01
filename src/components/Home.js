@@ -23,9 +23,8 @@ export default class Home extends Component {
   render() {
 
     return (
-      <div className="Home wrap-login">
+      <div className="Home">
       <Login />
-
       </div>
     );
   }

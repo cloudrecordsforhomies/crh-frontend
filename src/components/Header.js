@@ -33,10 +33,10 @@ export default class Header extends Component {
       );
     } else
     return (
-      <Navbar fluid collapseOnSelect style={{maxWidth:1000, margin:'0 auto'}}>
+      <Navbar fluid collapseOnSelect style={{width:"100%", margin:'0 auto'}}>
         <Navbar.Header style={{display:'inline-block'}}>
           <a href="/home">
-            <img src={Treasure} alt='Cache' style={{paddingTop:2.5,height:45, width:45, zIndex:1}}></img>
+            <img src={Treasure} alt='Cache' style={{paddingTop:2.5,paddingRight:10,height:45, width:45, float:'left'}} />
             <Navbar.Brand>Cache</Navbar.Brand>
           </a>
           <Navbar.Toggle />
