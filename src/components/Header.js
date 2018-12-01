@@ -26,19 +26,17 @@ export default class Header extends Component {
     });
   }
 
-  componentDidRender(){
-    console.log(this.state.profile);
-  }
-
   render() {
     if(this.state.logout){
-      return (<Redirect to={"/home"} />);
+      return (
+        <Redirect to={"/home"} />
+      );
     } else
     return (
-      <Navbar fluid collapseOnSelect style={{maxWidth:1000, margin:'0 auto'}}>
+      <Navbar fluid collapseOnSelect style={{width:"100%", margin:'0 auto'}}>
         <Navbar.Header style={{display:'inline-block'}}>
           <a href="/home">
-            <img src={Treasure} alt='Cache' style={{paddingTop:2.5,height:45, width:45, zIndex:1}}></img>
+            <img src={Treasure} alt='Cache' style={{paddingTop:2.5,paddingRight:10,height:45, width:45, float:'left'}} />
             <Navbar.Brand>Cache</Navbar.Brand>
           </a>
           <Navbar.Toggle />
@@ -47,12 +45,10 @@ export default class Header extends Component {
           <Nav pullRight style={{display:'inline-block'}}>
             <NavItem href="/users">Users</NavItem>
             <NavItem href="/about">About</NavItem>
-            <NavItem href='/contract'> Contract </NavItem>
             {
             this.state.profile? (
               <Nav pullRight style={{display:'inline-block'}}>
                 <NavItem href={`/profile/${this.state.profile}`}> Profile </NavItem>
-                <NavItem href={'/map'}> Map </NavItem>
                 <NavItem onClick={this.handleLogout}> Log Out </NavItem>
               </Nav>
             ) : (

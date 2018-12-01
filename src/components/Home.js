@@ -25,13 +25,6 @@ export default class Home extends Component {
     return (
       <div className="Home">
       <Login />
-      <button class="transferFunds">Send Money!</button>
-        <div className="lander">
-          <div className="blackOverlay">
-            <div className="bgImage">
-            </div>
-          </div>
-        </div>
       </div>
     );
   }

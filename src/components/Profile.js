@@ -2,6 +2,30 @@ import React, { Component } from "react";
 import Booking from "./Booking.js";
 import Hosting from "./Hosting.js";
 import axios from 'axios';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import "react-tabs/style/react-tabs.css";
+import Modal from 'react-modal';
+import {
+  FormGroup,
+  FormControl,
+  ControlLabel,
+  Button,
+  Thumbnail
+} from "react-bootstrap";
+
+Modal.setAppElement('#root');
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)',
+    height                : '500px',
+    width                 : '500px'
+  }
+};
 
 export default class Profile extends Component {
 
@@ -20,6 +44,9 @@ export default class Profile extends Component {
     }
 
     this.handleLogin = this.handleLogin.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     var self = this;
     axios.get(`http://localhost:5000/profile/${uId}`)
     .then(function(response){
@@ -35,10 +62,16 @@ export default class Profile extends Component {
     this.setState({ first: result.first, last:result.last, email:result.email, image:result.profPic, saves:result.saves }, () => {
       console.log(this.state.first);
     });
-    // var newState = {}
-    // Object.keys(result).map(function(key){newState[key] = result[key]});
-    // console.log(newState);
-    // this.setState(newState);
+  }
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
   }
 
   render() {
@@ -54,11 +87,48 @@ export default class Profile extends Component {
                   <img src={this.state.image} className="avatar img-thumbnail" style={{width:"250px", height:"250px"}} alt="avatar"></img>
                   <div className="row">
                   <div className="col-md-6">
-                    <button href='#' className='btn btn-default'>Change Password</button>
-                    </div>
-                    <div className="col-md-6">
-                    <button href='#' className='btn btn-default'>Upload New Avatar</button>
+                    <button onClick={this.openModal} className='btn btn-default'>Change Password</button>
                   </div>
+                  <div className="col-md-6">
+                    <button onClick={this.openModal} className='btn btn-default'>Upload New Avatar</button>
+                  </div>
+                  <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onAfterOpen={this.afterOpenModal}
+                    onRequestClose={this.closeModal}
+                    style={customStyles}
+                    contentLabel="Modal"
+                  >
+                    <button onClick={this.closeModal} style={{marginRight:"3%",marginLeft:"97%", marginBotton:'20px'}}>X</button>
+                    <span> new password, new avatar </span>
+                    <form onSubmit={this.handleSubmit} style={{top:'25px'}}>
+                    <FormGroup controlId="password" bsSize="large">
+                      <ControlLabel>New Password</ControlLabel>
+                      <FormControl
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                        type="password"
+                      />
+                    </FormGroup>
+                    <FormGroup controlId="image" bsSize="large">
+                    <ControlLabel>New Avatar</ControlLabel>
+                    <FormControl
+                    type="text"
+                    onChange={this.handleChange}
+                    />
+                    </FormGroup>
+
+                    <Button
+                      block
+                      bsSize="large"
+                      className="btn-success"
+                      type="submit"
+                    >
+                      Submit Changes
+                    </Button>
+                    </form>
+
+                  </Modal>
                   </div>
                 </div>
                 <ul className="list-group">
@@ -72,8 +142,18 @@ export default class Profile extends Component {
                 </ul>
               </div>
               <div className="col-md-6">
-                <div className="activePane"><Booking history={this.props.history} /></div>
-                <Hosting user={this.state.uId} />
+              <Tabs>
+                <TabList>
+                  <Tab>Search Available Booking</Tab>
+                  <Tab>Host Your Space</Tab>
+                </TabList>
+                <TabPanel>
+                  <Booking history={this.props.history} />
+                </TabPanel>
+                <TabPanel>
+                  <Hosting user={this.state.uId} />
+                </TabPanel>
+              </Tabs>
               </div>
             </div>
         </div>

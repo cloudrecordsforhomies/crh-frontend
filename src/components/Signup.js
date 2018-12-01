@@ -11,6 +11,8 @@ import "../styles/Signup.css";
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
 
+
+
 export default class Signup extends Component {
   constructor(props) {
     super(props);
@@ -31,6 +33,7 @@ export default class Signup extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleFileUpload = this.handleFileUpload.bind(this);
+
   }
 
   validateForm() {

@@ -51,7 +51,11 @@ export default class Login extends Component {
 
   renderForm(){
     return(
-    <div className="landerForm" style={{width:"377px", margin:"0 auto"}}>
+    <div className="container-login100">
+    <div className="wrap-login100" style={{width:"377", margin:"0 auto"}}>
+    <div class="login100-pic">
+      <img src={require("../images/img-01.png")} alt="IMG"/>
+    </div>
     <Thumbnail>
       <div style={{textAlign:'center'}}>
         <Button className="btn btn-primary">Login with Facebook</Button>
@@ -67,6 +71,7 @@ export default class Login extends Component {
             type="email"
             value={this.state.email}
             onChange={this.handleChange}
+            bsClass="input100"
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
@@ -74,23 +79,26 @@ export default class Login extends Component {
           <FormControl
             value={this.state.password}
             onChange={this.handleChange}
+            bsClass="input100"
             type="password"
           />
         </FormGroup>
         <Button
           block
           bsSize="large"
-          className="btn-success"
-          disabled={!this.validateForm()}
+          bsClass="login100-form-btn"
           type="submit"
         >
           Login
         </Button>
       </form>
       <hr></hr>
-      <a href="/signup">Don't have an account? Sign up</a>
+      <div style={{textAlign:'center'}}>
+      <a href="/signup" style={{color:"#e6e6e6;"}}>Create Your Account</a>
+      </div>
 
       </Thumbnail>
+    </div>
     </div>
   );
   }
