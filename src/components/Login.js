@@ -67,6 +67,7 @@ export default class Login extends Component {
             type="email"
             value={this.state.email}
             onChange={this.handleChange}
+            className="input100"
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
@@ -74,6 +75,7 @@ export default class Login extends Component {
           <FormControl
             value={this.state.password}
             onChange={this.handleChange}
+            className="input100"
             type="password"
           />
         </FormGroup>

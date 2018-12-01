@@ -107,7 +107,6 @@ export default class Hosting extends Component {
   }
   afterOpenModal() {
     // references are now sync'd and can be accessed.
-
   }
 
   closeModal() {
@@ -136,13 +135,14 @@ render() {
           />
         </FormGroup>
         <div className="row">
+          <div style={{marginLeft:"185px"}}>
           <Button className="btn btn-danger" onClick={this.openModal}> Get Location From Map </Button>
           <Modal
             isOpen={this.state.modalIsOpen}
             onAfterOpen={this.afterOpenModal}
             onRequestClose={this.closeModal}
             style={customStyles}
-            contentLabel="Example Modal"
+            contentLabel="Modal"
           >
             <button onClick={this.closeModal} style={{marginRight:"3%",marginLeft:"97%", marginBotton:'20px'}}>X</button>
             <div id="mapContainerContainer" style={{height:'900px', width:'900px'}}>
@@ -150,6 +150,7 @@ render() {
             </div>
 
           </Modal>
+          </div>
         </div>
     <div className="row">
       <div className="col-xs-6">
@@ -214,7 +215,7 @@ render() {
          </datalist>
         <div id='boxShape'>
         </div>
-        <div id='target'>
+        <div id='target' style={{marginLeft:"200px;"}}>
           <img
             style={{height:'100px',width:'auto', margin:"0 auto"}}
             id='boxesImg'

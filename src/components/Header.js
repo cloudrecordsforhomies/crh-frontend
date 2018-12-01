@@ -26,13 +26,11 @@ export default class Header extends Component {
     });
   }
 
-  componentDidRender(){
-    console.log(this.state.profile);
-  }
-
   render() {
     if(this.state.logout){
-      return (<Redirect to={"/home"} />);
+      return (
+        <Redirect to={"/home"} />
+      );
     } else
     return (
       <Navbar fluid collapseOnSelect style={{maxWidth:1000, margin:'0 auto'}}>
@@ -47,12 +45,10 @@ export default class Header extends Component {
           <Nav pullRight style={{display:'inline-block'}}>
             <NavItem href="/users">Users</NavItem>
             <NavItem href="/about">About</NavItem>
-            <NavItem href='/contract'> Contract </NavItem>
             {
             this.state.profile? (
               <Nav pullRight style={{display:'inline-block'}}>
                 <NavItem href={`/profile/${this.state.profile}`}> Profile </NavItem>
-                <NavItem href={'/map'}> Map </NavItem>
                 <NavItem onClick={this.handleLogout}> Log Out </NavItem>
               </Nav>
             ) : (

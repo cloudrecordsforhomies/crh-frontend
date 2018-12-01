@@ -106,11 +106,14 @@ app.get('/listings', (req,res) => {
 
   sql_filter = sql_filter + filter_str;
 
-  if(sql_filter === `WHERE ` && req.query.bid){
-    sql_filter += `bId IN (${bid})`;
-  } else if (sql_filter !== `WHERE ` && req.query.bid) {
-    sql_filter += ` AND bId IN (${bid})`;
+  if(req.query.bid){
+    if(sql_filter === `WHERE ` && req.query.bid){
+      sql_filter += `bId IN (${bid})`;
+    } else {
+      sql_filter += ` AND bId IN (${bid})`;
+    }
   }
+
 
   var sql = `SELECT b.bId, b.hostId, b.squareFeet, b.address, b.picture, b.status, (3959 * acos( cos( radians(${uLat}) )
                                           * cos( radians(b.latitude) )
@@ -146,14 +149,9 @@ app.get('/booking/:id', (req,res) => {
   });
 });
 
-app.get('/booking/confirm', (req, res) => {
-  // if(renterId == hostId || endTime > startTime){
-  //   res.status(400).send("This is not a valid booking");
-  // }
+app.post('/booking/confirm', (req, res) => {
 
-  // confirmed booking just references unconfirmed
-  var sql = `UPDATE Booking SET status=1, renderId=${req.body.renterId} WHERE bid=${req.body.bId}`;
-
+  var sql = `UPDATE Booking SET status=1, renterId=${req.body.renterId} WHERE bid=${req.body.bId}`;
   db.query(sql, function(err,result,fields){
     if(err){
       throw(err);
@@ -164,11 +162,7 @@ app.get('/booking/confirm', (req, res) => {
 });
 
 app.get('/booking/flush', (req,res) => {
-
-  // archive stale confirmed Bookings
-  // set status=2 where current time < endtime
-
-})
+});
 
 app.get('/booking/archive', (req,res) => {
   var curr_time = Date.now();
@@ -203,12 +197,21 @@ function handleSaves(bid, uid, method, callback){
   let sql = `SELECT saves FROM User WHERE uId=${uid}`;
   let arr = [];
   db.query(sql, function(err,result,fields){
-    result = result[0].saves.split(",");
-    if(method === "mk"){
+    result = result[0]
+
+    if(result.saves){
+      result = result.saves.split(",");
+    } else {
+      result = []
+    }
+
+    if(method === "mk" &&
+       !result.includes(bid)){
       result.push(bid);
     } else if(method === "rm"){
       result.splice( result.indexOf(bid), 1 );
     }
+
     sql2 = `UPDATE User SET saves='${result.join(',')}' WHERE uId=${uid}`;
     db.query(sql2, function(err,result2,fields){
       if(err) console.log(err);

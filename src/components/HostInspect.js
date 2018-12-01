@@ -12,6 +12,9 @@ export default class HostInspect extends Component {
     }
 
     this.handleData = this.handleData.bind(this);
+    this.confirm = this.confirm.bind(this);
+    this.save = this.save.bind(this);
+
     var self = this;
     axios.get(`http://localhost:5000/booking/${self.state.bId}`)
     .then(function(response){
@@ -31,13 +34,26 @@ export default class HostInspect extends Component {
     this.setState(newState);
   }
 
-  // save = () => {
-  //   uid = localStorage.getItem("profile");
-  //   axios.get(`http://localhost:5000/save/${uid}/${this.state.bid}`)
-  //        .then(function(){
-  //          alert(`booking ${this.state.bid} has been saved`);
-  //        })
-  // }
+  confirm() {
+    console.log("Confirm button");
+    var uid = localStorage.getItem("profile");
+    const self = this;
+    axios.post(`http://localhost:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
+         .then(function(){
+           alert(`Booking ${self.state.bId} has been confirmed`);
+     })
+   }
+
+  save() {
+    console.log("Save button");
+    var uid = localStorage.getItem("profile");
+    console.log(uid);
+    const self = this;
+    axios.get(`http://localhost:5000/saves/${uid}/${self.state.bId}`)
+         .then(function(){
+           alert(`Booking ${self.state.bId} has been saved`);
+    })
+  }
 
   render() {
     return (
@@ -56,21 +72,21 @@ export default class HostInspect extends Component {
                               <hr className="divider"></hr>
                           </div>
                           <div className="col-xs-12 col-md-12 own-space space-pricing">
-                              <h3>$225.00/month</h3>
+                              <h3>{this.state.price}</h3>
                               <p className="small">for the whole space</p>
                           </div>
                       </div>
                       <div className="detail-box clearfix ">
                           <div className="reviews-container">
-                              <p className="review-section-header">Reviews</p>
-                              <p className="no-reviews">No reviews yet.</p>
+                              <p className="review-section-header">Confirm</p>
+                              <button className="btn btn-alert" onClick={this.confirm}>Confirm</button>
+                              <button className="btn btn-alert" onClick={this.save}>Save</button>
                           </div>
                       </div>
                   </div>
                   <div className="detail-picture-display col-xs-12 col-md-7">
                       <div className="detail-placeholder-pic"><img className="detail-placeholder-pic" src={this.state.picture} /></div>
                       <hr />
-                      {/* TODO: confirmlisting: send to a confirmation page listing out all the details, which redirects to filtered listing page*/}
                   </div>
               </div>
           </div>
