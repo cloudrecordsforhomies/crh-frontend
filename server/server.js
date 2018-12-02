@@ -55,7 +55,6 @@ app.post('/users/login', (req, response) => {
     if(result &&
        bcrypt.compareSync(password, result.password) &&
        !err) {
-
       var id = result['uId'];
       response.status(200).send({id:id});
     } else {
