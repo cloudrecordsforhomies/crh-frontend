@@ -158,6 +158,33 @@ app.post('/booking/confirm', (req, res) => {
     }
   });
 
+  sql = `SELECT u.email, u.phone, u.first, u.last FROM User u LEFT JOIN Booking b ON b.renterId=u.uid WHERE b.bid=${req.body.bId}`;
+  db.query(sql, function(err, result, fields){
+    var sql2 = `SELECT u.email, u.phone, u.first, u.last FROM User u LEFT JOIN Booking b ON b.hostId=u.uid WHERE b.bid=${req.body.bId}`;
+    console.log(result);
+    var renterEmail = result[0].email;
+    db.query(sql2, function(err, result2, fields){
+      var hostEmail = result2[0].email;
+      console.log(`Booking has been confirmed. Renter:${result[0].first} ${result[0].last} phone:${result[0].phone}. Host:${result2[0].first} ${result2[0].last} phone:${result2[0].phone}`);
+      var mailOptions = {
+        from: '"Cache Team" <admin@cache370.com>', // sender address
+        to: [renterEmail, hostEmail], // list of receivers
+        subject: 'Booking Confirmed!', // Subject line
+        text: `Booking has been confirmed. Renter:${result[0].first} ${result[0].last} phone:${result[0].phone}. Host:${result2[0].first} ${result2[0].last} phone:${result2[0].phone} `, // plaintext body
+        html: `Booking ${req.body.bId} has been confirmed!  Here are the details, work out the drop off yourselves. Renter:${result[0].first} ${result[0].last} phone:${result[0].phone}. Host:${result2[0].first} ${result2[0].last} phone:${result2[0].phone} `
+    };
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
+      });
+    })
+  });
+
+
+
   res.status(200).send();
 });
 
@@ -208,7 +235,9 @@ function handleSaves(bid, uid, method, callback){
     if(method === "mk" &&
        !result.includes(bid)){
       result.push(bid);
-    } else if(method === "rm"){
+    } else
+    if(result.includes(bid) &&
+       method === "rm"){
       result.splice( result.indexOf(bid), 1 );
     }
 
@@ -225,7 +254,6 @@ app.get('/saves/rm/:uid/:bid', (req, res) => {
   var bid = req.params.bid;
   var uid = req.params.uid;
   handleSaves(bid, uid, "rm", function(arr){
-    console.log(arr);
     res.status(200).send(arr)
   });
 });
@@ -266,9 +294,9 @@ app.post('/users/new', (req, res) => {
   var mailOptions = {
     from: '"Cache Team" <admin@cache370.com>', // sender address
     to: req.body.email, // list of receivers
-    subject: 'Welcome!', // Subject line
+    subject: `Welcome to Cache, ${req.body.first} ${req.body.last}!`, // Subject line
     text: 'Hey there! Welcome to Cache! We are excited to have you.', // plaintext body
-    html: axios.get("https://pastebin.com/raw/WueB3Lvd").then((response) => response.data)
+    html: `Hey there, ${req.body.first}! Welcome to Cache. We are excited to have you.  Login to your account and host or rent a space!`
 };
 
   transporter.sendMail(mailOptions, function(error, info){
