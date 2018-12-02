@@ -67,7 +67,7 @@ app.post('/users/login', (req, response) => {
 
 app.get('/profile/:id', (req, res) => {
   var id = req.params.id;
-  var sql = `SELECT * FROM USER WHERE uId=${id}`;
+  var sql = `SELECT * FROM User WHERE uId=${id}`;
   db.query(sql, function(err,result,fields){
     if(err){
       throw(err);

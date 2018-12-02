@@ -60,7 +60,7 @@ export default class Profile extends Component {
 
   handleLogin = (result) => {
     this.setState({ first: result.first, last:result.last, email:result.email, image:result.profPic, saves:result.saves }, () => {
-      console.log(this.state.first);
+      console.log(this.state.saves);
     });
   }
   openModal() {
