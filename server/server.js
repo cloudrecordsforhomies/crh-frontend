@@ -147,17 +147,8 @@ app.get('/booking/:id', (req,res) => {
   });
 });
 
-<<<<<<< HEAD
-app.get('/booking/confirm', (req, res) => {
-  // if(renterId == hostId || endTime > startTime){
-  //   res.status(400).send("This is not a valid booking");
-  // }
 
-  // confirmed booking just references unconfirmed
-  var sql = `UPDATE Booking SET status=1, renterId=${req.body.renterId} WHERE bid=${req.body.bId}`;
-=======
 app.post('/booking/confirm', (req, res) => {
->>>>>>> 6503d934cea03f7f91cfcbc52ab16f5abf30b598
 
   var sql = `UPDATE Booking SET status=1, renterId=${req.body.renterId} WHERE bid=${req.body.bId}`;
   db.query(sql, function(err,result,fields){

@@ -48,7 +48,7 @@ export default class Profile extends Component {
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     var self = this;
-    axios.get(`http://localhost:5000/profile/${uId}`)
+    axios.get(`http://52.15.115.174:5000/profile/${uId}`)
     .then(function(response){
       user = response.data;
       self.handleLogin(user);
