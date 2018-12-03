@@ -52,14 +52,11 @@ app.post('/users/login', (req, response) => {
   sql = `SELECT uId, password FROM User WHERE email='${email}';`
   db.query(sql, function(err,result,fields){
     result = result[0];
-    console.log(result);
     if(result &&
        bcrypt.compareSync(password, result.password) &&
        !err) {
-
       var id = result['uId'];
       response.status(200).send({id:id});
-
     } else {
       throw(err);
       response.status(400).send({id:-1});
@@ -70,7 +67,7 @@ app.post('/users/login', (req, response) => {
 
 app.get('/profile/:id', (req, res) => {
   var id = req.params.id;
-  var sql = `SELECT * FROM USER WHERE uId=${id}`;
+  var sql = `SELECT * FROM User WHERE uId=${id}`;
   db.query(sql, function(err,result,fields){
     if(err){
       throw(err);
@@ -148,6 +145,7 @@ app.get('/booking/:id', (req,res) => {
     res.status(200).send(result[0]);
   });
 });
+
 
 app.post('/booking/confirm', (req, res) => {
 
@@ -285,9 +283,12 @@ app.post('/users/new', (req, res) => {
   var values = Object.keys(req.body).map(function(_){return req.body[_]});
 
   values[3] = bcrypt.hashSync(req.body.password, 10);
-
   db.query(sql, [values], function(err,result,fields){
-    if(err) throw(err);
+
+    if(err){
+      throw(err);
+      console.log("uh oh");
+    }
   });
 
 
@@ -299,13 +300,13 @@ app.post('/users/new', (req, res) => {
     html: `Hey there, ${req.body.first}! Welcome to Cache. We are excited to have you.  Login to your account and host or rent a space!`
 };
 
-  transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        return console.log(error);
-    }
-    console.log('Message sent: ' + info.response);
-  });
-  res.status(200).send(req.body);
+  // transporter.sendMail(mailOptions, function(error, info){
+  //   if(error){
+  //       return console.log(error);
+  //   }
+  //   console.log('Message sent: ' + info.response);
+  // });
+  res.status(200).send(JSON.stringify(req.body));
 });
 
 

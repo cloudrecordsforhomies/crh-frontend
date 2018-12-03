@@ -6,6 +6,7 @@ export class MapContainer extends Component {
     super(props);
     this.state = {
       currentLocation: {},
+      clickedLocation: {},
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
@@ -21,15 +22,19 @@ export class MapContainer extends Component {
         showingInfoWindow: true
     });
 
-  onMapClicked = (props) => {
-      if (this.state.showingInfoWindow) {
-        this.setState({
-          showingInfoWindow: false,
-          activeMarker: null
-        })
-      }
-      console.log(props);
-    };
+  onMapClicked = (props, map, clickEvent) => {
+      var clickLoc = clickEvent.latLng;
+       this.setState({
+         showingInfoWindow: false,
+         activeMarker: null,
+         clickedLocation: {
+          lat: clickLoc.lat(),
+          lng: clickLoc.lng()
+        }
+      });
+      this.props.callback(clickLoc.lat, clickLoc.lng);
+      console.log(this.state.clickedLocation);
+  };
 
   render() {
     if (navigator && navigator.geolocation) {

@@ -94,10 +94,9 @@ export default class ContractHome extends Component {
 
   initContract (contract) {
 
-    const MiniToken = contract(abi)
-    const miniToken = MiniToken.at(address)
-    console.log(miniToken);
-    this.state = {miniToken:miniToken};
+    const Booking = contract(abi)
+    const booking = Booking.at(address)
+    this.state = {bookingContract:booking};
 
   }
 

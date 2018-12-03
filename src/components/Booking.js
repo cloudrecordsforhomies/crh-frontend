@@ -40,6 +40,7 @@ export default class Booking extends Component {
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleCoords = this.handleCoords.bind(this);
   }
 
 
@@ -55,9 +56,17 @@ export default class Booking extends Component {
       console.log(this.state.list);
     })
   }
+
+  handleCoords = (lat, lng) => {
+      this.setState({lat:lat(), lng:lng()});
+      document.getElementById("latitude").value = this.state.lat;
+      document.getElementById("longitude").value = this.state.lng;
+  }
+
   openModal() {
     this.setState({modalIsOpen: true});
   }
+
   afterOpenModal() {
     // references are now sync'd and can be accessed.
 
@@ -70,6 +79,15 @@ export default class Booking extends Component {
 
 
 render() {
+  if (navigator && navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((pos) => {
+        const coords = pos.coords;
+        this.setState({
+            latitude: coords.latitude,
+            longitude: coords.longitude
+        })
+      })
+  }
   return (
     <Thumbnail className="landerForm">
       <h1>Rent with Cache</h1>
@@ -96,7 +114,7 @@ render() {
         >
           <button onClick={this.closeModal} style={{marginRight:"3%",marginLeft:"97%", marginBotton:'20px'}}>X</button>
           <div id="mapContainerContainer" style={{height:'900px', width:'900px'}}>
-            <MapContainer />
+            <MapContainer callback={this.handleCoords} />
           </div>
 
         </Modal>

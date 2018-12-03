@@ -62,7 +62,7 @@ export default class Signup extends Component {
     var self = this;
     axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: self.state.image, file:self.state.file})
     .then(function(){
-      axios.post(`http://localhost:5000/users/login`, {email:self.state.email, password:self.state.password
+      axios.post('http://localhost:5000/users/login', {email:self.state.email, password:self.state.password
     })
     .then(function(response){
       return response.data.id;
@@ -72,6 +72,7 @@ export default class Signup extends Component {
     });
   });
   }
+
 
 
   handleConfirmationSubmit = async event => {
