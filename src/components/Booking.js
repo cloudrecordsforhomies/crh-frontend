@@ -66,6 +66,7 @@ export default class Booking extends Component {
   openModal() {
     this.setState({modalIsOpen: true});
   }
+
   afterOpenModal() {
     // references are now sync'd and can be accessed.
 
@@ -78,6 +79,15 @@ export default class Booking extends Component {
 
 
 render() {
+  if (navigator && navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((pos) => {
+        const coords = pos.coords;
+        this.setState({
+            latitude: coords.latitude,
+            longitude: coords.longitude
+        })
+      })
+  }
   return (
     <Thumbnail className="landerForm">
       <h1>Rent with Cache</h1>
