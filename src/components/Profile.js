@@ -47,6 +47,7 @@ export default class Profile extends Component {
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+  
     var self = this;
     axios.get(`http://52.15.115.174:5000/profile/${uId}`)
     .then(function(response){
@@ -73,6 +74,8 @@ export default class Profile extends Component {
   closeModal() {
     this.setState({modalIsOpen: false});
   }
+
+
 
   render() {
     return (
