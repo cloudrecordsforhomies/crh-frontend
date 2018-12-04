@@ -11,6 +11,8 @@ import "../styles/Signup.css";
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
 
+
+
 export default class Signup extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +32,8 @@ export default class Signup extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleFileUpload = this.handleFileUpload.bind(this);
+
   }
 
   validateForm() {
@@ -56,16 +60,19 @@ export default class Signup extends Component {
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
     var self = this;
-    axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: self.state.image}
-  ).then(function(){
-    axios.post(`http://localhost:5000/users/login`, {email:self.state.email, password:self.state.password})
+    axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: self.state.image, file:self.state.file})
+    .then(function(){
+      axios.post('http://localhost:5000/users/login', {email:self.state.email, password:self.state.password
+    })
     .then(function(response){
       return response.data.id;
-    }).then(function(result){
+    })
+    .then(function(result){
       self.handleLogin(result);
     });
   });
   }
+
 
 
   handleConfirmationSubmit = async event => {
@@ -75,7 +82,16 @@ export default class Signup extends Component {
 
   handleLogin = (result) => {
     localStorage.setItem('profile', result);
-    this.setState({ user: result });
+    this.setState({ user: result }, function(){
+      console.log(this.state.user);
+    });
+  }
+
+  handleFileUpload = (event) => {
+    console.log(event.target.files[0]);
+    this.setState({file: event.target.files[0]}, function(){
+      console.log(this.state.file);
+    });
   }
 
   renderConfirmationForm() {
@@ -164,15 +180,23 @@ export default class Signup extends Component {
             type="phone"
           />
         </FormGroup>
-        <div className="row">
+
+        <FormGroup controlId="file" bsSize="large">
+        <ControlLabel>Profile Picture</ControlLabel>
+        <FormControl
+        type="file"
+        onChange={this.handleFileUpload}
+        />
+        </FormGroup>
+
         <FormGroup controlId="image" bsSize="large">
-        <ControlLabel>Image Url</ControlLabel>
+        <ControlLabel>Profile Picture</ControlLabel>
         <FormControl
         type="text"
         onChange={this.handleChange}
         />
         </FormGroup>
-        </div>
+
         <Button
           block
           bsSize="large"

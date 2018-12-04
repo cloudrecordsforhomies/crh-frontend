@@ -7,6 +7,7 @@ export default class Home extends Component {
     super(props);
     this.state = {
     }
+
   }
 
   handleChange = event => {
@@ -20,15 +21,10 @@ export default class Home extends Component {
   }
 
   render() {
+
     return (
       <div className="Home">
       <Login />
-        <div className="lander">
-          <div className="blackOverlay">
-            <div className="bgImage">
-            </div>
-          </div>
-        </div>
       </div>
     );
   }

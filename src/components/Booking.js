@@ -7,7 +7,22 @@ import {
   Thumbnail
 } from "react-bootstrap";
 import "../styles/Booking.css";
+import MapContainer from './MapContainer';
+import Modal from 'react-modal';
 
+Modal.setAppElement('#root');
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)',
+    height                : '1000px',
+    width                 : '1000px'
+  }
+};
 
 export default class Booking extends Component {
 
@@ -22,7 +37,10 @@ export default class Booking extends Component {
       list:false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.handleCoords = this.handleCoords.bind(this);
   }
 
 
@@ -39,8 +57,37 @@ export default class Booking extends Component {
     })
   }
 
+  handleCoords = (lat, lng) => {
+      this.setState({lat:lat(), lng:lng()});
+      document.getElementById("latitude").value = this.state.lat;
+      document.getElementById("longitude").value = this.state.lng;
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+
+
 
 render() {
+  if (navigator && navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((pos) => {
+        const coords = pos.coords;
+        this.setState({
+            latitude: coords.latitude,
+            longitude: coords.longitude
+        })
+      })
+  }
   return (
     <Thumbnail className="landerForm">
       <h1>Rent with Cache</h1>
@@ -55,6 +102,24 @@ render() {
           onChange={this.handleChange}
           />
         </FormGroup>
+      <div className="row">
+        <div style={{marginLeft:"185px"}}>
+        <Button className="btn btn-danger" onClick={this.openModal}> Get Location From Map </Button>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Modal"
+        >
+          <button onClick={this.closeModal} style={{marginRight:"3%",marginLeft:"97%", marginBotton:'20px'}}>X</button>
+          <div id="mapContainerContainer" style={{height:'900px', width:'900px'}}>
+            <MapContainer callback={this.handleCoords} />
+          </div>
+
+        </Modal>
+        </div>
+      </div>
       <div className="row">
         <div className="col-xs-4">
           <FormGroup controlId="latitude" bsSize="large">
@@ -123,7 +188,7 @@ render() {
         bsSize="large"
         className="btn-success"
         type="submit"
-        href={`/listings/?uLat=${this.state.latitude}&uLong=${this.state.longitude}&uRadius=${this.state.radius}`}
+        href={`/listings/?uLat=${this.state.latitude}&uLong=${this.state.longitude}&uRadius=${this.state.radius}&status=0`}
       > Submit
       </Button>
       </form>
