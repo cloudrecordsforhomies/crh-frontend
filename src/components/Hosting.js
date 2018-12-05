@@ -41,6 +41,7 @@ export default class Hosting extends Component {
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleCoords = this.handleCoords.bind(this);
   }
 
   handleRangeChange() {
@@ -77,10 +78,14 @@ export default class Hosting extends Component {
       var target = document.getElementById('ppd');
       target.innerHTML = this.state.squareFootage * parseFloat(event.target.value)/10 * this.state.days;
     }
-    //
-
-
   }
+
+
+  handleCoords = (lat, lng) => {
+      this.setState({lat:lat(), lng:lng()});
+      document.getElementById("latitude").value = this.state.lat;
+      document.getElementById("longitude").value = this.state.lng;
+    }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -146,7 +151,7 @@ render() {
           >
             <button onClick={this.closeModal} style={{marginRight:"3%",marginLeft:"97%", marginBotton:'20px'}}>X</button>
             <div id="mapContainerContainer" style={{height:'900px', width:'900px'}}>
-              <MapContainer />
+              <MapContainer callback={this.handleCoords} />
             </div>
 
           </Modal>
