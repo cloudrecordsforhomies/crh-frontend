@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "../styles/About.css";
+import "../styles/bootstrap-social.css";
+import "../styles/bootstrap-social stephen.css";
 
 export default class About extends Component {
   constructor(props){
@@ -12,6 +14,7 @@ export default class About extends Component {
       desc3: props.desc3,
       linkedin: props.linkedin,
       image: props.image,
+      github: props.github,
     }
   }
 
@@ -27,11 +30,8 @@ export default class About extends Component {
 
   render() {
     return (
-      <div>
 
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-3">
+      <div style={{marginLeft:"70px"}}>
 
               <div class="card hovercard">
                 <div class="cardheader">
@@ -42,36 +42,31 @@ export default class About extends Component {
                 </div>
                 <div class="info">
                     <div class="title">
-                        <a target="_blank" href="https://scripteden.com/">{this.state.name}</a>
+                        <a target="_blank" href={this.state.linkedin}>{this.state.name}</a>
                     </div>
                     <div class="desc">{this.state.desc1}</div>
                     <div class="desc">{this.state.desc2}</div>
                     <div class="desc">{this.state.desc3}</div>
                 </div>
                 <div class="bottom">
-                    <a class="btn-about btn-primary btn-twitter btn-sm " href="https://twitter.com/">
-                        <i class="fa fa-twitter"></i>
+
+                    <a class="btn btn-social-icon btn-facebook" href = {this.state.facebook}>
+                      <span class="fa fa-facebook"></span>
                     </a>
-                    <a class="btn-about btn-danger btn-sm " rel="publisher"
-                       href={this.state.linkedin}>
-                        <i class="fa fa-linkedin"></i>
+
+                    <a class="btn btn-social-icon btn-linkedin" href = {this.state.linkedin}>
+                      <span class="fa fa-linkedin"></span>
                     </a>
-                    <a class="btn-about btn-primary btn-sm " rel="publisher"
-                       href={this.state.facebook}>
-                        <i class="fa fa-facebook"></i>
+
+                    <a class="btn btn-social-icon btn-github" href = {this.state.linkedin}>
+                      <span class="fa fa-github"></span>
                     </a>
-                    <a class="btn-about btn-warning btn-sm " rel="publisher" href="https://plus.google.com/shahnuralam">
-                        <i class="fa fa-behance"></i>
-                    </a>
+
                 </div>
             </div>
 
         </div>
 
-  </div>
-</div>
-
-      </div>
 
     );
   }

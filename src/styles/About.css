@@ -197,7 +197,7 @@
     overflow: hidden;
     font-size: 12px;
     line-height: 16px;
-    color: #737373;
+    color: #FFFFFF;
     text-overflow: ellipsis;
 }
 
@@ -221,6 +221,7 @@
     overflow: hidden;
     text-align: center;
     background-color: rgba(214, 224, 226, 0.2);
+		width: 300px;
 }
 
 .card.hovercard .cardheader {
@@ -262,7 +263,7 @@
     overflow: hidden;
     font-size: 12px;
     line-height: 20px;
-    color: #737373;
+    color: #FFFFFF;
     text-overflow: ellipsis;
 }
 
@@ -271,4 +272,4 @@
     margin-bottom: 17px;
 }
 
-.btn-about{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
+.btn-about{ border-radius: 50%;  }
