@@ -25,6 +25,7 @@
     "multiparty": "^4.2.1",
     "mysql": "^2.16.0",
     "nodemailer": "^4.6.8",
+    "paypal-rest-sdk": "^1.8.1",
     "react": "^16.5.2",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.5.2",

@@ -75,7 +75,7 @@ export default class Hosting extends Component {
       document.getElementById("sqfttarget").innerHTML = event.target.value;
     }
     if(event.target.id === 'price'){
-      var target = document.getElementById('ppd');
+      var target = document.getElementById('priceTarget');
       target.innerHTML = this.state.squareFootage * parseFloat(event.target.value)/10 * this.state.days;
     }
   }
@@ -91,18 +91,17 @@ export default class Hosting extends Component {
     event.preventDefault();
     var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
     var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
+    var b;
     var self = this;
     axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:this.state.image, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude, price:this.state.price}})
      .then( function(response) {
-        self.setState({bid:response.data},function(){
-          console.log(this.state.bid);
-        });
+        b = response.data
       })
      .catch( function(response){
         console.log("error");
     });
 
-    this.setState({list:true}, function(){
+    this.setState({list:true,bid:b}, function(){
       console.log(this.state.list);
     });
   }
@@ -124,7 +123,6 @@ render() {
   if(this.state.list){
     return(<Redirect to={`/hostinspect/${this.state.bid}`} />)
   }
-
   return (
     <Thumbnail className="landerForm">
       <h1 style={{paddingLeft:'100px'}}>Host a Space</h1>
@@ -234,6 +232,7 @@ render() {
           <FormControl
           type="text"
           onChange={this.handleChange}
+          placeholder={'http://placehold.it/200x200'}
           />
         </FormGroup>
 

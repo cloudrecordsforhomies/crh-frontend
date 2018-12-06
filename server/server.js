@@ -73,6 +73,7 @@ app.get('/profile/:id', (req, res) => {
       throw(err);
       res.status(400).send("Could not complete request");
     }
+    console.log(`getting profile ${JSON.stringify(result)}`);
     res.status(200).send(result[0]);
   });
 
@@ -112,7 +113,7 @@ app.get('/listings', (req,res) => {
   }
 
 
-  var sql = `SELECT b.bId, b.hostId, b.squareFeet, b.address, b.picture, b.status, (3959 * acos( cos( radians(${uLat}) )
+  var sql = `SELECT b.bId, b.hostId, b.squareFeet, b.address, b.picture, b.status, b.latitude, b.longitude, b.price, (3959 * acos( cos( radians(${uLat}) )
                                           * cos( radians(b.latitude) )
                                           * cos( radians(b.longitude) - radians(${uLong}) )
                                           + sin( radians(${uLat}) )
@@ -133,8 +134,9 @@ app.get('/listings', (req,res) => {
   });
 });
 
-app.get('/booking/:id', (req,res) => {
-  var id = req.params.id;
+app.get('/booking/', (req,res) => {
+  console.log(req.query);
+  var id = req.query.bid;
   var sql = `SELECT * FROM Booking WHERE bId=${id}`;
   db.query(sql, function(err,result,fields){
     if(err){
@@ -313,25 +315,25 @@ app.post('/users/new', (req, res) => {
 app.post('/booking/new', (req, res) => {
 
   //req = req.body;
-  var sql = `INSERT INTO Booking(hostId, startTime, endTime, picture, address, latitude, longitude, squareFeet, status) VALUES (?)`;
-  var values = [req.body.hostId, req.body.checkIn, req.body.checkOut, req.body.picture, req.body.address, req.body.latitude, req.body.longitude, req.body.squareFeet, 0];
+  console.log(req.body);
+  var sql = `INSERT INTO Booking(hostId, startTime, endTime, picture, address, latitude, longitude, squareFeet, status, price) VALUES (?)`;
+  var values = [req.body.hostId, req.body.checkIn, req.body.checkOut, req.body.picture, req.body.address, req.body.latitude, req.body.longitude, req.body.squareFeet, 0, req.body.price];
   db.query(sql, [values], function(err,result,fields){
     if(err){
       throw(err);
       res.status(500).send("Booking Error");
     }
   });
-  // sql = `SELECT bId FROM Booking WHERE hostId=${req.body.hostId} ORDER BY bId DESC LIMIT 1`;
-  // db.query(sql, function(err,result,fields){
-  //   if(err){
-  //     throw(err);
-  //     res.status(500).send("Booking Error");
-  //   }
-  //   var bid = result[0].bId;
-  //   console.log(bid);
-  //   res.status(200).send(bid.toString());
-  // });
-  res.status(200).send();
+  sql = `SELECT bId FROM Booking ORDER BY bId DESC LIMIT 1`;
+  db.query(sql, function(err,result,fields){
+    if(err){
+      throw(err);
+      res.status(500).send("Booking Error");
+    }
+    var bid = result[0].bId;
+    console.log(bid);
+    res.status(200).send(bid.toString());
+  });
 });
 
 

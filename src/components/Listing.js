@@ -19,6 +19,19 @@ export default class Listing extends Component {
 
   }
 
+  createTable(data){
+    let table = [];
+    for(var user of data){
+      let children = [];
+      for(var key in user){
+        children.push(`<td>${user[key]}</td>`)
+      }
+
+      table.push(`<tr>${children.join('')}</tr>`);
+    }
+    document.getElementById('target').innerHTML = table.join('');
+  }
+
   render() {
     return (
       <div id="listing" width="1000px">
@@ -29,7 +42,17 @@ export default class Listing extends Component {
           { this.state.cards.map(function(listing){
               return(
                 <td style={{paddingLeft:5}}>
-                  <ListCard bId={listing.bId} address={listing.address} sqft={listing.squareFeet} image={listing.picture} distance={listing.distance_miles} host={listing.hostId}/>
+                  <ListCard bId={listing.bId}
+                            address={listing.address}
+                            sqft={listing.squareFeet}
+                            image={listing.picture}
+                            distance={listing.distance_miles}
+                            host={listing.hostId}
+                            price={listing.price}
+                            lat={listing.latitude}
+                            lng={listing.longitude}
+
+                  />
                 </td>
               )
             })

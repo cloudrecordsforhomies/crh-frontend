@@ -23,10 +23,10 @@ CREATE TABLE Booking(
   endTime INT,
   address VARCHAR(255),
   squareFeet INT,
-  latitude DECIMAL,
-  longitude DECIMAL,
+  latitude FLOAT(5),
+  longitude FLOAT(5),
   status TINYINT,
-  price DECIMAL,
+  price FLOAT(2),
   CONSTRAINT bPK PRIMARY KEY (bId),
   CONSTRAINT rFK FOREIGN KEY (renterId) REFERENCES User(uId),
   CONSTRAINT hFK FOREIGN KEY (hostID) REFERENCES User(uId)

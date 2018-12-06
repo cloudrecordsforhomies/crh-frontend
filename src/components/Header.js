@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import Treasure from "../treasure.svg";
-import { Redirect } from "react-router-dom";
 
 
 export default class Header extends Component {
@@ -12,26 +11,14 @@ export default class Header extends Component {
       profile: props.profile,
       logout:false
     }
-
-    this.handleLogout = this.handleLogout.bind(this);
+    this.loggedIn = this.loggedIn.bind(this);
   }
 
-  handleLogout() {
-    localStorage.clear();
-    this.setState({
-      profile: 0,
-      logout: true
-    }, function(){
-      console.log(this.state.profile);
-    });
+  loggedIn() {
+    return this.state.profile !== null;
   }
 
   render() {
-    if(this.state.logout){
-      return (
-        <Redirect to={"/home"} />
-      );
-    } else
     return (
       <Navbar fluid collapseOnSelect style={{width:"100%", margin:'0 auto'}}>
         <Navbar.Header style={{display:'inline-block'}}>
@@ -45,11 +32,12 @@ export default class Header extends Component {
           <Nav pullRight style={{display:'inline-block'}}>
             <NavItem href="/users">Users</NavItem>
             <NavItem href="/about">About</NavItem>
+            <NavItem href={'/listings'}> Listings </NavItem>
             {
-            this.state.profile? (
+             this.loggedIn() ? (
               <Nav pullRight style={{display:'inline-block'}}>
                 <NavItem href={`/profile/${this.state.profile}`}> Profile </NavItem>
-                <NavItem onClick={this.handleLogout}> Log Out </NavItem>
+                <NavItem href={'/'} onClick={this.props.handleLogout}> Log Out </NavItem>
               </Nav>
             ) : (
               <Nav pullRight style={{display:'inline-block'}}>

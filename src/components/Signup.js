@@ -26,7 +26,8 @@ export default class Signup extends Component {
       newUser: null,
       phone: "",
       first: "",
-      last: ""
+      last: "",
+      image: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -40,7 +41,9 @@ export default class Signup extends Component {
     return (
       this.state.email.length > 0 &&
       this.state.password.length > 0 &&
-      this.state.password === this.state.confirmPassword
+      this.state.password === this.state.confirmPassword &&
+      this.state.phone.length > 0 &&
+      this.state.image.length > 0
     );
   }
 
@@ -181,14 +184,6 @@ export default class Signup extends Component {
           />
         </FormGroup>
 
-        <FormGroup controlId="file" bsSize="large">
-        <ControlLabel>Profile Picture</ControlLabel>
-        <FormControl
-        type="file"
-        onChange={this.handleFileUpload}
-        />
-        </FormGroup>
-
         <FormGroup controlId="image" bsSize="large">
         <ControlLabel>Profile Picture</ControlLabel>
         <FormControl
@@ -212,7 +207,7 @@ export default class Signup extends Component {
 
   render() {
     if(this.state.user){
-      return <Redirect to={`profile/${this.state.user}`} />
+      return <Redirect to={`/profile/${this.state.user}`} from={'/signup'} />
     }
     return (
       <div>

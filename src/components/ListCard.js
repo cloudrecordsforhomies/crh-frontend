@@ -16,6 +16,8 @@ export default class ListCard extends Component {
       host:props.host,
       hostImg: null,
       hostFirst:null,
+      lat: props.lat,
+      lng: props.lng,
       user:localStorage.getItem("profile")
     }
     console.log(props.bId);
@@ -39,7 +41,7 @@ export default class ListCard extends Component {
   render() {
     return (
       <div className="card" style={{ width: 200, height: "auto" }}>
-        <div className="container" style={{ position: "relative" }}>
+        <div className="container" style={{ position: "relative",margin:0,padding:0,width:200 }}>
           <img
             className="card-img-top"
             src={this.state.image}
@@ -63,12 +65,15 @@ export default class ListCard extends Component {
         </div>
         <div className="card-body">
           <h5 className="card-title">
-            <a href={this.state.host == this.state.profile ? `/hostinspect/${this.state.id}` : `/hostinspect/${this.state.id}`}>
+            <a href={`/hostinspect/${this.state.id}`}>
               {this.state.sqft} sqft hosted by {this.state.hostFirst}
             </a>
           </h5>
           <p className="card-text">
             {this.state.distance} miles away
+          </p>
+          <p className="price-text">
+            ${this.state.price}
           </p>
         </div>
       </div>

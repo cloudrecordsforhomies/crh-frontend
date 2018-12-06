@@ -53,15 +53,10 @@ export default class Login extends Component {
     return(
     <div className="container-login100">
     <div className="wrap-login100" style={{width:"377", margin:"0 auto"}}>
-    <div class="login100-pic">
+    <div className="login100-pic">
       <img src={require("../images/img-01.png")} alt="IMG"/>
     </div>
     <Thumbnail>
-      <div style={{textAlign:'center'}}>
-        <Button className="btn btn-primary">Login with Facebook</Button>
-        <div style={{marginTop:'10px'}}></div>
-        <Button className="btn btn-success">Login with Google</Button>
-      </div>
       <hr></hr>
       <form onSubmit={this.handleSubmit}>
         <FormGroup controlId="email" bsSize="large">
@@ -94,7 +89,7 @@ export default class Login extends Component {
       </form>
       <hr></hr>
       <div style={{textAlign:'center'}}>
-      <a href="/signup" style={{color:"#e6e6e6;"}}>Create Your Account</a>
+      <a href="/signup" style={{color:"#e6e6e6"}}>Create Your Account</a>
       </div>
 
       </Thumbnail>

@@ -5,7 +5,7 @@ export class MapContainer extends Component {
   constructor(props){
     super(props);
     this.state = {
-      currentLocation: {},
+      currentLocation: props.location,
       clickedLocation: {},
       showingInfoWindow: false,
       activeMarker: {},
@@ -32,7 +32,7 @@ export class MapContainer extends Component {
           lng: clickLoc.lng()
         }
       });
-      this.props.callback(clickLoc.lat, clickLoc.lng);
+      if(this.props.callback) this.props.callback(clickLoc.lat, clickLoc.lng);
       console.log(this.state.clickedLocation);
   };
 
@@ -40,6 +40,7 @@ export class MapContainer extends Component {
     if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
           const coords = pos.coords;
+          if(!this.state.location)
           this.setState({
               currentLocation: {
                   lat: coords.latitude,
@@ -60,17 +61,18 @@ export class MapContainer extends Component {
       google={this.props.google}
       zoom={14}
       onClick={this.onMapClicked}
-      initialCenter={
+      initialCenter={ !this.props.location ?
         {lat: 33.794772,
         lng: -84.326590}
+        : this.props.location
       }
       >
 
       <Marker
         onClick={this.onMarkerClick}
         name={"Current location"}
-        location={this.state.currentLocation}
-        position={this.state.currentLocation}
+        location={this.props.location? this.props.location : this.state.currentLocation}
+        position={this.props.location? this.props.location : this.state.currentLocation}
        />
 
       <InfoWindow

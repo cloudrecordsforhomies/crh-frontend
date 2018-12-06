@@ -9,8 +9,7 @@ import {
   FormGroup,
   FormControl,
   ControlLabel,
-  Button,
-  Thumbnail
+  Button
 } from "react-bootstrap";
 
 Modal.setAppElement('#root');
@@ -82,7 +81,7 @@ export default class Profile extends Component {
       <div className="profile">
         <div className="container bootstrap snippet">
             <div className="row">
-              <div className="col-sm-10"><h1>{this.state.first} {this.state.last}</h1></div>
+              <div className="col-sm-10" style={{width:'300px'}}><h1>{this.state.first} {this.state.last}</h1></div>
             </div>
             <div className="row">
               <div className="col-sm-3">
