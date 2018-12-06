@@ -93,7 +93,7 @@ export default class Hosting extends Component {
     var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
     var b;
     var self = this;
-    axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:this.state.image, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude, price:this.state.price}})
+    axios.post("http://52.15.115.174:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:this.state.image, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude, price:this.state.price}})
      .then( function(response) {
         b = response.data
       })
