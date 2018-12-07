@@ -20,7 +20,7 @@ export default class HostInspect extends Component {
     this.handleHostData = this.handleHostData.bind(this);
 
     var self = this;
-    axios.get(`http://localhost:5000/booking/?bid=${self.state.bId}`)
+    axios.get(`http://52.15.115.174:5000/booking/?bid=${self.state.bId}`)
     .then(function(response){
       self.handleData(response.data);
     })
@@ -57,7 +57,7 @@ export default class HostInspect extends Component {
     console.log("Confirm button");
     var uid = localStorage.getItem("profile");
     const self = this;
-    axios.post(`http://localhost:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
+    axios.post(`http://52.15.115.174:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
          .then(function(){
            alert(`Booking ${self.state.bId} has been confirmed`);
      })
@@ -68,7 +68,7 @@ export default class HostInspect extends Component {
     var uid = localStorage.getItem("profile");
     console.log(uid);
     const self = this;
-    axios.get(`http://localhost:5000/saves/${uid}/${self.state.bId}`)
+    axios.get(`http://52.15.115.174:5000/saves/${uid}/${self.state.bId}`)
          .then(function(){
            alert(`Booking ${self.state.bId} has been saved`);
     })

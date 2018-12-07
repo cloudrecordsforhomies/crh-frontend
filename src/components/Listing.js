@@ -10,7 +10,7 @@ export default class Listing extends Component {
       cards: []
     }
     var self = this;
-    axios.get(`http://localhost:5000/listings/${this.props.location.search}`).then( (res) => {
+    axios.get(`http://52.15.115.174:5000/listings/${this.props.location.search}`).then( (res) => {
       self.setState({cards:res.data}, function(){
         console.log(self.state.cards);
       });

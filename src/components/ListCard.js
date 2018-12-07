@@ -23,7 +23,7 @@ export default class ListCard extends Component {
       user:localStorage.getItem("profile")
     }
     var self = this;
-    axios.get(`http://localhost:5000/profile/${self.state.host}`)
+    axios.get(`http://52.15.115.174:5000/profile/${self.state.host}`)
     .then(function(response){
       var user = response.data;
       self.getData(user);
