@@ -22,26 +22,26 @@ export default class AboutPage extends Component {
   render() {
     return (
       <div>
-     <table>
+     <table style={{marginLeft:"300px", marginTop:"100px"}}>
       <tbody>
       <tr>
       <td>
        <div><About name="Safa Tinaztepe" linkedin = "https://www.linkedin.com/in/safatinaztepe/"
-        facebook ="https://www.facebook.com/safa.tinaztepe" desc1 = "Frontend Developer" desc2 = "Product Manager"
-        desc3 = "Loves null pointers" image = "https://avatars2.githubusercontent.com/u/8147022?s=460&v=4"
+        facebook ="https://www.facebook.com/safa.tinaztepe" desc1 = "Full Stack" desc2 = "Product Manager"
+        desc3 = "Artificially Intelligent" image = "https://avatars2.githubusercontent.com/u/8147022?s=460&v=4"
         github = "https://github.com/SafaTinaztepe"/> </div>
       </td>
       <td>
-       <div><About name= "Tejas Kashyap" linkedin = "www.linkedin.com/in/tejasvkashyap/"
-        facebook = "www.facebook.com/tejas.v.kashyap" desc1 = "Frontend Developer" desc2 = "Scrum Master"
+       <div><About name= "Tejas Kashyap" linkedin = "https://www.linkedin.com/in/tejasvkashyap/"
+        facebook = "https://www.facebook.com/tejas.v.kashyap" desc1 = "Frontend Developer" desc2 = "Scrum Master"
         desc3 = "Rugby Player" image = "https://scontent-atl3-1.xx.fbcdn.net/v/t31.0-8/15896373_1230298507026046_4721607100954488594_o.jpg?_nc_cat=101&_nc_ht=scontent-atl3-1.xx&oh=a5977560dda5b0e790f4818b77838d42&oe=5C7C2CD0"
         github = "https://github.com/tkash55"/></div>
       </td>
       <td>
         <div><About name="Tom Purdy" linkedin = "https://www.linkedin.com/in/thomas-purdy-608a0a141/"
          facebook ="https://www.facebook.com/thomas.purdy.77" desc1 = "Backend Developer" desc2 = "Group Leader"
-         desc3 = "Lacrosse Player" image = "https://media.licdn.com/dms/image/C5603AQE-2yjN37Aazw/profile-displayphoto-shrink_800_800/0?e=1547078400&v=beta&t=EwaD-eLG1SVr7tLI-IWx8hZBUTKA1cnLH8ejPR12OTU"
-         github = "https://github.com"/></div>
+         desc3 = "Lacrosse Player" image = "https://scontent-atl3-1.xx.fbcdn.net/v/t1.0-1/p320x320/16807609_1369752266431295_3730726946825304875_n.jpg?_nc_cat=108&_nc_ht=scontent-atl3-1.xx&oh=9a5b0bc9a173389ffba8ec10648344c1&oe=5C679274"
+         github = "https://github.com/Anon514"/></div>
       </td>
       </tr>
       <tr>

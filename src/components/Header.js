@@ -30,9 +30,9 @@ export default class Header extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight style={{display:'inline-block'}}>
-            <NavItem href="/users">Users</NavItem>
+            {/*<NavItem href="/users">Users</NavItem>*/}
             <NavItem href="/about">About</NavItem>
-            <NavItem href={'/listings'}> Listings </NavItem>
+            <NavItem href={'/listings/?uLat=33.79010684411262&uLong=-84.32665145463136'}> Listings </NavItem>
             {
              this.loggedIn() ? (
               <Nav pullRight style={{display:'inline-block'}}>

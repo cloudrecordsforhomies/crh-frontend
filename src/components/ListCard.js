@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "../styles/ListCard.css";
 import axios from 'axios';
+import MapContainer from './MapContainer.js';
+import { Thumbnail } from 'react-bootstrap';
 
 export default class ListCard extends Component {
 
@@ -20,7 +22,6 @@ export default class ListCard extends Component {
       lng: props.lng,
       user:localStorage.getItem("profile")
     }
-    console.log(props.bId);
     var self = this;
     axios.get(`http://localhost:5000/profile/${self.state.host}`)
     .then(function(response){
@@ -34,13 +35,15 @@ export default class ListCard extends Component {
 
   getData = (result) => {
     this.setState({ hostImg:result.profPic, hostFirst:result.first }, () => {
-      console.log(result.first);
     });
   }
 
   render() {
     return (
-      <div className="card" style={{ width: 200, height: "auto" }}>
+      <div className="card" style={{ width: 200, height: "auto", paddingTop:'0px' }}>
+        <div className="container" style={{marginBottom:'200px', paddingLeft:'0px'}}>
+          <MapContainer callback={null} location={{lat:this.state.lat, lng:this.state.lng}} style = {{width:'200px', height:'200px'}} />
+        </div>
         <div className="container" style={{ position: "relative",margin:0,padding:0,width:200 }}>
           <img
             className="card-img-top"
@@ -63,11 +66,13 @@ export default class ListCard extends Component {
             <a href={`/profile/${this.state.host}`}> <img src={this.state.hostImg} className="avatar img-circle img-thumbnail" alt="host"/></a>
           </div>
         </div>
+
         <div className="card-body">
-          <h5 className="card-title">
-            <a href={`/hostinspect/${this.state.id}`}>
-              {this.state.sqft} sqft hosted by {this.state.hostFirst}
-            </a>
+          <h3 className="card-title">
+            {this.state.address}
+          </h3>
+          <h5>
+            {this.state.sqft}sqft hosted by {this.state.hostFirst}
           </h5>
           <p className="card-text">
             {this.state.distance} miles away
@@ -75,7 +80,9 @@ export default class ListCard extends Component {
           <p className="price-text">
             ${this.state.price}
           </p>
+          <a href={`/hostinspect/${this.state.id}`} style={{marginBottom:'10px'}}> Inspect </a>
         </div>
+
       </div>
     );
   }

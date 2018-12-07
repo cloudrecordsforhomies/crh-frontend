@@ -33,7 +33,8 @@ export default class Hosting extends Component {
     this.state = {
       user: props.user,
       list: false,
-      modalIsOpen: false
+      modalIsOpen: false,
+      squareFootage:30
     };
 
     this.handleRangeChange = this.handleRangeChange.bind(this);
@@ -82,27 +83,32 @@ export default class Hosting extends Component {
 
 
   handleCoords = (lat, lng) => {
-      this.setState({lat:lat(), lng:lng()});
-      document.getElementById("latitude").value = this.state.lat;
-      document.getElementById("longitude").value = this.state.lng;
+      this.setState({latitude:lat(), longitude:lng()});
+      document.getElementById("latitude").value = this.state.latitude;
+      document.getElementById("longitude").value = this.state.longitude;
     }
 
   handleSubmit = event => {
     event.preventDefault();
     var checkIn = Math.round(new Date(this.state.checkIn).getTime()/1000);
     var checkOut = Math.round(new Date(this.state.checkOut).getTime()/1000);
+    var img;
+    if(this.state.image)
+      img = this.state.image
+    else
+      img = "https://placehold.it/200x200";
     var b;
     var self = this;
-    axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:this.state.image, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude, price:this.state.price}})
+    var b = axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:img, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude, price:this.state.price}})
      .then( function(response) {
-        b = response.data
+        return response.data
       })
      .catch( function(response){
         console.log("error");
     });
 
     this.setState({list:true,bid:b}, function(){
-      console.log(this.state.list);
+      console.log(this.state.bid);
     });
   }
 
@@ -121,15 +127,15 @@ export default class Hosting extends Component {
 render() {
 
   if(this.state.list){
-    return(<Redirect to={`/hostinspect/${this.state.bid}`} />)
+    return(<Redirect to={`/listings/?bid=all`} />)
   }
   return (
     <Thumbnail className="landerForm">
-      <h1 style={{paddingLeft:'100px'}}>Host a Space</h1>
-
+      <h1>Host a Space</h1>
+      <hr/>
       <form onSubmit={this.handleSubmit.bind(this)}>
         <FormGroup controlId="location" bsSize="large">
-          <ControlLabel>Location</ControlLabel>
+          <ControlLabel>Give Your Space a Title</ControlLabel>
           <FormControl
           autoFocus
           type="location"
@@ -138,7 +144,7 @@ render() {
           />
         </FormGroup>
         <div className="row">
-          <div style={{marginLeft:"185px"}}>
+          <div style={{marginLeft:"0px"}}>
           <Button className="btn btn-danger" onClick={this.openModal}> Get Location From Map </Button>
           <Modal
             isOpen={this.state.modalIsOpen}
@@ -218,7 +224,7 @@ render() {
          </datalist>
         <div id='boxShape'>
         </div>
-        <div id='target' style={{marginLeft:"200px;"}}>
+        <div id='target' style={{margin:"0px;"}}>
           <img
             style={{height:'100px',width:'auto', margin:"0 auto"}}
             id='boxesImg'

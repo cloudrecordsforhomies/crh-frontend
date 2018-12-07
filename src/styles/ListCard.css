@@ -16,3 +16,8 @@
 .ListCard .price{
   color: black;
 }
+
+.card-body {
+  position:relative;
+  z-index:2;
+}

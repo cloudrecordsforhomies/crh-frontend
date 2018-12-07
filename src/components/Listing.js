@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ListCard from "./ListCard.js";
 import axios from 'axios';
 
-
 export default class Listing extends Component {
 
   constructor(props){
@@ -16,29 +15,49 @@ export default class Listing extends Component {
         console.log(self.state.cards);
       });
     });
+    this.createTable = this.createTable.bind(this);
+    //this.createTable(this.state.cards);
 
   }
 
   createTable(data){
     let table = [];
-    for(var user of data){
+    for(var i = 0; i<data.length;){
       let children = [];
-      for(var key in user){
-        children.push(`<td>${user[key]}</td>`)
+      for(;i%3===0;i++){
+        console.log(i);
+        let listing = data[i];
+        children.push(`<td>${
+          <ListCard bId={listing.bId}
+                    address={listing.address}
+                    sqft={listing.squareFeet}
+                    image={listing.picture}
+                    distance={listing.distance_miles}
+                    host={listing.hostId}
+                    price={listing.price}
+                    lat={listing.latitude}
+                    lng={listing.longitude}
+
+          />}</td>`)
       }
 
       table.push(`<tr>${children.join('')}</tr>`);
     }
-    document.getElementById('target').innerHTML = table.join('');
+    document.getElementById('listing').innerHTML = table.join('');
+  }
+
+  componentDidMount(){
+    //document.getElementById('maptarget').innerHTML = 'he'
   }
 
   render() {
     return (
+      <div>
       <div id="listing" width="1000px">
       <h3> Where to store </h3>
-      <table style={{marginTop:'100px'}}>
+      <table style={{marginTop:'100px'}} id="target">
       <tbody>
-        <tr id="target">
+        <tr id="">
           { this.state.cards.map(function(listing){
               return(
                 <td style={{paddingLeft:5}}>
@@ -60,6 +79,8 @@ export default class Listing extends Component {
         </tr>
         </tbody>
       </table>
+      </div>
+
       </div>
     );
   }

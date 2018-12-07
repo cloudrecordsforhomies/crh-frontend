@@ -28,6 +28,16 @@ export default class About extends Component {
     this.setState({[event.target.id]: event.target.value});
   }
 
+  sendToLinkedIn = () => {
+    window.location.assign(this.state.linkedin);
+  }
+  sendToGh = () => {
+    window.location.assign(this.state.github);
+  }
+  sendToFb = () => {
+    window.location.assign(this.state.facebook);
+  }
+
   render() {
     return (
 
@@ -42,7 +52,7 @@ export default class About extends Component {
                 </div>
                 <div class="info">
                     <div class="title">
-                        <a target="_blank" href={this.state.linkedin}>{this.state.name}</a>
+                      {this.state.name}
                     </div>
                     <div class="desc">{this.state.desc1}</div>
                     <div class="desc">{this.state.desc2}</div>
@@ -50,17 +60,17 @@ export default class About extends Component {
                 </div>
                 <div class="bottom">
 
-                    <a class="btn btn-social-icon btn-facebook" href = {this.state.facebook}>
+                    <a class="btn btn-social-icon btn-facebook" onClick={this.sendToFb.bind(this)}>
                       <span class="fa fa-facebook"></span>
                     </a>
 
-                    <a class="btn btn-social-icon btn-linkedin" href = {this.state.linkedin}>
+                    <a class="btn btn-social-icon btn-linkedin" onClick={this.sendToLinkedIn.bind(this)}>
                       <span class="fa fa-linkedin"></span>
                     </a>
 
-                    <a class="btn btn-social-icon btn-github" href = {this.state.linkedin}>
+                    <button class="btn btn-social-icon btn-github" onClick={this.sendToGh.bind(this)}>
                       <span class="fa fa-github"></span>
-                    </a>
+                    </button>
 
                 </div>
             </div>

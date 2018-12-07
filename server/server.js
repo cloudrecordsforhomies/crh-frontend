@@ -73,7 +73,6 @@ app.get('/profile/:id', (req, res) => {
       throw(err);
       res.status(400).send("Could not complete request");
     }
-    console.log(`getting profile ${JSON.stringify(result)}`);
     res.status(200).send(result[0]);
   });
 
@@ -112,18 +111,37 @@ app.get('/listings', (req,res) => {
     }
   }
 
+  if(req.query.sqft){
+    if(sql_filter === `WHERE ` && req.query.sqft){
+      sql_filter += `squareFeet >= (${req.query.sqft})`;
+    } else {
+      sql_filter += ` AND squareFeet >= (${req.query.sqft})`;
+    }
+  }
 
-  var sql = `SELECT b.bId, b.hostId, b.squareFeet, b.address, b.picture, b.status, b.latitude, b.longitude, b.price, (3959 * acos( cos( radians(${uLat}) )
+
+  var sql = `SELECT b.bId, b.hostId, b.squareFeet, b.address, b.picture, b.status, b.latitude, b.longitude, b.price, ROUND((3959 * acos( cos( radians(${uLat}) )
                                           * cos( radians(b.latitude) )
                                           * cos( radians(b.longitude) - radians(${uLong}) )
                                           + sin( radians(${uLat}) )
-                                          * sin( radians(${uLong}) ) ) ) AS distance_miles
+                                          * sin( radians(b.latitude) ) ) ), 2 ) AS distance_miles
   FROM Booking b
   ${sql_filter !== `WHERE ` ? sql_filter : ""}
   GROUP BY b.bId
   HAVING distance_miles <= ${uRadius}
-  ORDER BY distance_miles ASC;`;
+  ORDER BY b.bId DESC;`;
 
+  if(req.query.bid === "all"){
+    sql = `SELECT b.bId, b.hostId, b.squareFeet, b.address, b.picture, b.status, b.latitude, b.longitude, b.price, ROUND( 3959 * acos( cos( radians(${uLat}) )
+                                                                                                                               * cos( radians(latitude) )
+                                                                                                                               * cos( radians(longitude) - radians(${uLong}) )
+                                                                                                                               + sin( radians(${uLat}) )
+                                                                                                                               * sin( radians(latitude) ) ),2 ) as distance_miles
+    FROM Booking b
+    GROUP BY b.bId
+    ORDER BY b.bId DESC;`;
+  }
+  console.log(sql);
   db.query(sql, function(err, result) {
     if(err){
       throw(err);
@@ -221,11 +239,10 @@ app.get('/saves/:uid', (req,res) => {
 
 // had to split into different method due to asynchronous behavior of js
 function handleSaves(bid, uid, method, callback){
-  let sql = `SELECT saves FROM User WHERE uId=${uid}`;
+  let sql = `SELECT saves FROM User WHERE uId=${uid};`;
   let arr = [];
   db.query(sql, function(err,result,fields){
     result = result[0]
-
     if(result.saves){
       result = result.saves.split(",");
     } else {
@@ -314,7 +331,7 @@ app.post('/users/new', (req, res) => {
 
 app.post('/booking/new', (req, res) => {
 
-  //req = req.body;
+  req = req.body;
   console.log(req.body);
   var sql = `INSERT INTO Booking(hostId, startTime, endTime, picture, address, latitude, longitude, squareFeet, status, price) VALUES (?)`;
   var values = [req.body.hostId, req.body.checkIn, req.body.checkOut, req.body.picture, req.body.address, req.body.latitude, req.body.longitude, req.body.squareFeet, 0, req.body.price];

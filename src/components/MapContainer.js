@@ -1,5 +1,7 @@
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import React, { Component } from "react";
+import axios from 'axios';
+import '../styles/MapContainer.css';
 
 export class MapContainer extends Component {
   constructor(props){
@@ -10,9 +12,15 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
+      locations: props.locations
     };
+
+
+    
+
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.onMapClicked = this.onMapClicked.bind(this);
+    this.populateListings = this.populateListings.bind(this);
   }
 
   onMarkerClick = (props, marker, e) =>
@@ -36,23 +44,42 @@ export class MapContainer extends Component {
       console.log(this.state.clickedLocation);
   };
 
+  populateListings = (props, map) => {
+    var listings = this.state.locations;
+    console.log(this.state.locations);
+    var self = this;
+    var testPos = {lat: 33.796, lng: -84.29}
+    var marker = new this.props.google.maps.Marker({position: testPos, map: map});
+    marker.addListener('click', function() {
+      self.setState({
+        selectedPlace: {name: "TEST", position: testPos},
+        activeMarker: marker,
+        showingInfoWindow: true
+      })
+    })
+    listings.map(function(element) {
+       var pos = {lat: element.latitude, lng: element.longitude}
+       var marker = new self.props.google.maps.Marker({position: pos, map: map});
+    });
+  }
+
   render() {
     if (navigator && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-          const coords = pos.coords;
-          if(!this.state.location)
-          this.setState({
-              currentLocation: {
-                  lat: coords.latitude,
-                  lng: coords.longitude
-              }
-          })
-        })
-    }
-    const style = {
-      marginTop:'21px',
-      width: '95%',
-      height: '90%'
+          navigator.geolocation.getCurrentPosition((pos) => {
+              const coords = pos.coords;
+              this.setState({
+                  currentLocation: {
+                      lat: coords.latitude,
+                      lng: coords.longitude
+                  }
+              })
+            })
+        }
+
+    const style = this.props.style;
+    const mapoptions = {
+      disableDefaultUI: true,
+      gestureHandling: 'none'
     }
 
     return (
@@ -66,6 +93,9 @@ export class MapContainer extends Component {
         lng: -84.326590}
         : this.props.location
       }
+      options={mapoptions}
+      mapElement={<div style={{ height: `100px` }} />}
+      //onReady={this.populateListings}
       >
 
       <Marker

@@ -58,9 +58,9 @@ export default class Booking extends Component {
   }
 
   handleCoords = (lat, lng) => {
-      this.setState({lat:lat(), lng:lng()});
-      document.getElementById("latitude").value = this.state.lat;
-      document.getElementById("longitude").value = this.state.lng;
+      this.setState({latitude:lat(), longitude:lng()});
+      document.getElementById("latitude").value = this.state.latitude;
+      document.getElementById("longitude").value = this.state.longitude;
   }
 
   openModal() {
@@ -79,31 +79,13 @@ export default class Booking extends Component {
 
 
 render() {
-  if (navigator && navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((pos) => {
-        const coords = pos.coords;
-        this.setState({
-            latitude: coords.latitude,
-            longitude: coords.longitude
-        })
-      })
-  }
   return (
     <Thumbnail className="landerForm">
       <h1>Rent with Cache</h1>
-
+      <hr />
       <form onSubmit={this.handleSubmit.bind(this)}>
-        <FormGroup controlId="location" bsSize="large">
-          <ControlLabel>Send Me Your Location</ControlLabel>
-          <FormControl
-          autoFocus
-          type="location"
-          value={this.state.location}
-          onChange={this.handleChange}
-          />
-        </FormGroup>
       <div className="row">
-        <div style={{marginLeft:"185px"}}>
+        <div style={{marginLeft:"0px"}}>
         <Button className="btn btn-danger" onClick={this.openModal}> Get Location From Map </Button>
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -188,7 +170,7 @@ render() {
         bsSize="large"
         className="btn-success"
         type="submit"
-        href={`/listings/?uLat=${this.state.latitude}&uLong=${this.state.longitude}&uRadius=${this.state.radius}&status=0`}
+        href={`/listings/?uLat=${this.state.latitude}&uLong=${this.state.longitude}&uRadius=${this.state.radius}&sqft=${this.state.squareFootage}&status=0`}
       > Submit
       </Button>
       </form>

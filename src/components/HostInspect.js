@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import "../styles/HostInspect.css";
 import MapContainer from "./MapContainer";
+import {Thumbnail} from  'react-bootstrap';
 
 
 export default class HostInspect extends Component {
@@ -86,7 +87,6 @@ export default class HostInspect extends Component {
                           </div>
                           <div className="col-xs-12 col-md-12 own-space space-info">
                               <p className="space-desc">{this.state.squareFeet} square feet hosted by {this.state.first} {this.state.last}</p>
-                              <hr className="divider"></hr>
                           </div>
                           <div className="col-xs-12 col-md-12 own-space space-pricing">
                               <h3>${this.state.price}</h3>
@@ -112,8 +112,9 @@ export default class HostInspect extends Component {
                   </div>
 
                   <div className="detail-picture-display col-xs-12 col-md-7" style={{height:'400px'}}>
-                      <MapContainer callback={null} location={{lat:this.state.latitude, lng:this.state.longitude}} />
-                      <hr />
+                      <MapContainer callback={null} location={{lat:this.state.latitude, lng:this.state.longitude}} style={{width:'357px', height:'357px'}} />
+                      <div style={{width:'30px', height:'400px', left:'357px',position:'absolute'}}></div>
+                      <img src={this.state.picture} style={{width:'357px', height:'357px'}} />
                   </div>
               </div>
           </div>
