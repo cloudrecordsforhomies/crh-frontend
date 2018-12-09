@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import axios from 'axios';
 import "../styles/HostInspect.css";
 import MapContainer from "./MapContainer";
-import {Thumbnail} from  'react-bootstrap';
-
+import {Thumbnail, Button} from  'react-bootstrap';
+import PaypalContainer from './PaypalContainer';
 
 export default class HostInspect extends Component {
 
@@ -11,7 +11,8 @@ export default class HostInspect extends Component {
     super(props)
     this.state = {
       bId: props.location.pathname.split('/').slice(-1).pop(),
-      loggedIn: localStorage.getItem("profile") === null
+      loggedIn: localStorage.getItem("profile") === null,
+      uid: localStorage.getItem("profile")
     }
 
     this.handleData = this.handleData.bind(this);
@@ -20,7 +21,7 @@ export default class HostInspect extends Component {
     this.handleHostData = this.handleHostData.bind(this);
 
     var self = this;
-    axios.get(`http://52.15.115.174:5000/booking/?bid=${self.state.bId}`)
+    axios.get(`http://localhost:5000/booking/?bid=${self.state.bId}`)
     .then(function(response){
       self.handleData(response.data);
     })
@@ -54,10 +55,9 @@ export default class HostInspect extends Component {
   }
 
   confirm() {
-    console.log("Confirm button");
     var uid = localStorage.getItem("profile");
     const self = this;
-    axios.post(`http://52.15.115.174:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
+    axios.post(`http://localhost:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
          .then(function(){
            alert(`Booking ${self.state.bId} has been confirmed`);
      })
@@ -68,11 +68,12 @@ export default class HostInspect extends Component {
     var uid = localStorage.getItem("profile");
     console.log(uid);
     const self = this;
-    axios.get(`http://52.15.115.174:5000/saves/${uid}/${self.state.bId}`)
+    axios.get(`http://localhost:5000/saves/${uid}/${self.state.bId}`)
          .then(function(){
            alert(`Booking ${self.state.bId} has been saved`);
     })
   }
+
 
   render() {
     return (
@@ -95,19 +96,12 @@ export default class HostInspect extends Component {
                       </div>
                       <div className="detail-box clearfix ">
                           <div className="reviews-container">
-                              <p className="review-section-header">Actions</p>
-                              <button className="btn btn-alert" onClick={this.confirm} disabled={this.state.loggedIn}>Confirm</button>
-                              <button className="btn btn-alert" onClick={this.save} disabled={this.state.loggedIn}>Save</button>
-                              <a className="btn btn-alert" href={`mailto:${this.state.email}`}>Contact Host</a>
+                              <h5 className="review-section-header">Actions</h5>
+                              <hr />
+                              <Button className="btn btn-success" style={{width:150, height:25, borderRadius:15, marginBottom:25, padding:0}} onClick={this.save} disabled={this.state.loggedIn}>Save</Button>
+                              <br/><a className="btn btn-danger" style={{width:150, height:25,borderRadius:15, marginBottom:25, padding:0}} href={`mailto:${this.state.email}`}>Contact Host</a>
+                              <PaypalContainer price={this.state.price} renterId={this.state.uid} bId={this.state.bId} currency={'USD'} />
                           </div>
-                      </div>
-                      <div className = "paypal-box">
-                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                        <input type="hidden" name="cmd" value="_s-xclick"/>
-                        <input type="hidden" name="hosted_button_id" value="K48Q4JTPZ9M5L"/>
-                        <input type="image" disabled={this.state.loggedIn} src="https://www.paypalobjects.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"/>
-                        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"/>
-                        </form>
                       </div>
                   </div>
 

@@ -1,86 +1,82 @@
 import React, { Component } from "react";
 import ListCard from "./ListCard.js";
 import axios from 'axios';
+import {Table} from 'react-bootstrap';
 
 export default class Listing extends Component {
 
   constructor(props){
     super(props)
     this.state = {
-      cards: []
+      cards: [],
+      i:0
     }
     var self = this;
-    axios.get(`http://52.15.115.174:5000/listings/${this.props.location.search}`).then( (res) => {
+    axios.get(`http://localhost:5000/listings/${this.props.location.search}`).then( (res) => {
       self.setState({cards:res.data}, function(){
         console.log(self.state.cards);
       });
     });
     this.createTable = this.createTable.bind(this);
-    //this.createTable(this.state.cards);
 
   }
 
-  createTable(data){
+  // createTable = (data) => {
+  //   let table = [];
+  //   for(var i = 0; i<data.length;){
+  //     let children = [];
+  //     for(var j; j<5 ;j++){
+  //       let listing = data[j];
+  //       children.push(
+  //         <ListCard bId={listing.bId}
+  //                   address={listing.address}
+  //                   sqft={listing.squareFeet}
+  //                   image={listing.picture}
+  //                   distance={listing.distance_miles}
+  //                   host={listing.hostId}
+  //                   price={listing.price}
+  //                   lat={listing.latitude}
+  //                   lng={listing.longitude}
+  //                   />
+  //                 );
+  //     }
+  //     table.push(`<tr>${children.join('')}</tr>`);
+  //   }
+  //   document.getElementById('listing').innerHTML = table.join('');
+  // }
+
+  createTable = (data) => {
     let table = [];
-    for(var i = 0; i<data.length;){
+    while(data.length > 0){
       let children = [];
-      for(;i%3===0;i++){
-        console.log(i);
-        let listing = data[i];
-        children.push(`<td>${
-          <ListCard bId={listing.bId}
-                    address={listing.address}
-                    sqft={listing.squareFeet}
-                    image={listing.picture}
-                    distance={listing.distance_miles}
-                    host={listing.hostId}
-                    price={listing.price}
-                    lat={listing.latitude}
-                    lng={listing.longitude}
-
-          />}</td>`)
+      for(var i=0; i<4;i++){
+        const listing = data.pop();
+        if(listing == null) break;
+        console.log(listing.bId);
+        children.push(<td style={{paddingLeft:'10px'}}><ListCard bId={listing.bId}
+                          address={listing.address}
+                          sqft={listing.squareFeet}
+                          image={listing.picture}
+                          distance={listing.distance_miles}
+                          host={listing.hostId}
+                          price={listing.price}
+                          lat={listing.latitude}
+                          lng={listing.longitude}
+                          /></td>);
       }
-
-      table.push(`<tr>${children.join('')}</tr>`);
+      table.push(<div><hr /><tr style={{marginTop:'10px'}}>{children}</tr></div>)
     }
-    document.getElementById('listing').innerHTML = table.join('');
-  }
-
-  componentDidMount(){
-    //document.getElementById('maptarget').innerHTML = 'he'
+    return table;
   }
 
   render() {
     return (
       <div>
-      <div id="listing" width="1000px">
-      <h3> Where to store </h3>
-      <table style={{marginTop:'100px'}} id="target">
-      <tbody>
-        <tr id="">
-          { this.state.cards.map(function(listing){
-              return(
-                <td style={{paddingLeft:5}}>
-                  <ListCard bId={listing.bId}
-                            address={listing.address}
-                            sqft={listing.squareFeet}
-                            image={listing.picture}
-                            distance={listing.distance_miles}
-                            host={listing.hostId}
-                            price={listing.price}
-                            lat={listing.latitude}
-                            lng={listing.longitude}
-
-                  />
-                </td>
-              )
-            })
-          }
-        </tr>
+      <table style={{margin:'0 auto'}}>
+        <tbody id='target'>
+          {this.createTable(this.state.cards)}
         </tbody>
       </table>
-      </div>
-
       </div>
     );
   }

@@ -10,6 +10,7 @@ import {
 import "../styles/Signup.css";
 import axios from 'axios';
 import { Redirect } from "react-router-dom";
+import ImageUploader from "react-images-upload";
 
 
 
@@ -63,17 +64,19 @@ export default class Signup extends Component {
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
     var self = this;
-    axios.post('http://52.15.115.174:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: self.state.image, file:self.state.file})
+    axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: self.state.image, file:self.state.file})
     .then(function(){
-      axios.post('http://52.15.115.174:5000/users/login', {email:self.state.email, password:self.state.password
+      axios.post('http://localhost:5000/users/login', {email:self.state.email, password:self.state.password
     })
     .then(function(response){
       return response.data.id;
     })
     .then(function(result){
       self.handleLogin(result);
+      window.location = '/profile/'+result;
     });
-  });
+    });
+
   }
 
 
@@ -91,42 +94,24 @@ export default class Signup extends Component {
   }
 
   handleFileUpload = (event) => {
-    console.log(event.target.files[0]);
-    this.setState({file: event.target.files[0]}, function(){
-      console.log(this.state.file);
-    });
-  }
-
-  renderConfirmationForm() {
-    return (
-      <form onSubmit={this.handleConfirmationSubmit}>
-        <FormGroup controlId="confirmationCode" bsSize="large">
-          <ControlLabel>Confirmation Code</ControlLabel>
-          <FormControl
-            autoFocus
-            type="tel"
-            value={this.state.confirmationCode}
-            onChange={this.handleChange}
-          />
-          <HelpBlock>Please check your email for the code.</HelpBlock>
-        </FormGroup>
-        <Button
-          block
-          bsSize="large"
-          disabled={!this.validateConfirmationForm()}
-          type="submit"
-          isLoading={this.state.isLoading}
-          text="Verify"
-          loadingText="Verifying…"
-        />
-      </form>
-    );
-  }
+    let auth = 'Bearer 5323d68f250da95bf853e0670d17c2f92bd63386';
+    this.setState({image: event[0]});
+    var reader = new FileReader();
+    var img = reader.readAsDataURL(event[0]);
+    var self = this;
+    reader.onload = function (e) {
+      axios.post('https://api.imgur.com/3/image/',{image:e.target.result.split(',')[1]}, {headers: {Authorization:auth, Authorization: 'Client-ID f9809b264e1c6f5', Accept: 'application/json'}})
+      .then(function(response){
+        console.log(response.data.data.link);
+        self.setState({image:response.data.data.link});
+      });
+      }
+    }
 
   renderForm() {
 
     return (
-      <Thumbnail className='thumbnail signupForm' style={{width:'377px', margin:'0 auto'}}>
+      <Thumbnail className='thumbnail signupxForm' style={{width:'377px', margin:'0 auto'}}>
       <form onSubmit={this.handleSubmit} style={{top:'25px'}}>
       <div className="row">
         <div className="col-xs-6">
@@ -148,7 +133,6 @@ export default class Signup extends Component {
           </FormGroup>
         </div>
         </div>
-
 
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
@@ -184,13 +168,30 @@ export default class Signup extends Component {
           />
         </FormGroup>
 
-        <FormGroup controlId="image" bsSize="large">
+        {/*<FormGroup controlId="image" bsSize="large">
         <ControlLabel>Profile Picture</ControlLabel>
         <FormControl
         type="text"
         onChange={this.handleChange}
         />
         </FormGroup>
+
+        <FormGroup controlId="image2" bsSize="large">
+        <ControlLabel>Image2</ControlLabel>
+        <FormControl
+        type="file"
+        accept=".jpg"
+        onChange={this.handleFileUpload}
+        />
+        </FormGroup>*/}
+        <ImageUploader
+            withIcon={true}
+            buttonText='Choose image'
+            onChange={this.handleFileUpload}
+            imgExtension={['.jpg', '.gif', '.png', '.gif']}
+            maxFileSize={5242880}
+            singleImage={true}
+        />
 
         <Button
           block
@@ -206,11 +207,11 @@ export default class Signup extends Component {
   }
 
   render() {
-    if(this.state.user){
-      return <Redirect to={`/profile/${this.state.user}`} from={'/signup'} />
-    }
+    // if(this.state.user){
+    //   return <Redirect to={`/profile/${this.state.user}`} from={'/signup'} />
+    // }
     return (
-      <div>
+      <div style={{marginTop:'100px'}}>
         {this.renderForm()};
       </div>
     );

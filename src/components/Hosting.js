@@ -11,6 +11,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import Modal from 'react-modal';
 import MapContainer from './MapContainer';
+import ImageUploader from "react-images-upload";
 
 Modal.setAppElement('#root');
 const customStyles = {
@@ -43,6 +44,7 @@ export default class Hosting extends Component {
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleCoords = this.handleCoords.bind(this);
+    this.handleFileUpload = this.handleFileUpload.bind(this);
   }
 
   handleRangeChange() {
@@ -77,7 +79,7 @@ export default class Hosting extends Component {
     }
     if(event.target.id === 'price'){
       var target = document.getElementById('priceTarget');
-      target.innerHTML = this.state.squareFootage * parseFloat(event.target.value)/10 * this.state.days;
+      //target.innerHTML = this.state.squareFootage * parseFloat(event.target.value)/10 * this.state.days;
     }
   }
 
@@ -110,6 +112,8 @@ export default class Hosting extends Component {
     this.setState({list:true,bid:b}, function(){
       console.log(this.state.bid);
     });
+
+    window.location = '/listings/?bid=all&uLat=33.79010684411262&uLong=-84.32665145463136';
   }
 
   openModal() {
@@ -123,17 +127,29 @@ export default class Hosting extends Component {
     this.setState({modalIsOpen: false});
   }
 
+  handleFileUpload = (event) => {
+    let auth = 'Bearer 5323d68f250da95bf853e0670d17c2f92bd63386';
+    this.setState({image: event[0]});
+    var reader = new FileReader();
+    var img = reader.readAsDataURL(event[0]);
+    var self = this;
+    reader.onload = function (e) {
+      axios.post('https://api.imgur.com/3/image/',{image:e.target.result.split(',')[1]}, {headers: {Authorization:auth, Authorization: 'Client-ID f9809b264e1c6f5', Accept: 'application/json'}})
+      .then(function(response){
+        console.log(response.data.data.link);
+        self.setState({image:response.data.data.link});
+      });
+      }
+    this.setState()
+    }
+
 
 render() {
-
-  if(this.state.list){
-    return(<Redirect to={`/listings/?bid=all`} />)
-  }
   return (
     <Thumbnail className="landerForm">
       <h1>Host a Space</h1>
       <hr/>
-      <form onSubmit={this.handleSubmit.bind(this)}>
+      <form onSubmit={this.handleSubmit}>
         <FormGroup controlId="location" bsSize="large">
           <ControlLabel>Give Your Space a Title</ControlLabel>
           <FormControl
@@ -233,15 +249,6 @@ render() {
           />
         </div>
 
-        <FormGroup controlId="image" bsSize="large">
-        <ControlLabel>Image Url</ControlLabel>
-          <FormControl
-          type="text"
-          onChange={this.handleChange}
-          placeholder={'http://placehold.it/200x200'}
-          />
-        </FormGroup>
-
         <FormGroup controlId="price" bsSize="large">
         <ControlLabel>Price Per 10sqft per Day</ControlLabel>
           <FormControl
@@ -251,14 +258,23 @@ render() {
           maxLength={"4"}
           size={"4"}
           />
+
         </FormGroup>
 
-        <span id="days">0</span> days * <span id="sqfttarget">0</span> * <span id="ppd">0</span> =  <h3>$<span id="priceTarget">0</span></h3>
+        <ImageUploader
+            withIcon={true}
+            buttonText='Choose image'
+            onChange={this.handleFileUpload}
+            imgExtension={['.jpg', '.gif', '.png', '.gif']}
+            maxFileSize={5242880}
+            singleImage={true}
+        />
+
       <Button
         block
         bsSize="large"
         className="btn-success"
-        type="submit"
+        type='submit'
       > Submit
       </Button>
       </form>

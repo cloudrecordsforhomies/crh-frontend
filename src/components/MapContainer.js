@@ -65,16 +65,16 @@ export class MapContainer extends Component {
 
   render() {
     if (navigator && navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition((pos) => {
-              const coords = pos.coords;
-              this.setState({
-                  currentLocation: {
-                      lat: coords.latitude,
-                      lng: coords.longitude
-                  }
-              })
-            })
-        }
+      navigator.geolocation.getCurrentPosition((pos) => {
+          const coords = pos.coords;
+          this.setState({
+              currentLocation: {
+                  lat: coords.latitude,
+                  lng: coords.longitude
+              }
+          })
+        })
+    }
 
     const style = this.props.style;
     const mapoptions = {

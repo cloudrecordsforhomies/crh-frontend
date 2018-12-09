@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 import "../styles/Login.css";
 import axios from 'axios';
 
+
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +32,7 @@ export default class Login extends Component {
   handleSubmit = event => {
     event.preventDefault();
     var self = this;
-    axios.post(`http://52.15.115.174:5000/users/login`, {email:self.state.email, password:self.state.password}).then(function(response){
+    axios.post(`http://localhost:5000/users/login`, {email:self.state.email, password:self.state.password}).then(function(response){
       return response.data.id;
     }).then(function(result){
       self.handleLogin(result);

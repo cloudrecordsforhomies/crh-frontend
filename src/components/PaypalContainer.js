@@ -1,105 +1,44 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import scriptLoader from 'react-async-script-loader';
+import PaypalExpressBtn from 'react-paypal-express-checkout';
+import axios from 'axios';
 
-class PaypalContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showButton: false,
-    };
-
-    window.React = React;
-    window.ReactDOM = ReactDOM;
-  }
-
-  componentDidMount() {
-    const {
-      isScriptLoaded,
-      isScriptLoadSucceed
-    } = this.props;
-
-    if (isScriptLoaded && isScriptLoadSucceed) {
-      this.setState({ showButton: true });
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      isScriptLoaded,
-      isScriptLoadSucceed,
-    } = nextProps;
-
-    const isLoadedButWasntLoadedBefore =
-      !this.state.showButton &&
-      !this.props.isScriptLoaded &&
-      isScriptLoaded;
-
-    if (isLoadedButWasntLoadedBefore) {
-      if (isScriptLoadSucceed) {
-        this.setState({ showButton: true });
+export default class PaypalContainer extends Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        price: props.price,
+        env: 'sandbox',
+        currency:props.currency,
+        client: {
+            sandbox:    'AYVLFhv6FECzlMQapOii1SUI-CpLQvDRU4g8S8TIIK-ma2dCw9Fge2iGeKbM-AzEz0nAEbvsO9_Bp11-',
+            production: 'Ab4XiqtK7mex4jSF9RQnv_Gr5vwpYftEkbM4EMcS-wh_h54Zyby9XGpchGcQuAuuJR_JQ8J-8zAxMpO4'
+                }
       }
+      this.onSuccess = this.onSuccess.bind(this);
+      this.onCancel = this.onCancel.bind(this);
+      this.onError = this.onError.bind(this);
+
     }
-  }
 
-  render() {
-    const {
-      total,
-      currency,
-      env,
-      commit,
-      client,
-      onSuccess,
-      onError,
-      onCancel,
-    } = this.props;
+    onSuccess = (payment) => {
+      var uid = localStorage.getItem("profile");
+      const self = this;
+      axios.post(`http://localhost:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
+           .then(function(){
+             alert(`Payment succeeded! Booking ${self.state.bId} has been confirmed`);
+       })
+    }
+    onCancel = (data) => {
+        alert('The payment was cancelled!', data);
+    }
 
-    const {
-      showButton,
-    } = this.state;
+    onError = (err) => {
+        alert("Error!", err);
+    }
 
-    const payment = () =>
-      paypal.rest.payment.create(env, client, {
-        transactions: [
-          {
-            amount: {
-              total,
-              currency,
-            }
-          },
-        ],
-      });
-
-    const onAuthorize = (data, actions) =>
-      actions.payment.execute()
-        .then(() => {
-          const payment = {
-            paid: true,
-            cancelled: false,
-            payerID: data.payerID,
-            paymentID: data.paymentID,
-            paymentToken: data.paymentToken,
-            returnUrl: data.returnUrl,
-          };
-
-          onSuccess(payment);
-        });
-
-    return (
-      <div>
-        {showButton && <paypal.Button.react
-          env={env}
-          client={client}
-          commit={commit}
-          payment={payment}
-          onAuthorize={onAuthorize}
-          onCancel={onCancel}
-          onError={onError}
-        />}
-      </div>
-    );
-  }
+    render() {
+        return (
+            <PaypalExpressBtn env={this.state.env} client={this.state.client} currency={this.state.currency} shipping={1} total={this.props.price} onError={this.onError} onSuccess={this.onSuccess} onCancel={this.onCancel} />
+        );
+    }
 }
-
-export default scriptLoader('https://www.paypalobjects.com/api/checkout.js')(PaypalContainer);
