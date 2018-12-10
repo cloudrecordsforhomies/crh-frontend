@@ -41,7 +41,7 @@ export default class ListCard extends Component {
     return (
       <div className="card" style={{ width: 200, height: "auto", paddingTop:'0px' }}>
         <div className="container" style={{marginBottom:'200px', paddingLeft:'0px'}}>
-          <MapContainer callback={null} location={{lat:this.state.lat, lng:this.state.lng}} style = {{width:'200px', height:'200px'}} />
+          <MapContainer callback={null} place={{lat:this.state.lat, lng:this.state.lng}} style = {{width:'200px', height:'200px'}} />
         </div>
         <div className="container" style={{ position: "relative",margin:0,padding:0,width:200 }}>
           <img
@@ -62,7 +62,7 @@ export default class ListCard extends Component {
               borderRadius:"100%"
             }}
           >
-            <a href={`/profile/${this.state.host}`}> <img src={this.state.hostImg} className="avatar img-circle img-thumbnail" alt="host"/></a>
+            <a href={`/profile/${this.state.host}`}> <img src={this.state.hostImg} className="avatar img-circle img-thumbnail" style={{width:75, height:75}} alt="host"/></a>
           </div>
         </div>
 

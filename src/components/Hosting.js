@@ -35,7 +35,8 @@ export default class Hosting extends Component {
       user: props.user,
       list: false,
       modalIsOpen: false,
-      squareFootage:30
+      squareFootage:30,
+      image:''
     };
 
     this.handleRangeChange = this.handleRangeChange.bind(this);
