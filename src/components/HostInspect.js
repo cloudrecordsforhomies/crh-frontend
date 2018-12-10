@@ -106,7 +106,7 @@ export default class HostInspect extends Component {
                   </div>
 
                   <div className="detail-picture-display col-xs-12 col-md-7" style={{height:'400px'}}>
-                      <MapContainer callback={null} location={{lat:this.state.latitude, lng:this.state.longitude}} style={{width:'357px', height:'357px'}} />
+                      <MapContainer callback={null} places={{lat:this.state.latitude, lng:this.state.longitude}} style={{width:'357px', height:'357px'}} />
                       <div style={{width:'30px', height:'400px', left:'357px',position:'absolute'}}></div>
                       <img src={this.state.picture} style={{width:'357px', height:'357px'}} />
                   </div>

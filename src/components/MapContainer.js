@@ -13,10 +13,7 @@ export class MapContainer extends Component {
       activeMarker: {},
       selectedPlace: {},
       locations: props.locations
-    };
-
-
-    
+    };    
 
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.onMapClicked = this.onMapClicked.bind(this);
@@ -82,17 +79,15 @@ export class MapContainer extends Component {
       gestureHandling: 'none'
     }
 
+
     return (
+      <div className="container" style={{height:350, width:350}}>
       <Map
       style={style}
       google={this.props.google}
       zoom={14}
       onClick={this.onMapClicked}
-      initialCenter={ !this.props.location ?
-        {lat: 33.794772,
-        lng: -84.326590}
-        : this.props.location
-      }
+      initialCenter={ !this.props.location ? {lat: 33.794772,lng: -84.326590} : this.props.location }
       options={mapoptions}
       mapElement={<div style={{ height: `100px` }} />}
       //onReady={this.populateListings}
@@ -101,8 +96,8 @@ export class MapContainer extends Component {
       <Marker
         onClick={this.onMarkerClick}
         name={"Current location"}
-        location={this.props.location? this.props.location : this.state.currentLocation}
-        position={this.props.location? this.props.location : this.state.currentLocation}
+        location={this.props.place? this.props.place : this.state.currentLocation}
+        position={this.props.place? this.props.place : this.state.currentLocation}
        />
 
       <InfoWindow
@@ -114,6 +109,7 @@ export class MapContainer extends Component {
         </div>
       </InfoWindow>
       </Map>
+      </div>
     );
   }
 }
