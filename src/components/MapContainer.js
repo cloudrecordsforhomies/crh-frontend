@@ -83,7 +83,6 @@ export class MapContainer extends Component {
 
 
     return (
-      <div className="container" style={{height:350, width:350}}>
       <Map
       style={style}
       google={this.props.google}
@@ -116,7 +115,6 @@ export class MapContainer extends Component {
         </div>
       </InfoWindow>
       </Map>
-      </div>
     );
   }
 }
