@@ -323,6 +323,7 @@ app.post('/users/new', (req, res) => {
 
 app.post('/booking/new', (req, res) => {
   console.log(req.body);
+  req = req.body;
   var sql = `INSERT INTO Booking(hostId, startTime, endTime, picture, address, latitude, longitude, squareFeet, status, price) VALUES (?)`;
   var values = [req.body.hostId, req.body.checkIn, req.body.checkOut, req.body.picture, req.body.address, req.body.latitude, req.body.longitude, req.body.squareFeet, 0, req.body.price];
   db.query(sql, [values], function(err,result,fields){
