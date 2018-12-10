@@ -7,17 +7,24 @@ export class MapContainer extends Component {
   constructor(props){
     super(props);
     this.state = {
-      currentLocation: props.location,
+      currentLocation: props.place,
       clickedLocation: {},
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
+<<<<<<< HEAD
       locations: props.locations
     };    
+=======
+      locations: props.locations,
+      place: props.place
+    };
+>>>>>>> b955e6541cf15564dd2c3bf912d2b161a87cff8e
 
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.onMapClicked = this.onMapClicked.bind(this);
     this.populateListings = this.populateListings.bind(this);
+
   }
 
   onMarkerClick = (props, marker, e) =>
@@ -39,24 +46,25 @@ export class MapContainer extends Component {
       });
       if(this.props.callback) this.props.callback(clickLoc.lat, clickLoc.lng);
       console.log(this.state.clickedLocation);
+      var marker = new this.props.google.maps.Marker({position: this.state.clickedLocation, map: map});
   };
 
   populateListings = (props, map) => {
     var listings = this.state.locations;
-    console.log(this.state.locations);
-    var self = this;
-    var testPos = {lat: 33.796, lng: -84.29}
-    var marker = new this.props.google.maps.Marker({position: testPos, map: map});
-    marker.addListener('click', function() {
-      self.setState({
-        selectedPlace: {name: "TEST", position: testPos},
-        activeMarker: marker,
-        showingInfoWindow: true
-      })
-    })
+    console.log(this.props.locations);
+//     var self = this;
+//     var testPos = {lat: 33.796, lng: -84.29}
+//     var marker = new this.props.google.maps.Marker({position: testPos, map: map});
+//     marker.addListener('click', function() {
+//       self.setState({
+//         selectedPlace: {name: "TEST", position: testPos},
+//         activeMarker: marker,
+//         showingInfoWindow: true
+//       })
+//     })
     listings.map(function(element) {
-       var pos = {lat: element.latitude, lng: element.longitude}
-       var marker = new self.props.google.maps.Marker({position: pos, map: map});
+       var pos = {lat: element.lat, lng: element.lng}
+       var marker = new this.props.google.maps.Marker({position: pos, map: map});
     });
   }
 
@@ -87,7 +95,15 @@ export class MapContainer extends Component {
       google={this.props.google}
       zoom={14}
       onClick={this.onMapClicked}
+<<<<<<< HEAD
       initialCenter={ !this.props.location ? {lat: 33.794772,lng: -84.326590} : this.props.location }
+=======
+      initialCenter={ !this.props.place ?
+        {lat: 33.794772,
+        lng: -84.326590}
+        : this.props.place
+      }
+>>>>>>> b955e6541cf15564dd2c3bf912d2b161a87cff8e
       options={mapoptions}
       mapElement={<div style={{ height: `100px` }} />}
       //onReady={this.populateListings}

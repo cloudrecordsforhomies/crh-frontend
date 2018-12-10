@@ -141,7 +141,6 @@ app.get('/listings', (req,res) => {
     GROUP BY b.bId
     ORDER BY b.bId DESC;`;
   }
-  console.log(sql);
   db.query(sql, function(err, result) {
     if(err){
       throw(err);
@@ -161,7 +160,6 @@ app.get('/booking/', (req,res) => {
       throw(err);
       res.status(400).send("Could not complete request");
     }
-    console.log(result);
     res.status(200).send(result[0]);
   });
 });
@@ -179,11 +177,9 @@ app.post('/booking/confirm', (req, res) => {
   sql = `SELECT u.email, u.phone, u.first, u.last FROM User u LEFT JOIN Booking b ON b.renterId=u.uid WHERE b.bid=${req.body.bId}`;
   db.query(sql, function(err, result, fields){
     var sql2 = `SELECT u.email, u.phone, u.first, u.last FROM User u LEFT JOIN Booking b ON b.hostId=u.uid WHERE b.bid=${req.body.bId}`;
-    console.log(result);
     var renterEmail = result[0].email;
     db.query(sql2, function(err, result2, fields){
       var hostEmail = result2[0].email;
-      console.log(`Booking has been confirmed. Renter:${result[0].first} ${result[0].last} phone:${result[0].phone}. Host:${result2[0].first} ${result2[0].last} phone:${result2[0].phone}`);
       var mailOptions = {
         from: '"Cache Team" <admin@cache370.com>', // sender address
         to: [renterEmail, hostEmail], // list of receivers
@@ -279,7 +275,6 @@ app.get('/saves/:uid/:bid', (req, res) => {
   var bid = req.params.bid;
   var uid = req.params.uid;
   handleSaves(bid, uid, "mk", function(arr){
-    console.log(arr);
     res.status(200).send(arr)
   });
 
@@ -332,7 +327,6 @@ app.post('/users/new', (req, res) => {
 app.post('/booking/new', (req, res) => {
 
   req = req.body;
-  console.log(req.body);
   var sql = `INSERT INTO Booking(hostId, startTime, endTime, picture, address, latitude, longitude, squareFeet, status, price) VALUES (?)`;
   var values = [req.body.hostId, req.body.checkIn, req.body.checkOut, req.body.picture, req.body.address, req.body.latitude, req.body.longitude, req.body.squareFeet, 0, req.body.price];
   db.query(sql, [values], function(err,result,fields){
@@ -348,7 +342,6 @@ app.post('/booking/new', (req, res) => {
       res.status(500).send("Booking Error");
     }
     var bid = result[0].bId;
-    console.log(bid);
     res.status(200).send(bid.toString());
   });
 });

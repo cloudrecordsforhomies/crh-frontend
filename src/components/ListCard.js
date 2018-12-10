@@ -62,7 +62,7 @@ export default class ListCard extends Component {
               borderRadius:"100%"
             }}
           >
-            <a href={`/profile/${this.state.host}`}> <img src={this.state.hostImg} className="avatar img-circle img-thumbnail" alt="host"/></a>
+            <a href={`/profile/${this.state.host}`}> <img src={this.state.hostImg} className="avatar img-circle img-thumbnail" style={{width:75, height:75}} alt="host"/></a>
           </div>
         </div>
 
