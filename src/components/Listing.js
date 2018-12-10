@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ListCard from "./ListCard.js";
 import axios from 'axios';
 import {Table} from 'react-bootstrap';
+import MapContainer from './MapContainer';
 
 export default class Listing extends Component {
 
@@ -72,12 +73,14 @@ export default class Listing extends Component {
   render() {
     return (
       <div>
-      <table style={{margin:'0 auto'}}>
-        <tbody id='target'>
-          {this.createTable(this.state.cards)}
-        </tbody>
-      </table>
+        <table style={{margin:'0 auto'}}>
+          <tbody id='target'>
+            {this.createTable(this.state.cards)}
+          </tbody>
+        </table>
+        {/*<MapContainer callback={null} place={{lat:33.790290, lng:-84.326914}} style={{width:'200px', height:'200px'}} locations={this.state.cards} />*/}
       </div>
+
     );
   }
 
