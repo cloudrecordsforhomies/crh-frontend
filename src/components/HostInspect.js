@@ -21,7 +21,7 @@ export default class HostInspect extends Component {
     this.handleHostData = this.handleHostData.bind(this);
 
     var self = this;
-    axios.get(`http://localhost:5000/booking/?bid=${self.state.bId}`)
+    axios.get(`http://52.15.115.174:5000/booking/?bid=${self.state.bId}`)
     .then(function(response){
       self.handleData(response.data);
     })
@@ -38,7 +38,7 @@ export default class HostInspect extends Component {
     this.setState(newState);
 
     var self = this;
-    axios.get(`http://localhost:5000/profile/${newState.hostId}`)
+    axios.get(`http://52.15.115.174:5000/profile/${newState.hostId}`)
     .then(function(response){
       self.handleHostData(response.data);
     })
@@ -57,7 +57,7 @@ export default class HostInspect extends Component {
   confirm() {
     var uid = localStorage.getItem("profile");
     const self = this;
-    axios.post(`http://localhost:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
+    axios.post(`http://52.15.115.174:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
          .then(function(){
            alert(`Booking ${self.state.bId} has been confirmed`);
      })
@@ -68,7 +68,7 @@ export default class HostInspect extends Component {
     var uid = localStorage.getItem("profile");
     console.log(uid);
     const self = this;
-    axios.get(`http://localhost:5000/saves/${uid}/${self.state.bId}`)
+    axios.get(`http://52.15.115.174:5000/saves/${uid}/${self.state.bId}`)
          .then(function(){
            alert(`Booking ${self.state.bId} has been saved`);
     })
@@ -106,7 +106,7 @@ export default class HostInspect extends Component {
                   </div>
 
                   <div className="detail-picture-display col-xs-12 col-md-7" style={{height:'400px'}}>
-                      <MapContainer callback={null} place={{lat:this.state.latitude, lng:this.state.longitude}} style={{width:'357px', height:'357px'}} />
+                      <MapContainer callback={null} places={{lat:this.state.latitude, lng:this.state.longitude}} style={{width:'357px', height:'357px'}} />
                       <div style={{width:'30px', height:'400px', left:'357px',position:'absolute'}}></div>
                       <img src={this.state.picture} style={{width:'357px', height:'357px'}} />
                   </div>

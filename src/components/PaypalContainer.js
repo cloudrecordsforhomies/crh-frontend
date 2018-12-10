@@ -23,7 +23,7 @@ export default class PaypalContainer extends Component {
     onSuccess = (payment) => {
       var uid = localStorage.getItem("profile");
       const self = this;
-      axios.post(`http://localhost:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
+      axios.post(`http://52.15.115.174:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
            .then(function(){
              alert(`Payment succeeded! Booking ${self.state.bId} has been confirmed`);
        })

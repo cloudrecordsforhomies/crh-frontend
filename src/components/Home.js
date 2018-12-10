@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../styles/Home.css";
 import Login from "./Login.js"
+import { Redirect } from 'react-router-dom';
 
 export default class Home extends Component {
   constructor(props){
@@ -21,7 +22,11 @@ export default class Home extends Component {
   }
 
   render() {
-
+    if(localStorage.getItem('profile')){
+      return (
+        <Redirect to={`/profile/${localStorage.getItem('profile')}`} />
+      )
+    } else
     return (
       <div className="Home">
       <Login />
