@@ -146,13 +146,11 @@ app.get('/listings', (req,res) => {
       throw(err);
       res.status(500).send();
     }
-    console.log(result);
     res.status(200).send(result);
   });
 });
 
 app.get('/booking/', (req,res) => {
-  console.log(req.query);
   var id = req.query.bid;
   var sql = `SELECT * FROM Booking WHERE bId=${id}`;
   db.query(sql, function(err,result,fields){
@@ -292,7 +290,6 @@ app.post('/api/echo', (req, res) => {
 });
 
 app.post('/users/new', (req, res) => {
-  console.log(req.body);
   var sql = `INSERT INTO User (first, last, email, password, phone, profPic) VALUES (?)`;
   var values = Object.keys(req.body).map(function(_){return req.body[_]});
 
