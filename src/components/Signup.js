@@ -64,9 +64,9 @@ export default class Signup extends Component {
     this.setState({ newUser: "test" });
     this.setState({ isLoading: false });
     var self = this;
-    axios.post('http://52.15.115.174:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: self.state.image, file:self.state.file})
+    axios.post('http://localhost:5000/users/new', {first: self.state.first, last: self.state.last,email: self.state.email,password: self.state.password, phone: self.state.phone, profPic: self.state.image, file:self.state.file})
     .then(function(){
-      axios.post('http://52.15.115.174:5000/users/login', {email:self.state.email, password:self.state.password
+      axios.post('http://localhost:5000/users/login', {email:self.state.email, password:self.state.password
     })
     .then(function(response){
       return response.data.id;

@@ -15,6 +15,7 @@ export class MapContainer extends Component {
       locations: props.locations,
       place: props.place
     };
+
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.onMapClicked = this.onMapClicked.bind(this);
     this.populateListings = this.populateListings.bind(this);
@@ -83,18 +84,12 @@ export class MapContainer extends Component {
 
 
     return (
-      <div className="container" style={{height:350, width:350}}>
       <Map
       style={style}
       google={this.props.google}
       zoom={14}
       onClick={this.onMapClicked}
-
-      initialCenter={ !this.props.place ?
-        {lat: 33.794772,
-        lng: -84.326590}
-        : this.props.place
-      }
+      initialCenter={ !this.props.place ? {lat: 33.794772,lng: -84.326590} : this.props.place }
       options={mapoptions}
       mapElement={<div style={{ height: `100px` }} />}
       //onReady={this.populateListings}
@@ -116,7 +111,6 @@ export class MapContainer extends Component {
         </div>
       </InfoWindow>
       </Map>
-      </div>
     );
   }
 }

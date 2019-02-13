@@ -21,7 +21,7 @@ export default class HostInspect extends Component {
     this.handleHostData = this.handleHostData.bind(this);
 
     var self = this;
-    axios.get(`http://52.15.115.174:5000/booking/?bid=${self.state.bId}`)
+    axios.get(`http://localhost:5000/booking/?bid=${self.state.bId}`)
     .then(function(response){
       self.handleData(response.data);
     })
@@ -38,7 +38,7 @@ export default class HostInspect extends Component {
     this.setState(newState);
 
     var self = this;
-    axios.get(`http://52.15.115.174:5000/profile/${newState.hostId}`)
+    axios.get(`http://localhost:5000/profile/${newState.hostId}`)
     .then(function(response){
       self.handleHostData(response.data);
     })
@@ -49,7 +49,7 @@ export default class HostInspect extends Component {
 
   handleHostData = (result) => {
     var newState2 = {}
-    Object.keys(result).map(function(key){return newState2[key] = result[key]});
+    Object.keys(result).map(function(key){return newState2['host_'+key] = result[key]});
     console.log(newState2);
     this.setState(newState2);
   }
@@ -57,7 +57,7 @@ export default class HostInspect extends Component {
   confirm() {
     var uid = localStorage.getItem("profile");
     const self = this;
-    axios.post(`http://52.15.115.174:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
+    axios.post(`http://localhost:5000/booking/confirm/`, {renterId: uid, bId: this.state.bId})
          .then(function(){
            alert(`Booking ${self.state.bId} has been confirmed`);
      })
@@ -68,11 +68,12 @@ export default class HostInspect extends Component {
     var uid = localStorage.getItem("profile");
     console.log(uid);
     const self = this;
-    axios.get(`http://52.15.115.174:5000/saves/${uid}/${self.state.bId}`)
+    axios.get(`http://localhost:5000/saves/${uid}/${self.state.bId}`)
          .then(function(){
            alert(`Booking ${self.state.bId} has been saved`);
     })
   }
+
 
 
   render() {
@@ -87,7 +88,7 @@ export default class HostInspect extends Component {
                               <p className="space-title">{this.state.address}</p>
                           </div>
                           <div className="col-xs-12 col-md-12 own-space space-info">
-                              <p className="space-desc">{this.state.squareFeet} square feet hosted by {this.state.first} {this.state.last}</p>
+                              <p className="space-desc">{this.state.squareFeet} square feet hosted by {this.state.host_first} {this.state.host_last}</p>
                           </div>
                           <div className="col-xs-12 col-md-12 own-space space-pricing">
                               <h3>${this.state.price}</h3>
@@ -99,14 +100,18 @@ export default class HostInspect extends Component {
                               <h5 className="review-section-header">Actions</h5>
                               <hr />
                               <Button className="btn btn-success" style={{width:150, height:25, borderRadius:15, marginBottom:25, padding:0}} onClick={this.save} disabled={this.state.loggedIn}>Save</Button>
-                              <br/><a className="btn btn-danger" style={{width:150, height:25,borderRadius:15, marginBottom:25, padding:0}} href={`mailto:${this.state.email}`}>Contact Host</a>
-                              <PaypalContainer price={this.state.price} renterId={this.state.uid} bId={this.state.bId} currency={'USD'} />
+                              <br/><a className="btn btn-danger" style={{width:150, height:25,borderRadius:15, marginBottom:25, padding:0}} href={`mailto:${this.state.host_email}`}>Contact Host</a>
+                              <PaypalContainer price={this.state.price} renterId={this.state.uid} bId={this.state.bId} currency={'USD'} handlebook={this.confirm} />
                           </div>
                       </div>
                   </div>
 
                   <div className="detail-picture-display col-xs-12 col-md-7" style={{height:'400px'}}>
                       <MapContainer callback={null} places={{lat:this.state.latitude, lng:this.state.longitude}} style={{width:'357px', height:'357px'}} />
+<<<<<<< HEAD
+
+=======
+>>>>>>> 7ea7b33482d3361afe12360464026aebdf679631
                       <div style={{width:'30px', height:'400px', left:'357px',position:'absolute'}}></div>
                       <img src={this.state.picture} style={{width:'357px', height:'357px'}} />
                   </div>

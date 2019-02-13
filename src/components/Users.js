@@ -11,7 +11,7 @@ export default class Users extends Component {
     this.state = {
     }
 
-    axios.get('http://52.15.115.174:5000/users/').then( (res) => {
+    axios.get('http://localhost:5000/users/').then( (res) => {
       this.createTable(res.data);
     });
   }
