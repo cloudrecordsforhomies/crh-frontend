@@ -32,7 +32,7 @@ export default class Login extends Component {
   handleSubmit = event => {
     event.preventDefault();
     var self = this;
-    axios.post(`http://52.15.115.174:5000/users/login`, {email:self.state.email, password:self.state.password}).then(function(response){
+    axios.post(`http://localhost:5000/users/login`, {email:self.state.email, password:self.state.password}).then(function(response){
       return response.data.id;
     }).then(function(result){
       self.handleLogin(result);
@@ -90,7 +90,7 @@ export default class Login extends Component {
       </form>
       <hr></hr>
       <div style={{textAlign:'center'}}>
-      <a href="/signup" style={{color:"#e6e6e6"}}>Create Your Account</a>
+      <a href="/signup">Create Your Account</a>
       </div>
 
       </Thumbnail>

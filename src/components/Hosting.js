@@ -102,7 +102,7 @@ export default class Hosting extends Component {
       img = "https://placehold.it/200x200";
     var b;
     var self = this;
-    var b = axios.post("http://52.15.115.174:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:img, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude, price:this.state.price}})
+    var b = axios.post("http://localhost:5000/booking/new", {body:{hostId:this.state.user, checkIn:checkIn, checkOut:checkOut, address:this.state.location, picture:img, squareFeet: this.state.squareFootage, latitude:this.state.latitude, longitude:this.state.longitude, price:this.state.price}})
      .then( function(response) {
         return response.data
       })
