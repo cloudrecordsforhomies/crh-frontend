@@ -251,13 +251,13 @@ render() {
         </div>
 
         <FormGroup controlId="price" bsSize="large">
-        <ControlLabel>Price Per 10sqft per Day</ControlLabel>
+        <ControlLabel>Price</ControlLabel>
           <FormControl
           id="price"
           type="text"
           onChange={this.handleChange}
-          maxLength={"4"}
-          size={"4"}
+          maxLength={"6"}
+          size={"6"}
           />
 
         </FormGroup>
